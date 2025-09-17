@@ -31,7 +31,7 @@ Platform web berbasis AI untuk deteksi dini disabilitas intelektual menggunakan 
 1. **Clone repository**
 ```bash
 git clone <repository-url>
-cd "Proyek ML DI"
+cd "FE_Disabilitas_intelektual"
 ```
 
 2. **Buat virtual environment**
@@ -59,7 +59,7 @@ python app.py
 ## 📁 Struktur Proyek
 
 ```
-Proyek ML DI/
+FE_Disabilitas_intelektual/
 ├── app.py                 # Aplikasi Flask utama
 ├── templates/
 │   └── index.html        # Template HTML
