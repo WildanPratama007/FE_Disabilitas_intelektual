@@ -135,7 +135,7 @@ FE_Disabilitas_intelektual/
 - **Ummi Azizah Rachmawati** - UI/UX
 - **Muhamad Fathurahman** - Software Developer
 - **Sri Chusri Haryanti** - UI/UX Designer
-- **Ibu Puspa** - Data Scientist
+- **Puspa Setia Pratiwi** - QA
 - **Alim El Hakim** - Backend Developer
 - **Nashuha Insani** - AI Engineer
 - **Muhammad Wildan Pratama** - Frontend Developer
