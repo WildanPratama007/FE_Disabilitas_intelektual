@@ -65,6 +65,22 @@ html {
   margin-top: 20px;
 }
 
+/* Image standardization */
+.visit-country .item .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  overflow: hidden;
+}
+
+.visit-country .item .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
 /* Team carousel responsive layout */
 @media (max-width: 768px) {
   .team-slide {
