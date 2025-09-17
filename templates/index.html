@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <title>Platform Deteksi Disabilitas Intelektual</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+
+</head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="index.html" class="logo">
+              <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="">
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li><a href="#section-1" class="active">Home</a></li>
+              <li><a href="#about-us">About us</a></li>
+              <li><a href="#contact-us">Contact Us</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <!-- ***** Main Banner Area Start ***** -->
+  <section id="section-1">
+    <div class="content-slider">
+      <input type="radio" id="banner1" class="sec-1-input" name="banner" checked>
+      <div class="slider">
+        <div id="top-banner-1" class="banner">
+          <div class="banner-inner-wrapper header-text">
+            <div class="main-caption">
+              <h2>Deteksi Dini Disabilitas Intelektual</h2>
+              <h1>Demi Generasi Optimal</h1>
+              <!-- <div class="border-button"><a href="#upload">Mulai Deteksi</a></div> -->
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="more-info">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <form method="POST" enctype="multipart/form-data" action="/upload" id="uploadForm">
+                          <div id="dropZone">
+                            <i class="fa fa-file-text"></i>
+                            <p>Drag & Drop file CSV di sini atau klik untuk pilih file</p>
+                            <input type="file" name="file" id="fileInput" accept=".csv" style="display: none;" required>
+                          </div>
+                        </form>
+
+                        <div class="predict-container">
+                          <button onclick="predictImage()" id="predictBtn" disabled>Predict</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav>
+        <!-- <div class="controls">
+          <label for="banner1"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">1</span></label>
+          <label for="banner2"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">2</span></label>
+          <label for="banner3"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">3</span></label>
+          <label for="banner4"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">4</span></label>
+        </div> -->
+      </nav>
+    </div>
+  </section>
+  <!-- ***** Main Banner Area End ***** -->
+
+  <div class="visit-country">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="section-heading">
+            <h2>Informasi Disabilitas Intelektual</h2>
+            <p>Deteksi dini sangat penting untuk memberikan intervensi yang tepat dan meningkatkan kualitas hidup anak.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="items">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="item">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-5">
+                      <div class="image">
+                        <img src="{{ url_for('static', filename='assets/images/country-01.jpg') }}" alt="">
+                      </div>
+                    </div>
+                    <div class="col-lg-8 col-sm-7">
+                      <div class="right-content">
+                        <h4>APA ITU DISABILITAS INTELEKTUAL</h4>
+                        <span>Informasi Dasar</span>
+                        <div class="main-button">
+                          <a href="about.html">Pelajari Lebih</a>
+                        </div>
+                        <p>Disabilitas intelektual adalah kondisi yang ditandai dengan keterbatasan signifikan dalam
+                          fungsi intelektual dan perilaku adaptif.</p>
+                        <ul class="info">
+                          <li><i class="fa fa-brain"></i> Fungsi Kognitif</li>
+                          <li><i class="fa fa-child"></i> Deteksi Dini</li>
+                          <li><i class="fa fa-heart"></i> Dukungan Keluarga</li>
+                        </ul>
+                        <div class="text-button">
+                          <a href="about.html">Butuh Bantuan ? <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="item">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-5">
+                      <div class="image">
+                        <img src="{{ url_for('static', filename='assets/images/country-02.jpg') }}" alt="">
+                      </div>
+                    </div>
+                    <div class="col-lg-8 col-sm-7">
+                      <div class="right-content">
+                        <h4>RIWAYAT DETEKSI</h4>
+                        <span>History Data</span>
+                        <div class="main-button">
+                          <a href="#history">Lihat Riwayat</a>
+                        </div>
+                        <p>Pantau hasil deteksi sebelumnya dan perkembangan anak melalui riwayat data yang tersimpan
+                          dalam sistem.</p>
+                        <ul class="info">
+                          <li><i class="fa fa-calendar"></i> Tanggal Deteksi</li>
+                          <li><i class="fa fa-file-image-o"></i> Foto Tersimpan</li>
+                          <li><i class="fa fa-chart-line"></i> Hasil Analisis</li>
+                        </ul>
+                        <div class="text-button">
+                          <a href="#history">Akses Data ? <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="item last-item">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-5">
+                      <div class="image">
+                        <img src="{{ url_for('static', filename='assets/images/country-03.jpg') }}" alt="">
+                      </div>
+                    </div>
+                    <div class="col-lg-8 col-sm-7">
+                      <div class="right-content">
+                        <h4>PANDUAN PENGGUNAAN</h4>
+                        <span>Tutorial</span>
+                        <div class="main-button">
+                          <a href="https://docs.google.com/document/d/1QpIDso0jmTBByRonzrpM662sbC0nisNiCTTsXOmdE3g/edit?usp=sharing">Lihat Panduan</a>
+                        </div>
+                        <p>Pelajari cara menggunakan sistem deteksi AI untuk mendapatkan hasil yang akurat dan memahami
+                          interpretasi hasilnya.</p>
+                        <ul class="info">
+                          <li><i class="fa fa-upload"></i> Upload Foto</li>
+                          <li><i class="fa fa-cogs"></i> Proses AI</li>
+                          <li><i class="fa fa-check-circle"></i> Hasil Deteksi</li>
+                        </ul>
+                        <div class="text-button">
+                          <a href="#guide">Butuh Panduan ? <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <ul class="page-numbers">
+                  <li><a href="#"><i class="fa fa-arrow-left"></i></a></li>
+                  <li><a href="#">1</a></li>
+                  <li class="active"><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#"><i class="fa fa-arrow-right"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="side-bar-map">
+            <div class="row">
+              <div class="col-lg-12">
+                <div id="map">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.4663618773!2d106.86771231476!3d-6.169659562186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f506b12dbf71%3A0xc934b14cf25a4d61!2sUniversitas%20YARSI!5e0!3m2!1sen!2sid!4v1642869952544!5m2!1sen!2sid"
+                    width="100%" height="550px" frameborder="0" style="border:0; border-radius: 23px; "
+                    allowfullscreen=""></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="call-to-action" id="about-us">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 style="text-align: center; margin-bottom: 50px;">About Us</h2>
+        </div>
+      </div>
+      <div class="team-carousel" style="overflow: hidden; position: relative;">
+        <!-- Previous button -->
+        <button class="prev-btn" onclick="prevSlide()"
+          style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">‹</button>
+        <!-- Next button -->
+        <button class="next-btn" onclick="nextSlide()"
+          style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">›</button>
+        <div class="team-slides" style="display: flex; transition: transform 0.5s ease;" id="teamSlides">
+          <!-- Slide 1 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  CP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Chandra Prasteyo Utomo</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Lead AI Researcher</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  UA</div>
+                <h4 style="color: white; margin-bottom: 10px;">Ummi Azizah Rachmawati</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">UI/UX</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  MF</div>
+                <h4 style="color: white; margin-bottom: 10px;">Muhamad Fathurahman</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Software Developer</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  SC</div>
+                <h4 style="color: white; margin-bottom: 10px;">Sri Chusri Haryanti</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">UI/UX Designer</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  PS</div>
+                <h4 style="color: white; margin-bottom: 10px;">Puspa Setia Pratiwi</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Data Scientist</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  AH</div>
+                <h4 style="color: white; margin-bottom: 10px;">Alim El Hakim</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Backend Developer</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  NI</div>
+                <h4 style="color: white; margin-bottom: 10px;">Nashuha Insani</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">AI Engineer</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  MW</div>
+                <h4 style="color: white; margin-bottom: 10px;">Muhammad Wildan Pratama</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">FrontEnd Developer</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+                  MM</div>
+                <h4 style="color: white; margin-bottom: 10px;">Mufid Farhan Muhana</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">BackEnd Developer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-indicators" style="text-align: center; margin-top: 20px;">
+          <span class="dot desktop-dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer;"
+            onclick="currentSlide(1)"></span>
+          <span class="dot desktop-dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer;"
+            onclick="currentSlide(2)"></span>
+          <span class="dot desktop-dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer;"
+            onclick="currentSlide(3)"></span>
+          <span class="dot mobile-dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: none; cursor: pointer;"
+            onclick="currentSlide(4)"></span>
+          <span class="dot mobile-dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: none; cursor: pointer;"
+            onclick="currentSlide(5)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Us Section -->
+  <div class="call-to-action" id="contact-us" style="background: #2a2a2a; padding: 60px 0;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 style="text-align: center; margin-bottom: 40px; color: white;">Contact Us</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Universitas YARSI</h4>
+            <p style="margin-bottom: 15px; line-height: 1.6;">
+              <i class="fa fa-map-marker" style="margin-right: 10px; color: #22b3c1;"></i>
+              Menara YARSI, Jl. Let. Jend. Suprapto Kav. 13. Cempaka Putih, Jakarta Pusat, DKI Jakarta 10510. Indonesia.
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-phone" style="margin-right: 10px; color: #22b3c1;"></i>
+              Telephone: +62(21)4206675
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-fax" style="margin-right: 10px; color: #22b3c1;"></i>
+              Fax: +62 (21)4243171
+            </p>
+            <p style="margin-bottom: 0;">
+              <i class="fa fa-envelope" style="margin-right: 10px; color: #22b3c1;"></i>
+              Email: info@yarsi.ac.id
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Mitra Kami</h4>
+            <div class="partners-grid"
+              style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: center;">
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="Partner 1"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/ptpathgen.png') }}" alt="Partner 2"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/fti.png') }}" alt="Partner 3"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/dikti.png') }}" alt="Partner 4"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2025. YARSI AI. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
+
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+
+</body>
+
+</html>
