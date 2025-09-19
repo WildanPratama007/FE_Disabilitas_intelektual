@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Login - Platform Deteksi Disabilitas Intelektual</title>
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="/" class="logo">
+              <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="">
+            </a>
+            <ul class="nav">
+              <li><a href="/">Home</a></li>
+              <li><a href="index.html#about-us">About us</a></li>
+              <li><a href="index.html#contact-us">Contact Us</a></li>
+              <li><a href="login.html" class="active">Login</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ***** Login Section Start ***** -->
+  <section style="min-height: 90vh; display: flex; align-items: center; padding: 20px 0 50px 0;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3); border: 2px solid rgba(0, 102, 204, 0.2);">
+            
+            <!-- Medical Header -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <div style="background: rgba(0, 102, 204, 0.1); border: 2px solid #0066CC; border-radius: 50px; padding: 8px 20px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fa fa-user-md" style="color: #0066CC;"></i>
+                <span style="color: #0066CC; font-size: 12px; font-weight: 600;">LOGIN</span>
+                <i class="fa fa-stethoscope" style="color: #2ECC71;"></i>
+              </div>
+              <!-- <h2 style="color: #0066CC; margin: 0; font-size: 28px;">🏥 Login Medis</h2> -->
+              <p style="color: #666; font-size: 14px; margin: 10px 0 0 0;">Akses sistem untuk tenaga medis profesional</p>
+            </div>
+
+            <!-- Login Form -->
+            <form method="POST" action="/login">
+              <div style="margin-bottom: 5px;">
+                <label style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                  <i class="fa fa-user" style="margin-right: 8px;"></i>Email
+                </label>
+                <input type="text" name="username" required 
+                       style="width: 100%; padding: 12px 15px; border: 2px solid #E3F2FD; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                       placeholder="Masukkan username atau email"
+                       onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(0,102,204,0.2)'"
+                       onblur="this.style.borderColor='#E3F2FD'; this.style.boxShadow='none'">
+              </div>
+
+              <div style="margin-bottom: 25px;">
+                <label style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                  <i class="fa fa-lock" style="margin-right: 8px;"></i>Password
+                </label>
+                <input type="password" name="password" required 
+                       style="width: 100%; padding: 12px 15px; border: 2px solid #E3F2FD; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                       placeholder="Masukkan password"
+                       onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(0,102,204,0.2)'"
+                       onblur="this.style.borderColor='#E3F2FD'; this.style.boxShadow='none'">
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <label style="display: flex; align-items: center; color: #666; font-size: 14px;">
+                  <input type="checkbox" name="remember" style="margin-right: 8px;">
+                  Ingat saya
+                </label>
+                <a href="#" style="color: #0066CC; font-size: 14px; text-decoration: none;">Lupa password?</a>
+              </div>
+
+              <button type="submit" 
+                      style="width: 100%; background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);"
+                      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 102, 204, 0.4)'"
+                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0, 102, 204, 0.3)'">
+                🩺 Login ke Sistem Medis
+              </button>
+            </form>
+
+            <!-- Medical Disclaimer -->
+            <div style="background: rgba(231, 76, 60, 0.1); border-left: 4px solid #E74C3C; padding: 12px 15px; margin-top: 25px; border-radius: 8px;">
+              <p style="color: #C0392B; font-size: 12px; margin: 0;">
+                ⚠️ <strong>Akses Terbatas:</strong> Sistem ini hanya untuk tenaga medis yang berwenang. Akses tidak sah akan dicatat dan dilaporkan.
+              </p>
+            </div>
+
+            <!-- Additional Links -->
+            <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #E3F2FD;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Belum memiliki akses? 
+                <a href="/register" style="color: #0066CC; text-decoration: none; font-weight: 600;">Registrasi</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background-color: #0066CC; text-align: center; padding: 20px 0;">
+    <div class="container">
+      <p style="color: #fff; margin: 0; font-size: 14px;">
+        Copyright © 2025. YARSI AI Medical Platform. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+</body>
+
+</html>

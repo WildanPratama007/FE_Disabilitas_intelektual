@@ -67,8 +67,9 @@ function handleFileUpload() {
 
         dropZone.innerHTML = `
           <div style="text-align: center;">
-            <i class="fa fa-check-circle" style="font-size: 32px; margin-bottom: 10px; color: #4CAF50;"></i>
-            <p style="margin: 10px 0;">File berhasil diupload: ${data.filename}</p>
+            <i class="fa fa-check-circle" style="font-size: 32px; margin-bottom: 10px; color: #2ECC71;"></i>
+            <p style="margin: 10px 0;">📋 Data medis berhasil diupload: ${data.filename}</p>
+            <p style="margin: 5px 0; font-size: 12px; color: #4c4f51ff;">✅ Siap untuk analisis klinis</p>
           </div>
         `;
       } else {
@@ -124,11 +125,20 @@ function showResultPopup(prediction, imagePath) {
   `;
 
   popup.innerHTML = `
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; text-align: center; position: relative;">
-      <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-      <h3 style="color: #333; margin-bottom: 20px;">Hasil Analisis Data CSV</h3>
-      <div style="color: #333; font-size: 16px; line-height: 1.5;">${prediction}</div>
-      <button onclick="this.parentElement.parentElement.remove()" style="background: #22b3c1; color: white; padding: 10px 25px; border: none; border-radius: 25px; margin-top: 20px; cursor: pointer;">Tutup</button>
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border-radius: 20px; max-width: 550px; text-align: center; position: relative; border: 3px solid #0066CC; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
+      <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #E74C3C;">&times;</button>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <i class="fa fa-stethoscope" style="color: #0066CC; font-size: 24px;"></i>
+        <h3 style="color: #0066CC; margin: 0;">📋 Laporan Diagnostik AI</h3>
+        <i class="fa fa-heartbeat" style="color: #E74C3C; font-size: 24px;"></i>
+      </div>
+      <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #0066CC;">
+        <div style="color: #0066CC; font-size: 16px; line-height: 1.6; font-weight: 500;">${prediction}</div>
+      </div>
+      <div style="background: #FFF3CD; padding: 10px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #FFC107;">
+        <p style="color: #856404; font-size: 12px; margin: 0;">⚠️ <strong>Catatan Medis:</strong> Hasil ini merupakan skrining awal. Diperlukan evaluasi lanjutan oleh tenaga medis profesional.</p>
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 12px 30px; border: 2px solid white; border-radius: 25px; margin-top: 10px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);">📄 Tutup Laporan</button>
     </div>
   `;
 
@@ -138,18 +148,14 @@ function showResultPopup(prediction, imagePath) {
 // Team Carousel Functionality
 let slideIndex = 1;
 let isMobile = window.innerWidth <= 768;
-let totalSlides = isMobile ? Math.ceil(9 / 2) : 3;
+let totalSlides = 2;
 
 const teamMembers = [
-  { initials: 'CP', name: 'Chandra Prasteyo Utomo', role: 'Lead AI Researcher', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-  { initials: 'UA', name: 'Ummi Azizah Rachmawati', role: 'UI/UX', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-  { initials: 'MF', name: 'Muhamad Fathurahman', role: 'Software Developer', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-  { initials: 'SC', name: 'Sri Chusri Haryanti', role: 'UI/UX Designer', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-  { initials: 'IP', name: 'Ibu Puspa', role: 'Data Scientist', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
-  { initials: 'AH', name: 'Alim El Hakim', role: 'Backend Developer', gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
-  { initials: 'NI', name: 'Nashuha Insani', role: 'AI Engineer', gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' },
-  { initials: 'MW', name: 'Muhammad Wildan Pratama', role: 'FrontEnd Developer', gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
-  { initials: 'MM', name: 'Mufid Farhan Muhana', role: 'BackEnd Developer', gradient: 'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)' }
+  { initials: 'S', name: 'Sultana', role: 'Ketua Pengusul', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+  { initials: 'AH', name: 'Ahmad Rusdan Handoyo Utomo', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+  { initials: 'CP', name: 'Chandra Prasetyo Utomo', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+  { initials: 'KP', name: 'Kinasih Prayuni', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+  { initials: 'SP', name: 'Susanti PhD', role: 'Anggota', org: 'Pathgen', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
 ];
 
 function initializeTeamCarousel() {
@@ -164,8 +170,8 @@ function initializeTeamCarousel() {
       const slidesContainer = document.getElementById('teamSlides');
       slidesContainer.innerHTML = '';
 
-      const totalSlides = Math.ceil(teamMembers.length / 2);
-      for (let i = 0; i < totalSlides; i++) {
+      const totalMobileSlides = Math.ceil(teamMembers.length / 2);
+      for (let i = 0; i < totalMobileSlides; i++) {
         const slide = document.createElement('div');
         slide.className = 'team-slide mobile-slide';
         slide.style.cssText = 'min-width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;';
@@ -183,6 +189,7 @@ function initializeTeamCarousel() {
                 <div style="width: 120px; height: 120px; border-radius: 50%; background: ${member.gradient}; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">${member.initials}</div>
                 <h4 style="color: white; margin-bottom: 8px; font-size: 16px; line-height: 1.2;">${member.name}</h4>
                 <p style="color: #ccc; margin-bottom: 5px; font-size: 14px;">${member.role}</p>
+                <p style="color: #aaa; font-size: 12px;">${member.org}</p>
               </div>
             `;
             slide.appendChild(memberDiv);
@@ -191,11 +198,13 @@ function initializeTeamCarousel() {
 
         slidesContainer.appendChild(slide);
       }
+      totalSlides = totalMobileSlides;
     } else {
       const teamSlides = document.querySelectorAll('.team-slide:not(.mobile-slide)');
       teamSlides.forEach(slide => slide.style.display = 'flex');
       const mobileSlides = document.querySelectorAll('.mobile-slide');
       mobileSlides.forEach(slide => slide.remove());
+      totalSlides = 2;
     }
   }
 
@@ -231,7 +240,6 @@ function initializeTeamCarousel() {
     const newIsMobile = window.innerWidth <= 768;
     if (newIsMobile !== isMobile) {
       isMobile = newIsMobile;
-      totalSlides = isMobile ? Math.ceil(9 / 2) : 3;
       slideIndex = 1;
       reorganizeForMobile();
       showSlide(slideIndex);

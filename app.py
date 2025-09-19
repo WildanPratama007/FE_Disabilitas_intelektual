@@ -213,6 +213,16 @@ def predict_csv(csv_path, filename):
 def index():
     return render_template('index.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/register')
+def regis():
+    return render_template('register.html')
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -263,6 +273,7 @@ def predict():
         'prediction': prediction_result, 
         'file_path': file_url
     })
+
 
 if __name__ == '__main__':
     if not os.path.exists(STATIC_FOLDER):
