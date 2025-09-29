@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Register - Platform Deteksi Disabilitas Intelektual</title>
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/navbar-custom.css') }}">
+
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/images/strokeyarsiai.png') }}" alt="YARSI AI Logo" height="40">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#about-us">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#contact-us">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ***** Register Section Start ***** -->
+  <section style="min-height: 30vh; display: flex; align-items: center; padding: 20px 0 50px 0;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3); border: 2px solid rgba(0, 102, 204, 0.2);">
+            
+            <!-- Medical Header -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <div style="background: rgba(46, 204, 113, 0.1); border: 2px solid #0066CC; border-radius: 50px; padding: 8px 20px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fa fa-user-plus" style="color: #0066CC;"></i>
+                <span style="color: #0066CC; font-size: 12px; font-weight: 600;">REGISTRATION</span>
+                <i class="fa fa-stethoscope" style="color: #0066CC;"></i>
+              </div>
+              <!-- <h2 style="color: #0066CC; margin: 0; font-size: 28px;">🏥 Registrasi Medis</h2> -->
+              <!-- <h2 style="color: #0066CC; margin: 0; font-size: 28px;">📝 Registrasi</h2> -->
+              <p style="color: #666; font-size: 14px; margin: 10px 0 0 0;">Daftar sebagai pengguna baru</p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert-message {% if category == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                    <p style="margin: 0;"><i class="fa fa-{% if category == 'error' %}exclamation-triangle{% else %}check-circle{% endif %}"></i> {{ message }}</p>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- Register Form -->
+            <form method="POST" action="/register">
+              <div class="row">
+                <div class="col-md-6">
+                  <div style="margin-bottom: 20px;">
+                    <label for="fullname" style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                      <i class="fa fa-user" style="margin-right: 8px;"></i>Nama Lengkap
+                    </label>
+                    <input type="text" id="fullname" name="fullname" required 
+                           style="width: 100%; padding: 12px 15px; border: 2px solid #E8F5E8; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                           placeholder="Nama Lengkap"
+                           onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(46,204,113,0.2)'"
+                           onblur="this.style.borderColor='#E8F5E8'; this.style.boxShadow='none'">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-bottom: 20px;">
+                    <label for="email" style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                      <i class="fa fa-envelope" style="margin-right: 8px;"></i>Email
+                    </label>
+                    <input type="email" id="email" name="email" required 
+                           style="width: 100%; padding: 12px 15px; border: 2px solid #E8F5E8; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                           placeholder="email@example.com"
+                           onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(46,204,113,0.2)'"
+                           onblur="this.style.borderColor='#E8F5E8'; this.style.boxShadow='none'">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div style="margin-bottom: 20px;">
+                    <label for="password" style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                      <i class="fa fa-lock" style="margin-right: 8px;"></i>Password
+                    </label>
+                    <div style="position: relative;">
+                      <input type="password" id="password" name="password" required 
+                             style="width: 100%; padding: 12px 45px 12px 15px; border: 2px solid #E8F5E8; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                             placeholder="Minimal 8 karakter"
+                             onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(46,204,113,0.2)'"
+                             onblur="this.style.borderColor='#E8F5E8'; this.style.boxShadow='none'">
+                      <button type="button" onclick="togglePassword('password')" 
+                              style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #0066CC; cursor: pointer; font-size: 16px;">
+                        <i class="fa fa-eye" id="password-toggle-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-bottom: 25px;">
+                    <label for="confirm_password" style="color: #0066CC; font-weight: 600; margin-bottom: 8px; display: block;">
+                      <i class="fa fa-lock" style="margin-right: 8px;"></i>Konfirmasi Password
+                    </label>
+                    <div style="position: relative;">
+                      <input type="password" id="confirm_password" name="confirm_password" required 
+                             style="width: 100%; padding: 12px 45px 12px 15px; border: 2px solid #E8F5E8; border-radius: 10px; font-size: 14px; transition: all 0.3s ease;"
+                             placeholder="Ulangi password"
+                             onfocus="this.style.borderColor='#0066CC'; this.style.boxShadow='0 0 10px rgba(46,204,113,0.2)'"
+                             onblur="this.style.borderColor='#E8F5E8'; this.style.boxShadow='none'">
+                      <button type="button" onclick="togglePassword('confirm_password')" 
+                              style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #0066CC; cursor: pointer; font-size: 16px;">
+                        <i class="fa fa-eye" id="confirm_password-toggle-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 25px;">
+                <label for="terms" style="display: flex; align-items: flex-start; color: #666; font-size: 14px;">
+                  <input type="checkbox" id="terms" name="terms" required style="margin-right: 10px; margin-top: 3px;">
+                  Saya menyetujui <a href="#" style="color: #0066CC; text-decoration: none;">syarat dan ketentuan</a> 
+                  serta <a href="#" style="color: #0066CC; text-decoration: none;">kebijakan privasi</a> platform medis ini
+                </label>
+              </div>
+
+              <button type="submit" id="registerBtn" disabled
+                      style="width: 100%; background: #ccc; color: white; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: not-allowed; transition: all 0.3s ease;">
+                🩺 Daftar
+              </button>
+            </form>
+
+            <!-- Medical Disclaimer -->
+            <!-- <div style="background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498DB; padding: 12px 15px; margin-top: 25px; border-radius: 8px;">
+              <p style="color: #2980B9; font-size: 12px; margin: 0;">
+                ℹ️ <strong>Verifikasi Diperlukan:</strong> Akun akan diverifikasi oleh administrator sebelum dapat mengakses sistem medis.
+              </p>
+            </div> -->
+
+            <!-- Additional Links -->
+            <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #E8F5E8;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Sudah memiliki akun? 
+                <a href="/login" style="color: #0066CC; text-decoration: none; font-weight: 600;">Login di sini</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <div class="call-to-action" id="about-us">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div style="text-align: center; margin-bottom: 50px;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px;">
+              <i class="fa fa-user-md" style="color: #2ECC71; font-size: 24px;"></i>
+              <h2 style="margin: 0; color: white;">Tim Peneliti</h2>
+              <i class="fa fa-stethoscope" style="color: #ffffff; font-size: 24px;"></i>
+            </div>
+            <p style="color: #E3F2FD; font-size: 14px; max-width: 600px; margin: 0 auto;">🏥 Tim multidisiplin yang terdiri dari Dosen Sains Biomedis, Dosen Informatika, dan ahli Biologi Molekuler.</p>
+          </div>
+        </div>
+      </div>
+      <div class="team-carousel" style="overflow: hidden; position: relative;">
+        <!-- Previous button -->
+        <button class="prev-btn" onclick="prevSlide()"
+          style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">‹</button>
+        <!-- Next button -->
+        <button class="next-btn" onclick="nextSlide()"
+          style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">›</button>
+        <div class="team-slides" style="display: flex; transition: transform 0.5s ease;" id="teamSlides">
+          <!-- Slide 1 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  S</div>
+                <h4 style="color: white; margin-bottom: 10px;">Sultana</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Ketua Pengusul</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  AH</div>
+                <h4 style="color: white; margin-bottom: 10px;">Ahmad Rusdan Handoyo Utomo</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  CP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Chandra Prasetyo Utomo</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  KP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Kinasih Prayuni</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  SP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Susanti PhD</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Pathgen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-indicators" style="text-align: center; margin-top: 20px;">
+          <span class="dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer; transition: background-color 0.3s ease;"
+            onclick="currentSlide(1)"></span>
+          <span class="dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer; transition: background-color 0.3s ease;"
+            onclick="currentSlide(2)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Us Section -->
+  <div class="call-to-action" id="contact-us" style="background: #2a2a2a; padding: 60px 0; margin-top: 15px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div style="text-align: center; margin-bottom: 40px;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px;">
+              <i class="fa fa-hospital-o" style="color: #2ECC71; font-size: 24px;"></i>
+              <h2 style="margin: 0; color: white;">Hubungi Kami</h2>
+              <i class="fa fa-phone-square" style="color: #0066CC; font-size: 24px;"></i>
+            </div>
+            <p style="color: #E3F2FD; font-size: 14px;">📞 Hubungi untuk konsultasi dan informasi lebih lanjut</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Universitas YARSI</h4>
+            <p style="margin-bottom: 15px; line-height: 1.6;">
+              <i class="fa fa-map-marker" style="margin-right: 10px; color: #22b3c1;"></i>
+              Menara YARSI, Jl. Let. Jend. Suprapto Kav. 13. Cempaka Putih, Jakarta Pusat, DKI Jakarta 10510. Indonesia.
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-phone" style="margin-right: 10px; color: #22b3c1;"></i>
+              Telephone: +62(21)4206675
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-fax" style="margin-right: 10px; color: #22b3c1;"></i>
+              Fax: +62 (21)4243171
+            </p>
+            <p style="margin-bottom: 0;">
+              <i class="fa fa-envelope" style="margin-right: 10px; color: #22b3c1;"></i>
+              Email: info@yarsi.ac.id
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Mitra Kami</h4>
+            <div class="partners-grid"
+              style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: center;">
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="Partner 1"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/ptpathgen.png') }}" alt="Partner 2"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/fti.png') }}" alt="Partner 3"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/dikti.png') }}" alt="Partner 4"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+    <!-- Footer -->
+  <footer style="background: linear-gradient(135deg, #4063ff 0%, #0004ff 100%); text-align: center; padding: 20px 0; border-top: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <p style="color: #fff; margin: 0; font-size: 14px;">
+        Copyright © 2025. YARSI AI Medical Platform. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+
+  <script>
+    function validateForm() {
+      const fullname = document.getElementById('fullname').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm_password').value;
+      const terms = document.getElementById('terms').checked;
+      const btn = document.getElementById('registerBtn');
+      
+      const isValid = fullname && email && password.length >= 8 && confirmPassword && terms;
+      
+      if (isValid) {
+        btn.disabled = false;
+        btn.style.background = 'linear-gradient(135deg, #0066CC 0%, #17A2B8 100%)';
+        btn.style.cursor = 'pointer';
+      } else {
+        btn.disabled = true;
+        btn.style.background = '#ccc';
+        btn.style.cursor = 'not-allowed';
+      }
+    }
+    
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId);
+      const icon = document.getElementById(fieldId + '-toggle-icon');
+      
+      if (field.type === 'password') {
+        field.type = 'text';
+        icon.className = 'fa fa-eye-slash';
+      } else {
+        field.type = 'password';
+        icon.className = 'fa fa-eye';
+      }
+    }
+    
+    document.getElementById('fullname').addEventListener('input', validateForm);
+    document.getElementById('email').addEventListener('input', validateForm);
+    document.getElementById('password').addEventListener('input', validateForm);
+    document.getElementById('confirm_password').addEventListener('input', validateForm);
+    document.getElementById('terms').addEventListener('change', validateForm);
+  </script>
+
+</body>
+
+</html>

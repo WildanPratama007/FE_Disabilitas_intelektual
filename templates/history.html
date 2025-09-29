@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>History - Platform Deteksi Disabilitas Intelektual</title>
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/navbar-custom.css') }}">
+
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <nav class="navbar navbar-expand-lg" style="border-bottom: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard">
+        <img src="{{ url_for('static', filename='assets/images/strokeyarsiai.png') }}" alt="YARSI AI Logo" height="40">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/history">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ***** History Section Start ***** -->
+  <section style="margin-top: -1px; min-height: 100vh; padding: 100px 0 50px 0; background: #ffffff;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3); border: 2px solid rgba(0, 102, 204, 0.2);">
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 30px;">
+              <div style="background: rgba(0, 102, 204, 0.1); border: 2px solid #0066CC; border-radius: 50px; padding: 8px 20px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fa fa-history" style="color: #0066CC;"></i>
+                <span style="color: #0066CC; font-size: 12px; font-weight: 600;">PREDICTION HISTORY</span>
+                <i class="fa fa-chart-line" style="color: #2ECC71;"></i>
+              </div>
+              <p style="color: #666; font-size: 14px; margin: 10px 0 0 0;">Riwayat analisis medis yang telah dilakukan</p>
+            </div>
+
+            <!-- History Table -->
+            <div style="overflow-x: auto; border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 102, 204, 0.1);">
+              <table class="table" style="margin-bottom: 0; border-collapse: separate; border-spacing: 0;">
+                <thead style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white;">
+                  <tr>
+                    <th style="padding: 15px; text-align: center; border: none; border-radius: 10px 0 0 0;">No</th>
+                    <th style="padding: 15px; text-align: center; border: none;">Tanggal Upload</th>
+                    <th style="padding: 15px; text-align: center; border: none; border-radius: 0 10px 0 0;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <!-- Data will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" style="text-align: center; padding: 40px;">
+              <div style="border: 4px solid #f3f3f3; border-top: 4px solid #0066CC; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+              <p style="color: #0066CC; font-weight: 600;">Memuat riwayat...</p>
+            </div>
+
+            <!-- No Data -->
+            <div id="noData" style="display: none; text-align: center; padding: 40px;">
+              <i class="fa fa-inbox" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+              <p style="color: #666;">Belum ada riwayat prediksi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: linear-gradient(135deg, #4063ff 0%, #0004ff 100%); text-align: center; padding: 20px 0; border-top: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <p style="color: #fff; margin: 0; font-size: 14px;">
+        Copyright © 2025. YARSI AI Medical Platform. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+
+  
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script>
+    function loadHistory() {
+      fetch('/api/history')
+        .then(response => response.json())
+        .then(data => {
+          console.log('History data:', data);
+          document.getElementById('loading').style.display = 'none';
+          
+          if (data.status === 'success' && data.data && data.data.predictions && data.data.predictions.length > 0) {
+            historyData = data.data.predictions;
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = '';
+            
+            data.data.predictions.forEach((item, index) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td style="padding: 15px; text-align: center; border-bottom: 1px solid #f0f8ff; background: #fafcff;">${index + 1}</td>
+                <td style="padding: 15px; text-align: center; border-bottom: 1px solid #f0f8ff; background: #fafcff;">${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
+                <td style="padding: 15px; text-align: center; border-bottom: 1px solid #f0f8ff; background: #fafcff;">
+                  <button onclick="showHistoryDetail('${item.id}')" 
+                          style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                    <i class="fa fa-eye"></i> Cek History
+                  </button>
+                </td>
+              `;
+              tbody.appendChild(row);
+            });
+          } else {
+            document.getElementById('noData').style.display = 'block';
+          }
+        })
+        .catch(error => {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('noData').style.display = 'block';
+          console.error('Error loading history:', error);
+        });
+    }
+
+    let historyData = [];
+    let isHistoryPopupOpen = false;
+
+    function showHistoryDetail(historyId) {
+      if (isHistoryPopupOpen) {
+        return; // Prevent multiple popups
+      }
+      
+      const item = historyData.find(h => h.id === historyId);
+      if (item) {
+        showResultPopup(item.risk_score, item.confidence, item.predicted_condition);
+      } else {
+        alert('Data tidak ditemukan');
+      }
+    }
+
+    function showResultPopup(riskScore, confidence, condition) {
+      if (isHistoryPopupOpen) {
+        return; // Prevent multiple popups
+      }
+      
+      isHistoryPopupOpen = true;
+      const popup = document.createElement('div');
+      popup.id = 'historyResultPopup';
+      popup.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.8); z-index: 1000; display: flex; 
+        align-items: center; justify-content: center;
+      `;
+
+      popup.innerHTML = `
+        <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border-radius: 20px; max-width: 550px; text-align: center; position: relative; border: 3px solid #0066CC; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
+          <button onclick="closeHistoryResultPopup()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #E74C3C;">&times;</button>
+          <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <i class="fa fa-stethoscope" style="color: #0066CC; font-size: 24px;"></i>
+            <h3 style="color: #0066CC; margin: 0;">📋 Detail Riwayat Diagnostik</h3>
+            <i class="fa fa-heartbeat" style="color: #E74C3C; font-size: 24px;"></i>
+          </div>
+          <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #0066CC;">
+            <div style="color: #0066CC; font-size: 16px; line-height: 1.6; font-weight: 500;">
+              Risk Score: ${riskScore}<br>
+              Confidence: ${confidence}%<br>
+              Condition: ${condition}
+            </div>
+          </div>
+          <div style="background: #FFF3CD; padding: 10px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #FFC107;">
+            <p style="color: #856404; font-size: 12px; margin: 0;">⚠️ <strong>Catatan Medis:</strong> Hasil ini merupakan skrining awal. Diperlukan evaluasi lanjutan oleh tenaga medis profesional.</p>
+          </div>
+          <button onclick="closeHistoryResultPopup()" style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 12px 30px; border: 2px solid white; border-radius: 25px; margin-top: 10px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);">📄 Tutup Laporan</button>
+        </div>
+      `;
+
+      // Add ESC key event listener
+      function handleEscKey(event) {
+        if (event.key === 'Escape') {
+          closeHistoryResultPopup();
+        }
+      }
+      
+      document.addEventListener('keydown', handleEscKey);
+      popup.addEventListener('remove', () => {
+        document.removeEventListener('keydown', handleEscKey);
+      });
+
+      document.body.appendChild(popup);
+    }
+    
+    function closeHistoryResultPopup() {
+      const popup = document.getElementById('historyResultPopup');
+      if (popup) {
+        popup.remove();
+        isHistoryPopupOpen = false; // Reset flag
+      }
+    }
+
+    // Load history when page loads
+    document.addEventListener('DOMContentLoaded', loadHistory);
+    
+    function checkTokenExpiry() {
+      fetch('/api/check-token', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer {{ session.access_token }}'
+        }
+      })
+      .then(response => {
+        if (response.status === 401) {
+          window.location.href = '/logout';
+        }
+      })
+      .catch(() => {
+        window.location.href = '/logout';
+      });
+    }
+    
+    setInterval(checkTokenExpiry, 60000);
+    
+    document.addEventListener('click', checkTokenExpiry);
+    document.addEventListener('keydown', checkTokenExpiry);
+  </script>
+</body>
+
+</html>

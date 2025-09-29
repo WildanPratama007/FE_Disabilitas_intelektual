@@ -1,220 +1,120 @@
-# import os
-# import cv2
-# import numpy as np
-# from flask import Flask, request, render_template, redirect, url_for, jsonify
-# from werkzeug.utils import secure_filename
-# from tensorflow.keras.models import load_model
-
-# # Inisialisasi aplikasi Flask
-# app = Flask(__name__)
-
-# # Load the trained model
-# MODEL_PATH = 'model/DenseNet121_SisiBawah.h5'  # Path ke model klasifikasi Normal vs Abnormal
-# try:
-#     if os.path.exists(MODEL_PATH):
-#         model = load_model(MODEL_PATH, compile=False)
-#         print(f"Model berhasil dimuat dari: {MODEL_PATH}")
-#     else:
-#         model = None
-#         print(f"File model tidak ditemukan di: {MODEL_PATH}")
-# except Exception as e:
-#     model = None
-#     print(f"Error loading model: {str(e)}")
-
-# # --- Konfigurasi ---
-# # Tentukan path untuk folder upload.
-# # Sangat disarankan untuk meletakkan folder uploads di dalam folder 'static'
-# # agar file dapat diakses oleh browser dengan mudah.
-# STATIC_FOLDER = 'static'
-# UPLOAD_FOLDER = os.path.join(STATIC_FOLDER, 'uploads')
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# # Ekstensi file yang diizinkan
-# ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
-# # Fungsi untuk memeriksa ekstensi file
-# def allowed_file(filename):
-#     return '.' in filename and \
-#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# def predict_image(image_path, filename):
-#     """Fungsi untuk melakukan prediksi klasifikasi Normal vs Abnormal"""
-#     try:
-#         if model is None:
-#             return f"Model tidak tersedia. Gambar '{filename}' berhasil diunggah."
-        
-#         # Load and preprocess the image for prediction
-#         image = cv2.imread(image_path)
-#         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-#         image = cv2.resize(image, (224, 224))  # Resize to 224x224
-#         image = image / 255.0  # Normalize pixel values to [0,1]
-        
-#         # Expand dimensions to match model input shape (batch_size, height, width, channels)
-#         input_image = np.expand_dims(image, axis=0)
-        
-#         # Make prediction - output is probability
-#         prediction = model.predict(input_image, verbose=0)
-#         probability = float(prediction[0][0])  # Get probability score
-        
-#         # Binary classification: 0 = Normal, 1 = Abnormal
-#         if probability > 0.5:
-#             result = "Abnormal (Terdeteksi Disabilitas Intelektual)"
-#             confidence = probability * 100
-#         else:
-#             result = "Normal"
-#             confidence = (1 - probability) * 100
-            
-#         return f"Hasil Prediksi: {result}<br>Confidence: {confidence:.1f}%<br>Probability Score: {probability:.3f}"
-        
-#     except Exception as e:
-#         return f"Error dalam prediksi: {str(e)}"
-
-# # --- Rute Aplikasi Web ---
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
-
-# @app.route('/upload', methods=['POST'])
-# def upload_file():
-#     from flask import jsonify
-    
-#     if 'file' not in request.files:
-#         return jsonify({'success': False, 'message': 'No file selected'})
-    
-#     file = request.files['file']
-    
-#     if file.filename == '':
-#         return jsonify({'success': False, 'message': 'No file selected'})
-    
-#     if file and allowed_file(file.filename):
-#         filename = secure_filename(file.filename)
-#         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#         file.save(file_path)
-        
-#         return jsonify({'success': True, 'filename': filename, 'message': 'File uploaded successfully'})
-    
-#     return jsonify({'success': False, 'message': 'Invalid file type'})
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     from flask import jsonify
-    
-#     data = request.get_json()
-#     filename = data.get('filename')
-    
-#     if not filename:
-#         return jsonify({'success': False, 'message': 'No filename provided'})
-    
-#     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    
-#     if not os.path.exists(file_path):
-#         return jsonify({'success': False, 'message': 'File not found'})
-    
-#     # Prediksi menggunakan model
-#     prediction_result = predict_image(file_path, filename)
-#     image_path = os.path.join('uploads', filename).replace('\\', '/')
-    
-#     return jsonify({
-#         'success': True, 
-#         'prediction': prediction_result, 
-#         'image_path': image_path
-#     })
-
-# if __name__ == '__main__':
-#     # Pastikan folder static dan uploads ada
-#     if not os.path.exists(STATIC_FOLDER):
-#         os.makedirs(STATIC_FOLDER)
-#     if not os.path.exists(UPLOAD_FOLDER):
-#         os.makedirs(UPLOAD_FOLDER)
-    
-#     # Pastikan folder model ada
-#     model_dir = 'model'
-#     if not os.path.exists(model_dir):
-#         os.makedirs(model_dir)
-#         print(f"Folder '{model_dir}' dibuat. Silakan letakkan file 'DenseNet121_SisiBawah.h5' di folder ini.")
-        
-#     # Jalankan aplikasi
-#     app.run(debug=True)
-
 import os
-import pandas as pd
-import joblib
-from flask import Flask, request, render_template, jsonify
+import requests
+from flask import Flask, request, render_template, jsonify, session, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
 # Inisialisasi aplikasi Flask
 app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'
 
-# --- Load Model Joblib ---
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, 'model', 'model_dummy.joblib')
-
-print(f"BASE_DIR: {BASE_DIR}")
-print(f"MODEL_PATH: {MODEL_PATH}")
-print(f"File exists: {os.path.exists(MODEL_PATH)}")
-
-try:
-    if os.path.exists(MODEL_PATH):
-        model = joblib.load(MODEL_PATH)
-        print(f"Model berhasil dimuat dari: {MODEL_PATH}")
-        print(f"Model type: {type(model)}")
-    else:
-        model = None
-        print(f"File model tidak ditemukan di: {MODEL_PATH}")
-except Exception as e:
-    model = None
-    print(f"Error loading model: {str(e)}")
+# API Configuration
+API_BASE_URL = 'http://localhost:8000/api/v1'
 
 # --- Konfigurasi ---
 STATIC_FOLDER = 'static'
 UPLOAD_FOLDER = os.path.join(STATIC_FOLDER, 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Hanya izinkan CSV
-ALLOWED_EXTENSIONS = {'csv'}
+# Hanya izinkan BED
+ALLOWED_EXTENSIONS = {'bed'}
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# --- Fungsi Prediksi ---
-def predict_csv(csv_path, filename):
-    """Fungsi untuk prediksi file CSV"""
-    try:
-        print(f"predict_csv called with model: {model}")
-        if model is None:
-            return f"Model tidak tersedia. File '{filename}' berhasil diunggah."
-
-        # Baca CSV
-        df = pd.read_csv(csv_path)
-
-        # Pastikan ada minimal 10 fitur
-        if df.shape[1] < 10:
-            return f"Error: File '{filename}' harus memiliki minimal 10 fitur, tetapi hanya {df.shape[1]}."
-
-        # Ambil hanya 10 fitur pertama (agar konsisten dengan model)
-        df_input = df.iloc[:, :10]
-
-        # Prediksi
-        prediction_code = model.predict(df_input)
-        prediction_proba = model.predict_proba(df_input)
-
-        result_label = "Yes" if prediction_code[0] == 1 else "No"
-        prob_no = float(prediction_proba[0][0])
-        prob_yes = float(prediction_proba[0][1])
-
-        return f"Hasil Prediksi: {result_label}<br>Probabilitas No: {prob_no:.4f}<br>Probabilitas Yes: {prob_yes:.4f}"
-
-    except Exception as e:
-        return f"Error dalam prediksi: {str(e)}"
-
 # --- Rute Aplikasi Web ---
 @app.route('/')
 def index():
+    return render_template('landing.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if 'access_token' not in session:
+        return redirect(url_for('login'))
     return render_template('index.html')
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        try:
+            login_data = {
+                'email': username,
+                'password': password
+            }
+            print(f"Sending login data: {login_data}")
+            response = requests.post(f'{API_BASE_URL}/auth/login', json=login_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                print(f"Login response: {data}")
+                # Handle API response structure: {"status": "success", "data": {"access_token": "..."}}
+                if data.get('status') == 'success' and 'data' in data:
+                    token_data = data['data']
+                    session['access_token'] = token_data['access_token']
+                    session['refresh_token'] = token_data.get('refresh_token')
+                else:
+                    print(f"No access_token found in response: {data}")
+                    flash('Login response tidak valid!', 'error')
+                    return render_template('login.html')
+                
+                flash('Login berhasil!', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                print(f"Login failed: {response.status_code}, {response.text}")
+                flash('Username atau password salah!', 'error')
+        except requests.exceptions.RequestException:
+            flash('Tidak dapat terhubung ke server!', 'error')
+    
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        
+        if password != confirm_password:
+            flash('Password tidak cocok!', 'error')
+            return render_template('register.html')
+        
+        try:
+            response = requests.post(f'{API_BASE_URL}/auth/register', json={
+                'username': fullname,
+                'email': email,
+                'password': password
+            })
+            
+            if response.status_code == 201:
+                flash('Registrasi berhasil! Silakan login.', 'success')
+                return redirect(url_for('login'))
+            else:
+                data = response.json()
+                error_message = data.get('message', 'Registrasi gagal!')
+                flash(error_message, 'error')
+        except requests.exceptions.RequestException:
+            flash('Tidak dapat terhubung ke server!', 'error')
+    
+    return render_template('register.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Logout berhasil!', 'success')
+    return redirect(url_for('login'))
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    if 'access_token' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'})
+    
     if 'file' not in request.files:
         return jsonify({'success': False, 'message': 'No file selected'})
     
@@ -224,56 +124,143 @@ def upload_file():
         return jsonify({'success': False, 'message': 'No file selected'})
     
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-
-        # Validasi jumlah fitur minimal 10
         try:
-            df = pd.read_csv(file_path)
-            if df.shape[1] < 10:
-                os.remove(file_path)  # hapus file jika tidak valid
-                return jsonify({'success': False, 'message': f"CSV harus memiliki minimal 10 fitur, hanya {df.shape[1]} ditemukan"})
-        except Exception as e:
-            return jsonify({'success': False, 'message': f"Gagal membaca CSV: {str(e)}"})
-
-        return jsonify({'success': True, 'filename': filename, 'message': 'File uploaded successfully'})
+            files = {'file': (file.filename, file.stream, file.content_type)}
+            headers = {'Authorization': f'Bearer {session["access_token"]}'}
+            
+            print(f"Uploading file: {file.filename}")
+            print(f"Headers: {headers}")
+            
+            response = requests.post(f'{API_BASE_URL}/files/', files=files, headers=headers)
+            
+            print(f"Upload response: {response.status_code}, {response.text}")
+            
+            if response.status_code in [200, 201]:
+                data = response.json()
+                if data.get('status') == 'success':
+                    return jsonify({
+                        'success': True,
+                        'message': data.get('message', 'Upload successful'),
+                        'data': data.get('data')
+                    })
+                else:
+                    return jsonify({'success': False, 'message': data.get('message', 'Upload failed')})
+            else:
+                return jsonify({'success': False, 'message': f'Upload failed: {response.text}'})
+        except requests.exceptions.RequestException as e:
+            print(f"Upload error: {e}")
+            return jsonify({'success': False, 'message': f'Cannot connect to server: {e}'})
     
-    return jsonify({'success': False, 'message': 'Invalid file type, hanya CSV diperbolehkan'})
+    return jsonify({'success': False, 'message': 'Invalid file type, only BED allowed'})
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    filename = data.get('filename')
+@app.route('/upload/predict')
+def predict_proxy():
+    if 'access_token' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'})
     
+    filename = request.args.get('file_name')
     if not filename:
         return jsonify({'success': False, 'message': 'No filename provided'})
     
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    try:
+        headers = {'Authorization': f'Bearer {session["access_token"]}'}
+        response = requests.get(f'{API_BASE_URL}/files/predict?file_name={filename}', headers=headers)
+        
+        if response.status_code == 200:
+            data = response.json()
+            # Format response untuk frontend
+            if data.get('status') == 'success':
+                result_data = data.get('data', {})
+                prediction_text = f"Risk Score: {result_data.get('risk_score', 'N/A')}<br>Confidence: {result_data.get('confidence', 'N/A'):.1f}%<br>Condition: {result_data.get('predicted_condition', 'N/A')}"
+                return jsonify({
+                    'success': True,
+                    'prediction': prediction_text
+                })
+            else:
+                return jsonify({'success': False, 'message': data.get('message', 'Prediction failed')})
+        else:
+            return jsonify({'success': False, 'message': 'Prediction failed'})
+    except requests.exceptions.RequestException:
+        return jsonify({'success': False, 'message': 'Cannot connect to server'})
+
+@app.route('/history')
+def history():
+    if 'access_token' not in session:
+        return redirect(url_for('login'))
+    return render_template('history.html')
+
+@app.route('/api/history')
+def get_history():
+    if 'access_token' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'})
     
-    if not os.path.exists(file_path):
-        return jsonify({'success': False, 'message': 'File not found'})
+    try:
+        headers = {'Authorization': f'Bearer {session["access_token"]}'}
+        response = requests.get(f'{API_BASE_URL}/files/predictions/history', headers=headers)
+        
+        print(f"History response: {response.status_code}, {response.text}")
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'success': False, 'message': 'Failed to load history'})
+    except requests.exceptions.RequestException:
+        return jsonify({'success': False, 'message': 'Cannot connect to server'})
+
+@app.route('/api/history/<int:history_id>')
+def get_history_detail(history_id):
+    if 'access_token' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'})
     
-    # Prediksi menggunakan model joblib
-    prediction_result = predict_csv(file_path, filename)
-    file_url = os.path.join('uploads', filename).replace('\\', '/')
+    try:
+        headers = {'Authorization': f'Bearer {session["access_token"]}'}
+        response = requests.get(f'{API_BASE_URL}/predictions/{history_id}', headers=headers)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'success': False, 'message': 'Failed to load history detail'})
+    except requests.exceptions.RequestException:
+        return jsonify({'success': False, 'message': 'Cannot connect to server'})
+
+@app.route('/api/check-token')
+def check_token():
+    if 'access_token' not in session:
+        return jsonify({'valid': False}), 401
     
-    return jsonify({
-        'success': True, 
-        'prediction': prediction_result, 
-        'file_path': file_url
-    })
+    try:
+        headers = {'Authorization': f'Bearer {session["access_token"]}'}
+        response = requests.get(f'{API_BASE_URL}/auth/me', headers=headers)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('status') == 'success':
+                return jsonify({'valid': True})
+            else:
+                return jsonify({'valid': False}), 401
+        else:
+            return jsonify({'valid': False}), 401
+    except requests.exceptions.RequestException:
+        return jsonify({'valid': False}), 401
+
+
+
+
+@app.route('/architecture')
+def architecture():
+    if 'access_token' not in session:
+        return redirect(url_for('login'))
+    return render_template('architecture.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     if not os.path.exists(STATIC_FOLDER):
         os.makedirs(STATIC_FOLDER)
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    
-    model_dir = 'model'
-    if not os.path.exists(model_dir):
-        os.makedirs(model_dir)
-        print(f"Folder '{model_dir}' dibuat. Silakan letakkan file 'binary_classifier_model.joblib' di folder ini.")
         
-    app.run(debug=True)
+    app.run(debug=True, port=8001)
 

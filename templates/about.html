@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Tentang Disabilitas Intelektual - Platform Deteksi</title>
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/navbar-custom.css') }}">
+
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <nav class="navbar navbar-expand-lg" style="border-bottom: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/images/strokeyarsiai.png') }}" alt="YARSI AI Logo" height="40">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          {% if session.access_token %}
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#about-us">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact-us">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#about-us">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact-us">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ***** About Section Start ***** -->
+  <section style="margin-top: -1px; min-height: 90vh; padding: 80px 0 50px 0; background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+              <div style="background: rgba(0, 102, 204, 0.1); border: 2px solid #0066CC; border-radius: 50px; padding: 8px 20px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fa fa-brain" style="color: #0066CC;"></i>
+                <span style="color: #0066CC; font-size: 12px; font-weight: 600;">MEDICAL INFORMATION</span>
+                <i class="fa fa-stethoscope" style="color: #2ECC71;"></i>
+              </div>
+              <h2 style="color: #0066CC; margin-bottom: 10px;">🧠 Disabilitas Intelektual</h2>
+              <p style="color: #666; font-size: 14px;">Panduan Lengkap Medis dan Klinis</p>
+            </div>
+
+            <!-- Content with Image -->
+            <div class="row" style="margin-bottom: 40px; align-items: center;">
+              <div class="col-lg-4">
+                <img src="{{ url_for('static', filename='assets/images/disb.png') }}" alt="Disabilitas Intelektual" 
+                     style="width: 100%; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+              </div>
+              <div class="col-lg-8">
+                <h3 style="color: #0066CC; margin-bottom: 20px;">Urgensi</h3>
+                <p style="color: #333; line-height: 1.8; text-align: justify;">
+                  Penegakan diagnosis genetik pada anak dengan disabilitas intelektual (DI)
+                  merupakan contoh penyakit langka (rare disease) masih menjadi tantangan.
+                  Penyandang disabilitas merupakan salah satu sasaran Asta Cita nomer 4 dari
+                  pemerintah dimana penguatan Sumber Daya Manusia (SDM) perlu ditangani secara
+                  serius. Hingga kini penyandang disabilitas khususnya DI di Indonesia belum bisa
+                  didiagnosa secara tepat. Padahal tanpa diagnosis genetik yang jelas maka upaya
+                  pengobatan, konseling, intervensi, dan perencanaan kehamilan anak berikutnya
+                  menjadi terkendala. Akibatnya muncul diagnostic odyssey yang membuat orang
+                  tua anak yang DI mengalami ketidakpastian. Penelitian ini bertujuan
+                  mengembangkan metode diagnostik baru yaitu berbasis epigenetik pada kasus DI
+                  yang belum terjelaskan oleh pendekatan microarray, maupun WGS (Whole
+                  Genome Sequencing)/WES (Whole Exome Sequencing), di mana hanya sekitar 40%
+                  kasus mendapatkan diagnosis genetic.
+                </p>
+                <!-- <p style="color: #333; line-height: 1.8; text-align: justify;">
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+                </p> -->
+              </div>
+            </div>
+
+            <!-- Detailed Information -->
+            <div style="background: #E3F2FD; padding: 30px; border-radius: 15px; margin-bottom: 40px;">
+              <h3 style="color: #0066CC; margin-bottom: 25px; text-align: center;">📋 Karakteristik Klinis</h3>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <h5 style="color: #0066CC; margin-bottom: 15px;">Gejala Utama: </h5>
+                  <p style="color: #333; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
+                    Disabilitas intelektual ditandai oleh keterbatasan yang signifikan dalam fungsi intelektual maupun perilaku adaptif. Kondisi ini biasanya muncul sejak masa perkembangan anak. Gejala yang sering dijumpai antara lain:
+                  </p>
+                  <ul style="color: #333; line-height: 1.8;">
+                    <li>1. <strong>Keterlambatan perkembangan kognitif:</strong> Kesulitan dalam belajar membaca, menulis, berhitung, serta memahami konsep-konsep abstrak.</li>
+                    <li>2. <strong>Kesulitan komunikasi:</strong> Gangguan pada kemampuan bahasa ekspresif maupun reseptif, sehingga anak sulit mengutarakan kebutuhan atau memahami instruksi.</li>
+                    <li>3. <strong>Masalah perilaku adaptif:</strong> Hambatan dalam keterampilan sehari-hari, seperti mengurus diri, interaksi sosial, serta manajemen waktu dan uang.</li>
+                    <li>4. <strong>Gangguan motorik atau sensorik:</strong> Beberapa individu mungkin mengalami keterlambatan motorik halus atau kasar.</li>
+                    <li>5. <strong>Masalah emosi dan sosial:</strong> Cenderung mengalami frustrasi, mudah cemas, atau mengalami hambatan dalam membangun hubungan dengan teman sebaya.</li>
+                  </ul>
+                </div>
+                
+                <div class="col-md-6">
+                  <h5 style="color: #0066CC; margin-bottom: 15px;">Diagnosis: </h5>
+                  <p style="color: #333; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
+                    Diagnosis disabilitas intelektual dilakukan dengan pendekatan medis, psikologis, dan sosial, melalui langkah-langkah berikut:
+                  </p>
+                  <ul style="color: #333; line-height: 1.8;">
+                    <li>1. <strong>Anamnesis dan riwayat perkembangan:</strong> Menggali informasi tentang kehamilan, persalinan, riwayat kesehatan, serta pencapaian perkembangan anak.</li>
+                    <li>2. <strong>Pemeriksaan psikometri:</strong> Penilaian IQ menggunakan tes standar seperti WISC atau Stanford-Binet. Skor IQ di bawah 70 biasanya menjadi salah satu indikator.</li>
+                    <li>3. <strong>Asesmen perilaku adaptif:</strong> Evaluasi kemampuan individu dalam tiga domain utama—konseptual, sosial, dan praktis—menggunakan instrumen seperti Vineland Adaptive Behavior Scales.</li>
+                    <li>4. <strong>Pemeriksaan medis:</strong> Meliputi tes genetik (misalnya untuk mendeteksi sindrom Down atau Fragile X), pemeriksaan metabolik, pencitraan otak (MRI/CT scan), serta evaluasi kondisi penyerta seperti epilepsi atau gangguan pendengaran.</li>
+                    <li>5. <strong>Diagnosis banding:</strong> Memastikan perbedaan dengan kondisi lain seperti gangguan spektrum autisme, gangguan belajar spesifik, atau gangguan perkembangan global.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div style="background: #FFF3CD; padding: 20px; border-radius: 10px; border-left: 4px solid #FFC107; margin-top: 25px;">
+                <h6 style="color: #856404; margin-bottom: 10px;">📖 Sumber:</h6>
+                <ul style="color: #856404; font-size: 12px; line-height: 1.6; margin: 0;">
+                  <li>American Psychiatric Association. Diagnostic and Statistical Manual of Mental Disorders, 5th Edition (DSM-5). Washington, DC: APA; 2013.</li>
+                  <li>Schalock, R.L., et al. (2010). Intellectual Disability: Definition, Classification, and Systems of Supports. American Association on Intellectual and Developmental Disabilities (AAIDD).</li>
+                  <li>Patel, D.R., Greydanus, D.E., & Calles, J.L. (2018). Intellectual Disabilities: Epidemiology, Clinical Characteristics, and Diagnostic Evaluation. Pediatric Clinics of North America, 65(1), 63–81.</li>
+                  <li>Sadock, B.J., Sadock, V.A., & Ruiz, P. (2017). Kaplan & Sadock's Synopsis of Psychiatry. 11th ed. Wolters Kluwer.</li>
+                  <li>Matson, J.L., & Sturmey, P. (2011). International Handbook of Autism and Pervasive Developmental Disorders. Springer.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Treatment Information -->
+            <div style="background: #E8F5E8; padding: 30px; border-radius: 15px; margin-bottom: 40px; font-family: Arial, sans-serif;">
+              <h3 style="color: #2ECC71; margin-bottom: 25px; text-align: center; font-size: 24px;">
+                🩺 Pendekatan
+              </h3>
+
+              <p style="color: #333; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
+                Pendekatan yang diusulkan adalah penerapan teknologi <em>long-read nanopore</em>
+                dengan <em>adaptive sampling</em>, yang memungkinkan penargetan khusus pada region
+                genom yang mengalami perubahan metilasi. Dengan memfokuskan sequencing
+                pada area yang telah diidentifikasi memiliki potensi perubahan epigenetik,
+                diharapkan penelitian ini dapat mengungkap pola metilasi yang selama ini terlewat
+                oleh metode konvensional. Pendekatan ini mengintegrasikan teknik isolasi DNA,
+                optimasi <em>library preparation</em> untuk <em>long-read</em>, serta pipeline bioinformatika khusus untuk
+                analisis metilasi.
+              </p>
+
+              <p style="color: #333; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
+                Tim YARSI memiliki pengalaman dalam menggunakan NGS Nanopore untuk
+                menemukan adanya tingkat metilasi yang berbeda pada kasus stunting pada anak. 
+                Hasil menunjukkan adanya hipermetilasi pada gen ribosom di kromosom 21
+                yang penting untuk pertumbuhan, sehingga konsisten dengan fenotip stunting
+                yang menunjukkan adanya tinggi badan yang tidak sesuai dengan usia. Teknologi
+                <em>adaptive sampling</em> dan pipeline bioinformatika yang sama akan diterapkan untuk
+                memecahkan masalah diagnosa DI pada anak.
+              </p>
+
+              <h4 style="color: #2C3E50; margin-top: 25px; margin-bottom: 15px;">Tahapan Strategis</h4>
+              <ol style="color: #333; line-height: 1.8; padding-left: 20px; margin-bottom: 20px;">
+                <li>1. Isolasi DNA berkualitas tinggi dari sampel pasien.</li>
+                <li>2. Optimasi <em>library preparation</em> untuk <em>long-read sequencing</em>, agar hasil pembacaan
+                    cukup panjang untuk menjangkau motif-motif epigenetik dan struktural yang
+                    kompleks.</li>
+                <li>3. Penerapan <em>adaptive sampling</em> yang diarahkan pada region genomik yang
+                    relevan berdasarkan literatur maupun basis data epigenetik.</li>
+                <li>4. Analisis bioinformatika berbasis sinyal arus listrik khas teknologi nanopore, yang
+                    mampu membedakan basa yang termetilasi dan tidak termetilasi tanpa perlu
+                    konversi kimia seperti pada metode bisulfit.</li>
+              </ol>
+
+              <p style="color: #333; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
+                Teknologi dan pipeline analisis ini sebelumnya telah berhasil diterapkan oleh tim
+                peneliti Universitas YARSI dalam penelitian terhadap anak-anak dengan stunting,
+                di mana ditemukan adanya hipermetilasi pada gen ribosom di kromosom 21, yang
+                diyakini berkaitan dengan gangguan pertumbuhan. Keberhasilan tersebut
+                menunjukkan bahwa pendekatan ini mampu mendeteksi perubahan metilasi pada
+                gen-gen penting yang selama ini tidak teridentifikasi oleh metode konvensional.
+              </p>
+
+              <p style="color: #333; line-height: 1.8; text-align: justify;">
+                Dengan memanfaatkan pendekatan serupa, penelitian ini bertujuan untuk
+                menggali potensi adanya pola metilasi yang abnormal pada anak-anak dengan DI,
+                khususnya mereka yang tidak memiliki mutasi genetik yang jelas. Diharapkan,
+                strategi ini dapat memberikan kontribusi penting dalam penegakan diagnosis
+                molekuler penyakit langka berbasis epigenetik.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 mt-4 mt-lg-0">
+          <!-- Maps Section -->
+          <div style="margin-bottom: 30px;">
+            <div id="map">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.4663618773!2d106.86771231476!3d-6.169659562186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f506b12dbf71%3A0xc934b14cf25a4d61!2sUniversitas%20YARSI!5e0!3m2!1sen!2sid!4v1642869952544!5m2!1sen!2sid"
+                width="100%" height="300px" frameborder="0" style="border:0; border-radius: 15px;"
+                allowfullscreen=""></iframe>
+            </div>
+          </div>
+          
+          <!-- Publications Section -->
+          <div style="background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(23, 162, 184, 0.1) 100%); border-radius: 15px; padding: 25px; border: 1px solid rgba(0, 102, 204, 0.2);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+              <i class="fa fa-book" style="color: #0066CC; font-size: 20px;"></i>
+              <h4 style="color: #0066CC; margin: 0;">📚 Publikasi Penelitian</h4>
+            </div>
+            <div style="max-height: 250px; overflow-y: auto;">
+              <div style="margin-bottom: 15px; padding: 12px; background: rgba(255,255,255,0.5); border-radius: 8px; border-left: 3px solid #2ECC71;">
+                <h6 style="color: #2ECC71; margin: 0 0 5px 0; font-size: 14px;">Intractable & Rare Diseases Research • 2023</h6>
+                <p style="color: #333; margin: 0; font-size: 13px; line-height: 1.4;">"Genetic diagnostic approach to intellectual disability and multiple congenital anomalies in Indonesia"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <div class="call-to-action" id="about-us">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div style="text-align: center; margin-bottom: 50px;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px;">
+              <i class="fa fa-user-md" style="color: #2ECC71; font-size: 24px;"></i>
+              <h2 style="margin: 0; color: white;">Tim Peneliti</h2>
+              <i class="fa fa-stethoscope" style="color: #ffffff; font-size: 24px;"></i>
+            </div>
+            <p style="color: #E3F2FD; font-size: 14px; max-width: 600px; margin: 0 auto;">🏥 Tim multidisiplin yang terdiri dari Dosen Sains Biomedis, Dosen Informatika, dan ahli Biologi Molekuler.</p>
+          </div>
+        </div>
+      </div>
+      <div class="team-carousel" style="overflow: hidden; position: relative;">
+        <!-- Previous button -->
+        <button class="prev-btn" onclick="prevSlide()"
+          style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">‹</button>
+        <!-- Next button -->
+        <button class="next-btn" onclick="nextSlide()"
+          style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 18px; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;">›</button>
+        <div class="team-slides" style="display: flex; transition: transform 0.5s ease;" id="teamSlides">
+          <!-- Slide 1 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  S</div>
+                <h4 style="color: white; margin-bottom: 10px;">Sultana</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Ketua Pengusul</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  AH</div>
+                <h4 style="color: white; margin-bottom: 10px;">Ahmad Rusdan Handoyo Utomo</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  CP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Chandra Prasetyo Utomo</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="team-slide" style="min-width: 100%; display: flex;">
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  KP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Kinasih Prayuni</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Universitas YARSI</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="team-member" style="text-align: center; margin-bottom: 30px;">
+                <div
+                  style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">
+                  SP</div>
+                <h4 style="color: white; margin-bottom: 10px;">Susanti PhD</h4>
+                <p style="color: #ccc; margin-bottom: 5px;">Anggota</p>
+                <p style="color: #ccc; font-size: 14px;">Pathgen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-indicators" style="text-align: center; margin-top: 20px;">
+          <span class="dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer; transition: background-color 0.3s ease;"
+            onclick="currentSlide(1)"></span>
+          <span class="dot"
+            style="height: 15px; width: 15px; margin: 0 5px; background-color: #bbb; border-radius: 50%; display: inline-block; cursor: pointer; transition: background-color 0.3s ease;"
+            onclick="currentSlide(2)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Us Section -->
+  <div class="call-to-action" id="contact-us" style="background: #2a2a2a; padding: 60px 0; margin-top: 15px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div style="text-align: center; margin-bottom: 40px;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px;">
+              <i class="fa fa-hospital-o" style="color: #2ECC71; font-size: 24px;"></i>
+              <h2 style="margin: 0; color: white;">Hubungi Kami</h2>
+              <i class="fa fa-phone-square" style="color: #0066CC; font-size: 24px;"></i>
+            </div>
+            <p style="color: #E3F2FD; font-size: 14px;">📞 Hubungi untuk konsultasi dan informasi lebih lanjut</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Universitas YARSI</h4>
+            <p style="margin-bottom: 15px; line-height: 1.6;">
+              <i class="fa fa-map-marker" style="margin-right: 10px; color: #22b3c1;"></i>
+              Menara YARSI, Jl. Let. Jend. Suprapto Kav. 13. Cempaka Putih, Jakarta Pusat, DKI Jakarta 10510. Indonesia.
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-phone" style="margin-right: 10px; color: #22b3c1;"></i>
+              Telephone: +62(21)4206675
+            </p>
+            <p style="margin-bottom: 10px;">
+              <i class="fa fa-fax" style="margin-right: 10px; color: #22b3c1;"></i>
+              Fax: +62 (21)4243171
+            </p>
+            <p style="margin-bottom: 0;">
+              <i class="fa fa-envelope" style="margin-right: 10px; color: #22b3c1;"></i>
+              Email: info@yarsi.ac.id
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div style="color: white;">
+            <h4 style="color: #22b3c1; margin-bottom: 20px;">Mitra Kami</h4>
+            <div class="partners-grid"
+              style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: center;">
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="Partner 1"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/ptpathgen.png') }}" alt="Partner 2"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/fti.png') }}" alt="Partner 3"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+              <div class="partner-logo"
+                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/dikti.png') }}" alt="Partner 4"
+                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="background: linear-gradient(135deg, #4063ff 0%, #0004ff 100%); text-align: center; padding: 20px 0; border-top: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <p style="color: #fff; margin: 0; font-size: 14px;">
+        Copyright © 2025. YARSI AI Medical Platform. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  
+  <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+  
+  {% if session.access_token %}
+  <script>
+    function checkTokenExpiry() {
+      fetch('/api/check-token', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer {{ session.access_token }}'
+        }
+      })
+      .then(response => {
+        if (response.status === 401) {
+          window.location.href = '/logout';
+        }
+      })
+      .catch(() => {
+        window.location.href = '/logout';
+      });
+    }
+    
+    setInterval(checkTokenExpiry, 60000);
+    
+    document.addEventListener('click', checkTokenExpiry);
+    document.addEventListener('keydown', checkTokenExpiry);
+  </script>
+  {% endif %}
+
+</body>
+
+</html>
