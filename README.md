@@ -1,29 +1,28 @@
-# Platform Deteksi Disabilitas Intelektual - YARSI AI
+# Platform Deteksi Disabilitas Intelektual - Standalone AI System
 
 🧬 **Prototipe Kecerdasan Buatan berbasis Uji Metilasi dengan Nanopore NextGen Sequencing untuk Diagnosis Penyakit Langka Anak dengan Disabilitas Intelektual**
 
-Platform web berbasis AI untuk deteksi dini disabilitas intelektual menggunakan analisis data genomik (.bed files) dengan teknologi machine learning dan epigenetik.
+Platform web standalone untuk deteksi dini disabilitas intelektual menggunakan analisis data genomik CSV dengan teknologi machine learning Decision Tree terintegrasi.
 
 ## 🚀 Fitur Utama
 
-- **🧬 Upload BED Files**: Drag & drop file .bed (Nanopore NextGen Sequencing data)
-- **🤖 AI Prediction**: Binary classification (Intellectual Disability / Non-Intellectual Disability)
-- **🔐 Authentication System**: Login/Register dengan validasi form real-time
-- **👁️ Show/Hide Password**: Toggle visibility password dengan icon mata
-- **📊 History Management**: Riwayat prediksi dengan detail hasil analisis
-- **🏗️ Architecture Documentation**: Dokumentasi arsitektur cloud dan ML pipeline
-- **⌨️ Keyboard Shortcuts**: ESC untuk close modal, Enter prevention untuk multiple popup
+- **📊 Upload CSV Files**: Drag & drop file CSV (genomic data)
+- **🤖 Local AI Prediction**: Decision Tree model terintegrasi (Combined FMR1 + DMR)
+- **📈 Realistic Confidence**: Confidence score 75-95% berdasarkan kelengkapan data
+- **💾 Local History**: Riwayat prediksi tersimpan dalam JSON lokal
+- **📦 Sample Download**: Unduh kumpulan test data dalam format ZIP
+- **🔄 Standalone Operation**: Tidak memerlukan API server eksternal
 - **📱 Responsive Design**: Tampilan optimal di desktop, tablet, dan mobile
 - **🎠 Team Carousel**: Informasi tim peneliti multidisiplin
 - **📞 Contact Section**: Informasi kontak Universitas YARSI dan mitra
 
 ## 🛠️ Teknologi
 
-- **Frontend**: Flask (Python), HTML5, CSS3, JavaScript
-- **Backend API**: FastAPI (Python) - Clean Architecture
-- **Authentication**: JWT Token-based authentication
-- **Database**: SQLite dengan repository pattern
-- **ML Pipeline**: Genomic variant analysis dengan epigenetic approach
+- **Frontend**: Flask (Python), HTML5, CSS3, JavaScript ES6
+- **Backend**: Integrated Flask dengan local model
+- **AI/ML**: Decision Tree (Scikit-learn), Pandas, Joblib
+- **Model**: Combined FMR1 + DMR Decision Tree
+- **Storage**: JSON file system (local)
 - **UI Framework**: Bootstrap 5
 - **Icons**: Font Awesome 6
 - **Styling**: Custom CSS dengan medical theme
@@ -32,159 +31,215 @@ Platform web berbasis AI untuk deteksi dini disabilitas intelektual menggunakan 
 
 - Python 3.8+
 - Flask 2.0+
-- Requests library
-- Backend API (FastAPI) running on port 8000
-- Modern web browser dengan JavaScript enabled
+- Pandas
+- Scikit-learn
+- Joblib
+- Model deployment artifacts di `../model/`
 
 ## ⚡ Instalasi
 
-1. **Clone repository**
+1. **Setup Project Structure**
 ```bash
-git clone <repository-url>
-cd "FE_Disabilitas_intelektual - Dev"
+Last Man Standings/
+├── web/                    # Frontend Application
+├── model/                  # ML Model Deployment
+└── be/                     # Backend (placeholder)
 ```
 
-2. **Buat virtual environment**
+2. **Install Dependencies**
 ```bash
-python -m venv DIEnve
-DIEnve\Scripts\activate  # Windows
-# atau
-source DIEnve/bin/activate  # Linux/Mac
-```
-
-3. **Install dependencies**
-```bash
+cd web
 pip install -r requirements.txt
 ```
 
-4. **Setup Backend API**
-   - Pastikan backend API (disabilitas-intelektual-api) berjalan di `http://localhost:8000`
-   - API menggunakan endpoint `/api/v1/` prefix
+3. **Verify Model Path**
+   - Pastikan folder `../model/deployment_artifacts/` berisi:
+     - `model_decision_tree_combined.joblib`
+     - `label_encoder.joblib`
+     - `feature_names.json`
 
-5. **Jalankan aplikasi**
+4. **Jalankan Aplikasi**
 ```bash
 python app.py
 ```
 
-6. **Akses aplikasi**
+5. **Akses Aplikasi**
    - Frontend: `http://localhost:8004`
-   - Landing page untuk user belum login
-   - Dashboard untuk user yang sudah login
+   - Landing page untuk semua user
+   - Dashboard untuk upload dan prediksi
 
 ## 📁 Struktur Proyek
 
 ```
-FE_Disabilitas_intelektual - Dev/
-├── app.py                    # Aplikasi Flask utama
-├── templates/
-│   ├── landing.html         # Landing page (public)
-│   ├── login.html           # Halaman login dengan show/hide password
-│   ├── register.html        # Halaman registrasi dengan show/hide password
-│   ├── index.html           # Dashboard (authenticated)
-│   ├── about.html           # Informasi medis disabilitas intelektual
-│   ├── architecture.html    # Arsitektur cloud & ML pipeline (white bg)
-│   └── history.html         # Riwayat prediksi (white bg)
-├── static/
-│   ├── assets/
-│   │   ├── css/
-│   │   │   ├── navbar-custom.css  # Custom navbar styling
-│   │   │   ├── custom.css         # Custom styles
-│   │   │   └── templatem.css      # Main template styles
-│   │   ├── js/
-│   │   │   ├── app.js            # Main application logic dengan ESC support
-│   │   │   └── custom.js         # Custom JavaScript
-│   │   └── images/              # Medical images & logos
-│   ├── uploads/                 # Temporary upload folder
-│   └── vendor/                  # Bootstrap & jQuery
-├── model/                       # Placeholder for ML models
-├── requirements.txt             # Python dependencies
-└── README.md
+Last Man Standings/
+├── web/                          # Frontend Application
+│   ├── app.py                   # Flask app dengan model integration
+│   ├── templates/
+│   │   ├── landing.html         # Landing page
+│   │   ├── index.html           # Main dashboard
+│   │   ├── history.html         # Prediction history
+│   │   ├── about.html           # Medical information
+│   │   ├── architecture.html    # System architecture
+│   │   ├── login.html           # Login page (optional)
+│   │   └── register.html        # Register page (optional)
+│   ├── static/
+│   │   ├── assets/
+│   │   │   ├── css/            # Custom styling
+│   │   │   ├── js/             # JavaScript logic
+│   │   │   └── images/         # Medical images & logos
+│   │   ├── uploads/            # File upload storage
+│   │   ├── history.json        # Local prediction history
+│   │   └── vendor/             # Bootstrap & jQuery
+│   └── requirements.txt        # Python dependencies
+├── model/                       # ML Model Deployment
+│   ├── inference.py            # Model inference engine
+│   ├── deployment_artifacts/   # Model files
+│   │   ├── model_decision_tree_combined.joblib
+│   │   ├── label_encoder.joblib
+│   │   └── feature_names.json
+│   ├── test_data_csv/          # Test data samples
+│   └── kumpulan_test_data_csv.zip
+└── be/                         # Backend API (placeholder)
 ```
 
 ## 🔧 Penggunaan
 
-### 🏠 Landing Page (Public Access)
+### 🏠 Landing Page
 - Informasi platform AI untuk deteksi disabilitas intelektual
 - Tim peneliti dan informasi kontak
-- Link untuk login/register
+- Akses langsung ke dashboard
 
-### 🔐 Authentication
-1. **Register**: Daftar dengan nama, email, password (min 8 karakter)
-2. **Login**: Masuk dengan email dan password
-3. **Show/Hide Password**: Toggle visibility dengan icon mata (👁️)
-4. **Form Validation**: Real-time validation dengan visual feedback
+### 📊 Upload & Analisis
+1. **Upload File CSV**
+   - Drag & drop atau klik untuk pilih file CSV
+   - Format: Standard CSV dengan header genomik
+   - Automatic feature alignment dengan model
 
-### 🧬 Upload & Analisis (Authenticated Users)
-1. **Upload File BED**
-   - Drag & drop atau klik untuk pilih file .bed
-   - File format: Nanopore NextGen Sequencing data
-   - Single file upload only
-
-2. **Prediksi AI**
+2. **Prediksi AI Lokal**
    - Klik tombol "🩺 Analisis Medis" setelah upload berhasil
    - Loading screen dengan medical-themed animation
-   - Hasil binary classification: Intellectual Disability / Non-Intellectual Disability
+   - Hasil: "case" atau "ctrl" dengan confidence score
 
 3. **Hasil Prediksi**
-   - Modal popup dengan risk score, confidence, dan condition
+   - Modal popup dengan prediction, confidence, dan sample ID
+   - Confidence: 75-95% (realistic range)
    - Medical disclaimer untuk evaluasi lanjutan
    - Keyboard shortcut: **ESC** untuk close modal
-   - Prevention multiple popup dengan Enter
 
-### 📊 History & Navigation
-- **History**: Riwayat prediksi dengan detail hasil (white background)
-- **Architecture**: Dokumentasi arsitektur sistem (white background)
+### 📈 History & Navigation
+- **History**: Riwayat prediksi tersimpan lokal dalam JSON
+- **Architecture**: Dokumentasi arsitektur sistem
 - **About**: Informasi medis lengkap tentang disabilitas intelektual
+- **Download Sample**: Unduh test data ZIP untuk percobaan
 
 ## 🎯 AI & ML Pipeline
 
-- **Type**: Binary Classification (Intellectual Disability vs Non-Intellectual Disability)
-- **Input**: BED files (Nanopore NextGen Sequencing data)
-- **Technology**: Epigenetic analysis dengan methylation pattern detection
-- **Output**: Risk score, confidence level, predicted condition
-- **Threshold**: 0.5 untuk binary classification
-- **Backend**: FastAPI dengan Clean Architecture pattern
+### Model Specifications
+- **Type**: Binary Classification (case vs ctrl)
+- **Algorithm**: Decision Tree (Combined FMR1 + DMR)
+- **Input**: CSV files dengan genomic features
+- **Output**: Prediction + confidence score
+- **Confidence**: 75-95% berdasarkan feature completeness
+- **Feature Handling**: Automatic alignment + zero imputation
+
+### Local Integration
+- **Model Path**: `../model/deployment_artifacts/`
+- **Inference**: `inference.py` dari model folder
+- **No API Required**: Standalone operation
+- **Real-time Processing**: Instant prediction results
 
 ## 📱 Responsive Design
 
-- **Desktop**: Layout optimal dengan sidebar dan main content
-- **Tablet**: Responsive grid dengan proper spacing
-- **Mobile**: Stack layout dengan margin adjustments
+- **Desktop**: Optimal layout dengan proper spacing
+- **Tablet**: Responsive grid dengan adjusted margins
+- **Mobile**: Stack layout dengan mobile-first approach
 - **Team Carousel**: Auto-responsive (3 members desktop, 2 mobile)
-- **Navigation**: Bootstrap navbar dengan mobile hamburger menu
-- **White Background**: History dan Architecture pages menggunakan white background
+- **Navigation**: Bootstrap navbar dengan hamburger menu
 
-## 🏗️ Development
+## 🔧 Development
 
-### API Integration
-- Frontend berkomunikasi dengan FastAPI backend
-- Endpoint base: `http://localhost:8000/api/v1/`
-- Authentication: JWT Bearer token
-- Error handling untuk API responses
+### Local Model Integration
+```python
+# Model initialization
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'model'))
+from inference import ModelPredictor
 
-### Menambah Fitur Baru
-1. **Backend**: Edit `app.py` untuk Flask routes dan API calls
-2. **Frontend**: Update templates HTML sesuai kebutuhan
-3. **Styling**: Modifikasi CSS files di `static/assets/css/`
-4. **JavaScript**: Tambah logic di `static/assets/js/app.js`
+model_path = os.path.join(os.path.dirname(__file__), '..', 'model', 'deployment_artifacts')
+model_predictor = ModelPredictor(model_path)
+```
 
 ### Key Features Implementation
-- **File Upload**: Drag & drop dengan validation (.bed files only)
-- **Modal System**: Popup dengan ESC key support dan multiple prevention
-- **Form Validation**: Real-time validation dengan visual feedback
-- **Session Management**: Token-based dengan auto-refresh
-- **Loading States**: Medical-themed loading animations
-- **Show/Hide Password**: Toggle dengan icon mata pada login/register
+- **File Upload**: Local storage dengan validation
+- **Model Prediction**: Direct inference call
+- **History Storage**: JSON file system
+- **Error Handling**: Comprehensive error management
+- **Loading States**: Medical-themed animations
 
-## 🔒 Keamanan
+### API Endpoints
+- `POST /upload` - Upload CSV dan simpan lokal
+- `GET /upload/predict` - Prediksi menggunakan model lokal
+- `GET /api/history` - Ambil riwayat dari JSON
+- `GET /download/sample` - Download test data ZIP
 
-- **File Validation**: Hanya file .bed yang diizinkan
-- **Authentication**: JWT token-based dengan expiry
-- **Input Sanitization**: Validasi form dan file input
-- **Session Security**: Auto logout saat token expired
-- **API Security**: Bearer token untuk semua API calls
-- **Error Handling**: Proper error messages tanpa expose sensitive info
-- **CORS**: Configured untuk API communication
+## 🧪 Testing
+
+### Sample Data Testing
+1. **Download Test Data**
+   - Klik "📥 Unduh Test Data (ZIP)" di dashboard
+   - Extract file ZIP yang berisi multiple CSV samples
+
+2. **Upload & Test**
+   - Upload salah satu file CSV (bc10.csv, bc11.csv, dll)
+   - Klik "🩺 Analisis Medis" untuk testing
+   - Verifikasi hasil prediksi dan confidence
+
+### Expected Results
+- **Prediction**: "case" atau "ctrl"
+- **Confidence**: 75.0% - 95.0%
+- **Sample ID**: Nama file yang diupload
+- **Status**: "success"
+
+## 🏥 Format Data Medis
+
+### Input CSV Requirements
+- **Format**: Standard CSV dengan comma separator
+- **Header**: Sesuai dengan feature names model
+- **Content**: Nilai numerik (float/int)
+- **Missing Features**: Otomatis diisi 0 (zero imputation)
+- **Encoding**: UTF-8
+
+### Output Format
+```json
+{
+  "sample_id": "bc10.csv",
+  "prediction": "case",
+  "confidence": 87.5,
+  "status": "success"
+}
+```
+
+## 🔒 Keamanan & Privacy
+
+- **Local Processing**: Semua data diproses lokal
+- **No External API**: Tidak ada data yang dikirim ke server eksternal
+- **File Validation**: Hanya CSV files yang diizinkan
+- **Temporary Storage**: Upload files tersimpan sementara
+- **Medical Compliance**: Sesuai untuk lingkungan penelitian medis
+
+## 🚀 Deployment
+
+### Standalone Deployment
+1. **Copy Project**: Seluruh folder "Last Man Standings"
+2. **Install Dependencies**: `pip install -r requirements.txt`
+3. **Run Application**: `python web/app.py`
+4. **Access**: Browser ke `http://localhost:8004`
+
+### Production Considerations
+- **WSGI Server**: Gunakan Gunicorn atau uWSGI
+- **Reverse Proxy**: Setup Nginx untuk production
+- **SSL/TLS**: Configure HTTPS untuk keamanan
+- **Logging**: Implement proper application logging
+- **Monitoring**: Setup health checks dan monitoring
 
 ## 📞 Kontak
 
@@ -205,29 +260,33 @@ FE_Disabilitas_intelektual - Dev/
 
 ## 📄 Lisensi
 
-© 2025 YARSI AI. All rights reserved.
+© 2025 YARSI AI Medical Platform. All rights reserved.
+Dikembangkan untuk keperluan penelitian medis Hibah Tahun 1.
+
+## ⚠️ Medical Disclaimer
+
+Hasil analisis ini merupakan skrining awal menggunakan AI. Diperlukan evaluasi lanjutan oleh tenaga medis profesional untuk diagnosis definitif.
 
 ## 🔄 Changelog
 
-### v2.0.0 (Current)
-- ✅ **BED File Support**: Upload .bed files untuk genomic analysis
-- ✅ **Authentication System**: Login/Register dengan JWT token
-- ✅ **Binary Classification**: Intellectual Disability vs Non-Intellectual Disability
-- ✅ **Show/Hide Password**: Toggle password visibility dengan icon mata (👁️)
-- ✅ **History Management**: Riwayat prediksi dengan detail results
-- ✅ **Architecture Documentation**: Cloud & ML pipeline documentation
-- ✅ **White Background**: History dan Architecture pages dengan white background
-- ✅ **Medical Content**: Comprehensive medical information about intellectual disability
-- ✅ **Keyboard Shortcuts**: ESC untuk close modal, Enter prevention untuk multiple popup
-- ✅ **Form Validation**: Real-time validation dengan visual feedback
-- ✅ **Responsive Design**: Mobile-first approach dengan Bootstrap 5
-- ✅ **Loading Animations**: Medical-themed loading screens
-- ✅ **API Integration**: FastAPI backend dengan Clean Architecture
-- ✅ **Enhanced UX**: Improved color palette dan medical theme
+### v3.0.0 (Current - Standalone)
+- ✅ **Local Model Integration**: Decision Tree terintegrasi tanpa API
+- ✅ **CSV File Support**: Upload CSV files untuk genomic analysis
+- ✅ **Realistic Confidence**: 75-95% confidence berdasarkan data quality
+- ✅ **Local History**: JSON-based history storage
+- ✅ **Sample Download**: ZIP file dengan multiple test data
+- ✅ **Standalone Operation**: No external dependencies
+- ✅ **Enhanced Performance**: Direct model inference
+- ✅ **Improved UX**: Streamlined workflow tanpa authentication
+- ✅ **Medical Compliance**: Sesuai standar penelitian medis
+- ✅ **Zero Configuration**: Ready to run out of the box
 
-### v1.0.0 (Legacy)
-- ✅ Upload CSV functionality
-- ✅ ML prediction integration
-- ✅ Responsive team carousel
-- ✅ Contact section
-- ✅ Clean code structure
+### v2.0.0 (Legacy - API-based)
+- ✅ BED File Support dengan API integration
+- ✅ Authentication System dengan JWT token
+- ✅ External API communication
+
+### v1.0.0 (Initial)
+- ✅ Basic CSV functionality
+- ✅ Simple ML prediction
+- ✅ Responsive design

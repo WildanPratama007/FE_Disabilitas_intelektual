@@ -1,5 +1,5 @@
 # SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK
-## Platform Deteksi Disabilitas Intelektual Berbasis AI
+## Platform Deteksi Disabilitas Intelektual - Standalone AI System
 
 ---
 
@@ -9,213 +9,239 @@
 
 #### 1.1.1 Siklus Hidup Pengembangan Aplikasi
 
-Platform Deteksi Disabilitas Intelektual dikembangkan menggunakan metodologi **Software Development Life Cycle (SDLC)** dengan pendekatan **Agile Development** yang terdiri dari fase-fase berikut:
+Platform Deteksi Disabilitas Intelektual Standalone dikembangkan menggunakan metodologi **Software Development Life Cycle (SDLC)** dengan pendekatan **Agile Development** yang terdiri dari fase-fase berikut:
 
 **1. Fase Perencanaan dan Analisis**
 - Identifikasi kebutuhan medis untuk deteksi disabilitas intelektual
-- Analisis teknologi Nanopore NextGen Sequencing
-- Studi kelayakan implementasi AI/ML untuk analisis genomik
-- Definisi scope dan timeline pengembangan
+- Analisis teknologi genomik dan epigenetik
+- Studi kelayakan implementasi Decision Tree untuk analisis CSV
+- Definisi scope standalone system tanpa API eksternal
 
 **2. Fase Desain Sistem**
-- Perancangan arsitektur cloud computing (AWS)
-- Desain machine learning pipeline untuk analisis metilasi DNA
-- Perancangan antarmuka pengguna (UI/UX) untuk tenaga medis
-- Desain database dan API architecture
+- Perancangan arsitektur standalone dengan model terintegrasi
+- Desain Decision Tree pipeline (Combined FMR1 + DMR)
+- Perancangan antarmuka pengguna untuk analisis genomik
+- Desain local storage dan JSON-based history
 
 **3. Fase Implementasi**
-- Pengembangan frontend menggunakan Flask Web Framework
-- Implementasi backend API dengan Python
-- Integrasi model machine learning (TensorFlow/Scikit-learn)
-- Pengembangan sistem autentikasi dan otorisasi
+- Pengembangan Flask application dengan model integration
+- Implementasi inference engine lokal
+- Integrasi Decision Tree model (Scikit-learn)
+- Pengembangan sistem upload dan prediksi standalone
 
 **4. Fase Testing dan Quality Assurance**
-- Unit testing untuk setiap komponen
-- Integration testing untuk API dan database
-- User Acceptance Testing (UAT) dengan tenaga medis
-- Security testing dan performance testing
+- Unit testing untuk model inference
+- Integration testing untuk Flask-model communication
+- User Acceptance Testing (UAT) dengan sample data
+- Performance testing untuk local processing
 
 **5. Fase Deployment dan Maintenance**
-- Deployment ke cloud infrastructure (AWS)
-- Monitoring dan logging sistem
-- Maintenance dan update berkala
-- Support dan dokumentasi pengguna
+- Deployment sebagai standalone application
+- Local monitoring dan logging
+- Maintenance dan model updates
+- Documentation dan user support
 
 #### 1.1.2 Tujuan Penulisan Spesifikasi Kebutuhan Perangkat Lunak
 
 Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SRS) ini disusun dengan tujuan:
 
-**1. Dokumentasi Kebutuhan Sistem**
-- Mendefinisikan secara detail kebutuhan fungsional dan non-fungsional platform
-- Menyediakan referensi lengkap untuk tim pengembang, stakeholder, dan pengguna
-- Memastikan pemahaman yang sama antara semua pihak terkait
+**1. Dokumentasi Kebutuhan Sistem Standalone**
+- Mendefinisikan kebutuhan fungsional sistem terintegrasi
+- Menyediakan referensi untuk pengembangan standalone
+- Memastikan pemahaman arsitektur tanpa API eksternal
 
-**2. Panduan Pengembangan**
-- Memberikan blueprint untuk proses pengembangan aplikasi
-- Menjadi acuan dalam implementasi fitur-fitur sistem
-- Memfasilitasi estimasi waktu dan resource yang dibutuhkan
+**2. Panduan Pengembangan Model Integration**
+- Memberikan blueprint untuk integrasi model lokal
+- Menjadi acuan implementasi inference engine
+- Memfasilitasi estimasi resource dan performance
 
-**3. Basis Testing dan Validasi**
-- Menyediakan kriteria untuk User Acceptance Testing (UAT)
-- Menjadi dasar untuk verifikasi dan validasi sistem
-- Memastikan kualitas dan keandalan platform medis
+**3. Basis Testing dan Validasi Model**
+- Menyediakan kriteria untuk testing model accuracy
+- Menjadi dasar validasi confidence scoring
+- Memastikan kualitas prediksi medis
 
-**4. Komunikasi Stakeholder**
-- Memfasilitasi komunikasi antara tim teknis dan non-teknis
-- Menyediakan dokumentasi untuk approval dan sign-off
-- Menjadi kontrak kerja antara pengembang dan client
+**4. Komunikasi Stakeholder Medis**
+- Memfasilitasi komunikasi dengan tim peneliti
+- Menyediakan dokumentasi untuk approval medis
+- Menjadi kontrak untuk deliverable penelitian
 
 #### 1.1.3 Cakupan Produk
 
-**Nama Produk**: Platform Deteksi Disabilitas Intelektual Berbasis AI
+**Nama Produk**: Platform Deteksi Disabilitas Intelektual - Standalone AI System
 
 **Deskripsi Produk**:
-Platform web-based yang menggunakan teknologi Artificial Intelligence dan Machine Learning untuk menganalisis data genomik (file .bed dari Nanopore NextGen Sequencing) guna mendeteksi potensi disabilitas intelektual pada anak. Platform ini dikembangkan khusus untuk tenaga medis profesional di lingkungan klinis.
+Platform standalone yang menggunakan Decision Tree terintegrasi untuk menganalisis data genomik CSV guna mendeteksi potensi disabilitas intelektual. Platform ini beroperasi tanpa memerlukan API server eksternal dan dirancang untuk lingkungan penelitian medis.
 
 **Cakupan Fungsional**:
 
-1. **Sistem Autentikasi dan Manajemen User**
-   - Registrasi dan login tenaga medis
-   - Manajemen session dan keamanan akses
-   - Validasi kredensial dan otorisasi
+1. **Sistem Upload dan Validasi CSV**
+   - Upload file CSV dengan data genomik
+   - Validasi format dan struktur data
+   - Automatic feature alignment dengan model
 
-2. **Upload dan Manajemen File Genomik**
-   - Upload file .bed (Browser Extensible Data)
-   - Validasi format dan integritas file
-   - Penyimpanan aman file medis
+2. **Model Decision Tree Terintegrasi**
+   - Combined FMR1 + DMR Decision Tree
+   - Local inference tanpa API calls
+   - Realistic confidence scoring (75-95%)
 
-3. **Analisis AI/ML untuk Deteksi**
-   - Pemrosesan data metilasi DNA
-   - Analisis menggunakan model machine learning
-   - Generasi risk score dan confidence level
+3. **Analisis dan Prediksi Lokal**
+   - Binary classification (case vs ctrl)
+   - Real-time processing dan hasil
+   - Medical-grade accuracy dan reliability
 
-4. **Pelaporan dan Visualisasi Hasil**
-   - Tampilan hasil analisis dalam format medis
-   - Risk assessment dan rekomendasi klinis
-   - Medical disclaimer dan panduan interpretasi
+4. **Sistem History Lokal**
+   - JSON-based history storage
+   - Tracking prediksi per session
+   - Local data persistence
 
-5. **Riwayat dan Tracking Analisis**
-   - Penyimpanan history prediksi
-   - Tracking per user dan per analisis
-   - Export dan dokumentasi hasil
+5. **Sample Data Management**
+   - Download kumpulan test data ZIP
+   - Multiple CSV samples untuk testing
+   - Validation data untuk accuracy check
 
-6. **Informasi Medis dan Edukasi**
+6. **Interface Medis dan Dokumentasi**
+   - Medical-themed user interface
    - Informasi tentang disabilitas intelektual
-   - Panduan penggunaan platform
    - Arsitektur sistem dan metodologi
 
 **Cakupan Teknis**:
 - Frontend: Flask Web Application dengan HTML5, CSS3, JavaScript
-- Backend: Python dengan Flask Framework
-- Database: PostgreSQL untuk data persistence
-- AI/ML: TensorFlow, Scikit-learn untuk model prediksi
-- Cloud: AWS infrastructure (Lightsail, S3, Lambda, SageMaker)
-- Security: JWT authentication, HTTPS, data encryption
+- Backend: Integrated Flask dengan local model inference
+- Model: Decision Tree (Scikit-learn) dengan Joblib serialization
+- Storage: JSON file system untuk history
+- Processing: Local CSV processing dengan Pandas
+- Security: Local file validation dan sanitization
 
 **Batasan Cakupan**:
-- Platform hanya mendukung file format .bed
+- Platform hanya mendukung file format CSV
 - Sistem dirancang untuk single file upload per analisis
-- Target user terbatas pada tenaga medis profesional
+- Model terbatas pada Combined FMR1 + DMR features
 - Hasil analisis bersifat skrining awal, bukan diagnosis definitif
+- Tidak ada koneksi ke database eksternal atau API
 
 #### 1.1.4 Definisi, Singkatan, dan Akronim
 
 **Definisi Medis**:
 - **Disabilitas Intelektual**: Gangguan neurodevelopmental dengan keterbatasan signifikan dalam fungsi intelektual dan perilaku adaptif
-- **Metilasi DNA**: Modifikasi epigenetik yang mempengaruhi ekspresi gen tanpa mengubah sekuens DNA
-- **Nanopore Sequencing**: Teknologi sequencing DNA generasi ketiga yang dapat membaca molekul DNA secara real-time
+- **FMR1 Gene**: Fragile X Mental Retardation 1 gene yang terkait dengan disabilitas intelektual
+- **DMR**: Differentially Methylated Region yang mempengaruhi ekspresi gen
+- **Epigenetik**: Modifikasi yang mempengaruhi ekspresi gen tanpa mengubah sekuens DNA
 
 **Definisi Teknis**:
-- **BED File**: Browser Extensible Data format untuk menyimpan data genomik
-- **Risk Score**: Nilai numerik yang menunjukkan tingkat risiko disabilitas intelektual
-- **Confidence Level**: Tingkat kepercayaan model AI terhadap prediksi yang dihasilkan
+- **CSV File**: Comma-Separated Values format untuk data genomik
+- **Decision Tree**: Algoritma machine learning untuk binary classification
+- **Confidence Score**: Tingkat kepercayaan model terhadap prediksi (75-95%)
+- **Feature Alignment**: Proses menyelaraskan kolom CSV dengan model features
 
 **Singkatan dan Akronim**:
 
 | Akronim | Kepanjangan | Deskripsi |
 |---------|-------------|-----------|
-| AI | Artificial Intelligence | Kecerdasan buatan untuk analisis data |
-| ML | Machine Learning | Pembelajaran mesin untuk prediksi |
-| API | Application Programming Interface | Interface komunikasi antar sistem |
-| SRS | Software Requirements Specification | Dokumen spesifikasi kebutuhan |
+| AI | Artificial Intelligence | Kecerdasan buatan untuk analisis |
+| ML | Machine Learning | Pembelajaran mesin Decision Tree |
+| CSV | Comma-Separated Values | Format file data genomik |
+| DT | Decision Tree | Algoritma klasifikasi utama |
+| FMR1 | Fragile X Mental Retardation 1 | Gen target analisis |
+| DMR | Differentially Methylated Region | Region metilasi target |
+| SRS | Software Requirements Specification | Dokumen spesifikasi |
 | UAT | User Acceptance Testing | Testing penerimaan pengguna |
-| UI/UX | User Interface/User Experience | Antarmuka dan pengalaman pengguna |
-| JWT | JSON Web Token | Token untuk autentikasi |
-| HTTPS | HyperText Transfer Protocol Secure | Protokol komunikasi aman |
-| AWS | Amazon Web Services | Platform cloud computing |
-| S3 | Simple Storage Service | Layanan penyimpanan cloud |
-| NGS | Next Generation Sequencing | Teknologi sequencing DNA modern |
-| DI | Disabilitas Intelektual | Kondisi medis target deteksi |
-| YARSI | Yayasan Rumah Sakit Islam | Institusi pengembang |
-| REST | Representational State Transfer | Arsitektur API |
-| JSON | JavaScript Object Notation | Format pertukaran data |
-| CSS | Cascading Style Sheets | Bahasa styling web |
+| UI/UX | User Interface/User Experience | Antarmuka pengguna |
+| JSON | JavaScript Object Notation | Format penyimpanan history |
 | HTML | HyperText Markup Language | Bahasa markup web |
-| JS | JavaScript | Bahasa pemrograman web |
-| SQL | Structured Query Language | Bahasa query database |
-| CRUD | Create, Read, Update, Delete | Operasi dasar database |
-| MVC | Model-View-Controller | Pola arsitektur aplikasi |
-| SDLC | Software Development Life Cycle | Siklus pengembangan perangkat lunak |
+| CSS | Cascading Style Sheets | Bahasa styling web |
+| JS | JavaScript | Bahasa pemrograman frontend |
+| YARSI | Yayasan Rumah Sakit Islam | Institusi peneliti |
+| SDLC | Software Development Life Cycle | Siklus pengembangan |
 
 **Istilah Khusus Platform**:
-- **Medical Dashboard**: Antarmuka utama untuk tenaga medis
-- **Genomic Analysis**: Proses analisis data genomik menggunakan AI
-- **Clinical Report**: Laporan hasil analisis untuk keperluan medis
-- **Prediction History**: Riwayat analisis dan prediksi yang telah dilakukan
-- **Medical Disclaimer**: Peringatan bahwa hasil adalah skrining awal
+- **Standalone System**: Sistem yang beroperasi tanpa API eksternal
+- **Local Inference**: Prediksi model yang dijalankan secara lokal
+- **Feature Alignment**: Proses otomatis menyelaraskan kolom CSV
+- **Zero Imputation**: Pengisian nilai 0 untuk fitur yang hilang
+- **Medical Dashboard**: Interface utama untuk analisis genomik
+- **Prediction History**: Riwayat analisis tersimpan dalam JSON
+- **Sample Data ZIP**: Kumpulan file test untuk validasi
 
 #### 1.1.5 Deskripsi Umum Bab
 
-Dokumen SRS ini terdiri dari beberapa bab yang saling terkait untuk memberikan gambaran lengkap tentang Platform Deteksi Disabilitas Intelektual:
+Dokumen SRS ini terdiri dari beberapa bab yang memberikan gambaran lengkap tentang Platform Standalone:
 
 **BAB 1: Spesifikasi Kebutuhan Perangkat Lunak**
-- Pendahuluan dan latar belakang pengembangan
-- Tujuan, cakupan, dan definisi istilah
-- Metodologi pengembangan dan siklus hidup aplikasi
+- Pendahuluan dan metodologi pengembangan standalone
+- Tujuan, cakupan, dan definisi sistem terintegrasi
+- Arsitektur tanpa API dan local processing
 
 **BAB 2: Deskripsi Umum Sistem** *(akan dilanjutkan)*
-- Perspektif produk dalam ekosistem medis
-- Fungsi-fungsi utama platform
-- Karakteristik pengguna dan batasan sistem
-- Asumsi dan dependensi teknologi
+- Perspektif produk dalam ekosistem penelitian medis
+- Fungsi-fungsi utama sistem standalone
+- Karakteristik pengguna dan batasan teknis
+- Asumsi model dan dependensi lokal
 
 **BAB 3: Kebutuhan Fungsional** *(akan dilanjutkan)*
-- Spesifikasi detail fitur-fitur sistem
-- Use case dan skenario penggunaan
-- Interface requirements dan integrasi
-- Kebutuhan data dan pemrosesan
+- Spesifikasi detail fitur upload dan prediksi
+- Use case untuk analisis genomik CSV
+- Interface requirements dan model integration
+- Kebutuhan processing dan storage lokal
 
 **BAB 4: Kebutuhan Non-Fungsional** *(akan dilanjutkan)*
-- Performance dan scalability requirements
-- Security dan privacy requirements
-- Usability dan accessibility requirements
-- Reliability dan availability requirements
+- Performance requirements untuk local processing
+- Accuracy dan reliability requirements model
+- Usability requirements untuk peneliti medis
+- Security requirements untuk data genomik
 
 **BAB 5: Arsitektur dan Desain Sistem** *(akan dilanjutkan)*
-- Arsitektur cloud dan infrastructure
-- Machine learning pipeline design
-- Database design dan data flow
-- API design dan integration points
+- Arsitektur standalone dan model integration
+- Decision Tree pipeline dan inference engine
+- Local storage design dan data flow
+- CSV processing dan feature alignment
 
 **Struktur Pembahasan Setiap Bab**:
-- Setiap bab dimulai dengan overview dan objektif
-- Pembahasan detail dengan contoh dan ilustrasi
-- Referensi ke bab lain yang terkait
-- Summary dan key points di akhir bab
+- Overview objektif sistem standalone
+- Detail implementasi dengan contoh CSV
+- Referensi ke komponen model terintegrasi
+- Summary dan validation criteria
 
 **Audience dan Penggunaan Dokumen**:
-- **Tim Pengembang**: Sebagai panduan implementasi teknis
-- **Project Manager**: Untuk planning dan tracking progress
-- **Stakeholder Medis**: Untuk validasi kebutuhan klinis
-- **Quality Assurance**: Sebagai basis untuk testing strategy
-- **System Administrator**: Untuk deployment dan maintenance
+- **Tim Peneliti Medis**: Untuk validasi kebutuhan klinis
+- **Developer**: Sebagai panduan implementasi standalone
+- **Quality Assurance**: Untuk testing strategy model
+- **System Administrator**: Untuk deployment lokal
+- **End Users**: Untuk pemahaman sistem capabilities
 
 **Maintenance dan Update Dokumen**:
-- Dokumen ini akan diupdate seiring dengan perkembangan sistem
-- Setiap perubahan akan didokumentasikan dengan version control
-- Review berkala akan dilakukan bersama stakeholder
-- Feedback dari UAT akan diintegrasikan ke dalam dokumen
+- Update seiring dengan improvement model accuracy
+- Version control untuk perubahan algoritma
+- Review berkala dengan tim peneliti medis
+- Integration feedback dari testing dengan sample data
 
 ---
 
-*Dokumen ini merupakan living document yang akan terus berkembang sesuai dengan kebutuhan dan feedback dari stakeholder. Untuk informasi lebih lanjut atau klarifikasi, silakan hubungi tim pengembang Platform Deteksi Disabilitas Intelektual - YARSI AI.*
+### 1.2 Kebutuhan Sistem Standalone
+
+#### 1.2.1 Kebutuhan Model Integration
+- Decision Tree model harus terintegrasi dalam Flask application
+- Model artifacts (joblib files) harus accessible secara lokal
+- Inference engine harus mendukung real-time processing
+- Feature alignment harus otomatis untuk berbagai format CSV
+
+#### 1.2.2 Kebutuhan Performance Lokal
+- Response time prediksi maksimal 5 detik
+- Support untuk file CSV hingga 10MB
+- Memory usage optimal untuk model loading
+- Concurrent processing untuk multiple requests
+
+#### 1.2.3 Kebutuhan Accuracy dan Reliability
+- Model accuracy minimal 85% pada validation set
+- Confidence scoring realistis (75-95% range)
+- Consistent results untuk input yang sama
+- Proper error handling untuk invalid data
+
+#### 1.2.4 Kebutuhan Medical Compliance
+- Medical disclaimer untuk setiap hasil prediksi
+- Proper documentation untuk interpretasi hasil
+- Audit trail untuk tracking prediksi
+- Data privacy untuk informasi genomik
+
+---
+
+*Dokumen ini merupakan living document yang akan terus berkembang sesuai dengan improvement model dan feedback dari tim peneliti medis. Untuk informasi lebih lanjut, silakan hubungi tim pengembang Platform Deteksi Disabilitas Intelektual - YARSI AI.*

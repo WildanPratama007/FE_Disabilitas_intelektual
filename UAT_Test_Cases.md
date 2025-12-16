@@ -1,707 +1,420 @@
-# DAFTAR UAT (USER ACCEPTANCE TESTING)
-## Platform Deteksi Disabilitas Intelektual - YARSI AI
-
-### INFORMASI UMUM
-- **Aplikasi**: Platform Deteksi Disabilitas Intelektual
-- **Teknologi**: Flask Web Application dengan AI/ML Backend
-- **Target User**: Tenaga medis profesional
-- **File Format**: .bed (Nanopore NextGen Sequencing data)
-- **Upload**: Single file upload only - satu file per analisis medis
+# User Acceptance Testing (UAT) Test Cases
+## Platform Deteksi Disabilitas Intelektual - Standalone AI System
 
 ---
 
-## 1. LANDING PAGE TESTING
+## 1. Informasi Umum Testing
 
-### TC-LP-001: Akses Landing Page
-**Tujuan**: Memastikan landing page dapat diakses dengan benar
-- **Langkah**:
-  1. Buka browser
-  2. Akses URL aplikasi (http://localhost:8004/)
-- **Expected Result**: 
-  - Landing page terbuka dengan benar
-  - Logo YARSI AI terlihat
-  - Navbar menampilkan menu: Home, About, Contact, Login
-  - Banner utama menampilkan informasi platform AI
+### 1.1 Tujuan UAT
+- Memvalidasi fungsionalitas sistem standalone dengan model terintegrasi
+- Memastikan akurasi prediksi Decision Tree untuk data genomik CSV
+- Verifikasi user experience untuk peneliti medis
+- Validasi compliance dengan standar penelitian medis
 
-### TC-LP-002: Navigasi Menu Landing Page
-**Tujuan**: Memastikan semua menu di landing page berfungsi
-- **Langkah**:
-  1. Klik menu "Home" → harus tetap di landing page
-  2. Klik menu "About" → scroll ke section About Us
-  3. Klik menu "Contact" → scroll ke section Contact Us
-  4. Klik menu "Login" → redirect ke halaman login
-- **Expected Result**: Semua navigasi berfungsi dengan benar
+### 1.2 Scope Testing
+- **Platform**: Standalone Flask application dengan local model
+- **Model**: Decision Tree (Combined FMR1 + DMR)
+- **Data Format**: CSV files dengan genomic features
+- **Environment**: Local development dan production deployment
+- **Users**: Tim peneliti medis dan developer
 
-### TC-LP-003: Konten Informasi Platform
-**Tujuan**: Memastikan informasi platform ditampilkan lengkap
-- **Langkah**:
-  1. Scroll ke section informasi klinis
-  2. Periksa konten "Definisi Medis Disabilitas Intelektual"
-  3. Periksa konten "Arsitektur Cloud dan Machine Learning"
-- **Expected Result**: 
-  - Informasi medis ditampilkan dengan benar
-  - Gambar dan ikon terlihat
-  - Link "Pelajari Lebih" dan "Akses Sistem" berfungsi
-
-### TC-LP-004: Section Tim Peneliti
-**Tujuan**: Memastikan carousel tim peneliti berfungsi
-- **Langkah**:
-  1. Scroll ke section "Tim Peneliti"
-  2. Klik tombol next (›) pada carousel
-  3. Klik tombol previous (‹) pada carousel
-  4. Klik indicator dots di bawah carousel
-- **Expected Result**: 
-  - Carousel bergerak dengan smooth transition
-  - Menampilkan informasi tim peneliti dengan benar
-  - Semua kontrol carousel berfungsi
-
-### TC-LP-005: Section Contact Us
-**Tujuan**: Memastikan informasi kontak ditampilkan
-- **Langkah**:
-  1. Scroll ke section "Hubungi Kami"
-  2. Periksa informasi Universitas YARSI
-  3. Periksa logo mitra/partner
-- **Expected Result**: 
-  - Informasi kontak lengkap (alamat, telepon, email)
-  - Logo partner ditampilkan dengan benar
-  - Google Maps embed berfungsi
+### 1.3 Test Environment
+- **OS**: Windows 10/11, macOS, Linux
+- **Browser**: Chrome 90+, Firefox 88+, Safari 14+
+- **Python**: 3.8+
+- **Dependencies**: Flask, Scikit-learn, Pandas, Joblib
+- **Model Path**: `../model/deployment_artifacts/`
 
 ---
 
-## 2. AUTHENTICATION TESTING
+## 2. Test Cases - Core Functionality
 
-### TC-AUTH-001: Akses Halaman Login
-**Tujuan**: Memastikan halaman login dapat diakses
-- **Langkah**:
-  1. Dari landing page, klik menu "Login"
-  2. Atau akses langsung /login
-- **Expected Result**: 
-  - Halaman login terbuka
-  - Form login ditampilkan (username/email, password)
-  - Button show/hide password tersedia di field password
-  - Checkbox "Ingat saya" tersedia
-  - Link "Lupa password" tersedia
-  - Link "Registrasi" tersedia
+### TC001: Model Loading dan Initialization
+**Objective**: Memastikan model Decision Tree berhasil dimuat saat aplikasi startup
 
-### TC-AUTH-002: Validasi Form Login
-**Tujuan**: Memastikan validasi form login berfungsi
-- **Langkah**:
-  1. Buka halaman login - periksa status awal tombol
-  2. Isi username saja, biarkan password kosong
-  3. Isi password saja, biarkan username kosong
-  4. Isi username dan password kurang dari 8 karakter
-  5. Isi username dan password valid (minimal 8 karakter)
-  6. Hapus salah satu field yang sudah terisi
-- **Expected Result**: 
-  - Tombol login disabled saat halaman pertama kali dibuka
-  - Tombol tetap disabled jika ada field yang kosong
-  - Tombol tetap disabled jika password kurang dari 8 karakter
-  - Tombol enabled hanya ketika semua field terisi dan password ≥ 8 karakter
-  - Tombol kembali disabled jika ada field yang dikosongkan
-  - Validasi real-time berfungsi saat user mengetik
+**Pre-conditions**:
+- Model artifacts tersedia di `../model/deployment_artifacts/`
+- Files: `model_decision_tree_combined.joblib`, `label_encoder.joblib`, `feature_names.json`
 
-### TC-AUTH-003: Login dengan Kredensial Valid
-**Tujuan**: Memastikan login berhasil dengan kredensial yang benar
-- **Langkah**:
-  1. Isi username/email yang terdaftar
-  2. Isi password yang benar
-  3. Klik tombol "Login ke Sistem Medis"
-- **Expected Result**: 
-  - Login berhasil
-  - Redirect ke dashboard (/dashboard)
-  - Session token tersimpan
-  - Flash message "Login berhasil!" ditampilkan
+**Test Steps**:
+1. Jalankan `python app.py`
+2. Periksa console output untuk model loading status
+3. Akses `http://localhost:8004`
 
-### TC-AUTH-004: Login dengan Kredensial Invalid
-**Tujuan**: Memastikan login gagal dengan kredensial salah
-- **Langkah**:
-  1. Isi username/email yang tidak terdaftar
-  2. Isi password sembarang
-  3. Klik tombol login
-- **Expected Result**: 
-  - Login gagal
-  - Tetap di halaman login
-  - Flash message error ditampilkan
-  - Form direset
+**Expected Results**:
+- Console menampilkan "✅ Local model loaded successfully"
+- Aplikasi dapat diakses tanpa error
+- Landing page terbuka dengan normal
 
-### TC-AUTH-005: Akses Halaman Register
-**Tujuan**: Memastikan halaman registrasi dapat diakses
-- **Langkah**:
-  1. Dari halaman login, klik link "Registrasi"
-  2. Atau akses langsung /register
-- **Expected Result**: 
-  - Halaman register terbuka
-  - Form registrasi lengkap (nama, email, password, konfirmasi password)
-  - Button show/hide password tersedia di field password dan konfirmasi password
-  - Checkbox terms & conditions
-  - Link kembali ke login
-
-### TC-AUTH-006: Validasi Form Register
-**Tujuan**: Memastikan validasi form registrasi berfungsi
-- **Langkah**:
-  1. Buka halaman register - periksa status awal tombol
-  2. Isi nama lengkap saja, biarkan field lain kosong
-  3. Isi nama dan email, biarkan password kosong
-  4. Isi nama, email, password, biarkan konfirmasi password kosong
-  5. Isi semua field tapi password kurang dari 8 karakter
-  6. Isi semua field valid tapi password tidak sama dengan konfirmasi
-  7. Isi semua field valid tapi tidak centang terms & conditions
-  8. Isi semua field valid dan centang terms & conditions
-  9. Hapus salah satu field yang sudah terisi
-- **Expected Result**: 
-  - Tombol register disabled saat halaman pertama kali dibuka
-  - Tombol tetap disabled selama ada field yang kosong
-  - Tombol tetap disabled jika password kurang dari 8 karakter
-  - Tombol tetap disabled jika password tidak match dengan konfirmasi
-  - Tombol tetap disabled jika terms & conditions tidak dicentang
-  - Tombol enabled hanya ketika semua field terisi valid dan terms dicentang
-  - Tombol kembali disabled jika ada field yang dikosongkan
-  - Validasi real-time berfungsi saat user mengetik di setiap field
-
-### TC-AUTH-007: Registrasi User Baru
-**Tujuan**: Memastikan registrasi user baru berhasil
-- **Langkah**:
-  1. Isi nama lengkap
-  2. Isi email yang belum terdaftar
-  3. Isi password (minimal 8 karakter)
-  4. Isi konfirmasi password yang sama
-  5. Centang terms & conditions
-  6. Klik tombol "Daftar"
-- **Expected Result**: 
-  - Registrasi berhasil
-  - Redirect ke halaman login
-  - Flash message "Registrasi berhasil! Silakan login."
-  - User dapat login dengan kredensial baru
-
-### TC-AUTH-008: Registrasi dengan Email Terdaftar
-**Tujuan**: Memastikan registrasi gagal jika email sudah ada
-- **Langkah**:
-  1. Isi data registrasi dengan email yang sudah terdaftar
-  2. Submit form
-- **Expected Result**: 
-  - Registrasi gagal
-  - Error message ditampilkan
-  - Tetap di halaman register
-
-### TC-AUTH-009: Fungsi Show/Hide Password Login
-**Tujuan**: Memastikan button show/hide password berfungsi di halaman login
-- **Langkah**:
-  1. Buka halaman login
-  2. Isi password di field password
-  3. Klik button show password (icon mata)
-  4. Klik lagi button hide password
-- **Expected Result**: 
-  - Password awalnya tersembunyi (type="password")
-  - Setelah klik show: password terlihat sebagai text biasa
-  - Icon berubah dari mata tertutup ke mata terbuka
-  - Setelah klik hide: password kembali tersembunyi
-  - Icon kembali ke mata tertutup
-
-### TC-AUTH-010: Fungsi Show/Hide Password Register
-**Tujuan**: Memastikan button show/hide password berfungsi di halaman register
-- **Langkah**:
-  1. Buka halaman register
-  2. Isi password di field password
-  3. Isi konfirmasi password di field konfirmasi
-  4. Klik button show password di field password
-  5. Klik button show password di field konfirmasi password
-  6. Klik button hide password di kedua field
-- **Expected Result**: 
-  - Kedua password field awalnya tersembunyi
-  - Button show/hide berfungsi independen untuk setiap field
-  - Icon berubah sesuai status show/hide
-  - Password dan konfirmasi password dapat ditampilkan/disembunyikan terpisah
+**Pass Criteria**: Model berhasil dimuat dan aplikasi berjalan normal
 
 ---
 
-## 3. DASHBOARD TESTING
+### TC002: Landing Page Access
+**Objective**: Memvalidasi akses ke landing page dan navigasi dasar
 
-### TC-DASH-001: Akses Dashboard Tanpa Login
-**Tujuan**: Memastikan dashboard tidak dapat diakses tanpa login
-- **Langkah**:
-  1. Akses /dashboard tanpa login
-- **Expected Result**: 
-  - Redirect ke halaman login
-  - Dashboard tidak dapat diakses
+**Pre-conditions**:
+- Aplikasi berjalan di `http://localhost:8004`
 
-### TC-DASH-002: Akses Dashboard Setelah Login
-**Tujuan**: Memastikan dashboard dapat diakses setelah login
-- **Langkah**:
-  1. Login dengan kredensial valid
-  2. Periksa halaman dashboard
-- **Expected Result**: 
-  - Dashboard terbuka dengan benar
-  - Navbar menampilkan: Dashboard, About, Contact, Logout
-  - Banner utama dengan upload area tersedia
-  - Informasi klinis ditampilkan
+**Test Steps**:
+1. Buka browser dan akses `http://localhost:8004`
+2. Periksa tampilan landing page
+3. Klik tombol navigasi ke dashboard
+4. Periksa responsive design di berbagai ukuran layar
 
-### TC-DASH-003: Navigasi Dashboard
-**Tujuan**: Memastikan navigasi di dashboard berfungsi
-- **Langkah**:
-  1. Klik menu "Dashboard" → tetap di dashboard
-  2. Klik menu "About" → scroll ke section about
-  3. Klik menu "Contact" → scroll ke section contact
-  4. Klik menu "Logout" → logout dan redirect ke login
-- **Expected Result**: Semua navigasi berfungsi dengan benar
+**Expected Results**:
+- Landing page terbuka dengan medical theme
+- Informasi tim peneliti dan kontak tersedia
+- Navigasi ke dashboard berfungsi
+- Responsive design bekerja di mobile dan desktop
 
-### TC-DASH-004: Upload Area Interface
-**Tujuan**: Memastikan interface upload area berfungsi
-- **Langkah**:
-  1. Periksa drop zone upload
-  2. Klik area upload
-  3. Periksa tombol "Analisis Medis"
-- **Expected Result**: 
-  - Drop zone terlihat dengan jelas
-  - File input tersembunyi tapi dapat diakses
-  - Tombol analisis disabled sebelum upload
-  - Icon dan text informatif ditampilkan
+**Pass Criteria**: Landing page accessible dan navigasi berfungsi normal
 
 ---
 
-## 4. FILE UPLOAD TESTING
+### TC003: CSV File Upload - Valid File
+**Objective**: Memvalidasi upload file CSV yang valid
 
-### TC-UPLOAD-001: Upload Single File Valid (.bed)
-**Tujuan**: Memastikan upload single file .bed berhasil
-- **Langkah**:
-  1. Klik area upload untuk memilih file
-  2. Pilih satu file dengan ekstensi .bed
-  3. Periksa response upload
-- **Expected Result**: 
-  - File .bed berhasil diupload
-  - Response success dari server
-  - Tombol "Analisis Medis" menjadi enabled
-  - Nama file ditampilkan
-  - Hanya satu file yang dapat diupload per session
+**Pre-conditions**:
+- Berada di dashboard page
+- File test CSV tersedia (bc10.csv, bc11.csv, dll)
 
-### TC-UPLOAD-002: Upload File Invalid (bukan .bed)
-**Tujuan**: Memastikan file selain .bed ditolak
-- **Langkah**:
-  1. Coba upload file .txt, .csv, .jpg, .pdf
-  2. Periksa response
-- **Expected Result**: 
-  - Upload ditolak
-  - Error message "Invalid file type, only BED allowed"
-  - Tombol analisis tetap disabled
+**Test Steps**:
+1. Klik area upload atau drag file CSV ke drop zone
+2. Pilih file CSV yang valid (contoh: bc10.csv)
+3. Periksa feedback upload success
+4. Verifikasi file tersimpan di `static/uploads/`
 
-### TC-UPLOAD-003: Status Button Analysis Tanpa File
-**Tujuan**: Memastikan button analysis tidak dapat diklik tanpa file
-- **Langkah**:
-  1. Buka dashboard setelah login
-  2. Periksa status tombol "Analisis Medis" sebelum upload file
-  3. Coba klik tombol "Analisis Medis"
-- **Expected Result**: 
-  - Tombol "Analisis Medis" dalam status disabled
-  - Tombol tidak dapat diklik
-  - Tidak ada proses analisis yang berjalan
-  - Cursor menunjukkan "not-allowed" saat hover
+**Expected Results**:
+- Upload progress indicator muncul
+- Success message: "📋 Data medis berhasil diupload"
+- Tombol "🩺 Analisis Medis" menjadi aktif
+- File tersimpan dengan nama yang secure
 
-### TC-UPLOAD-004: Upload File Kedua (Replace)
-**Tujuan**: Memastikan upload file baru menggantikan file sebelumnya
-- **Langkah**:
-  1. Upload file .bed pertama
-  2. Upload file .bed kedua
-  3. Periksa status file yang tersimpan
-- **Expected Result**: 
-  - File kedua menggantikan file pertama
-  - Hanya satu file aktif dalam sistem
-  - Tombol analisis tetap berfungsi untuk file terbaru
-  - Nama file yang ditampilkan adalah file terbaru
-
-### TC-UPLOAD-005: Validasi Single File Upload
-**Tujuan**: Memastikan sistem hanya menerima satu file per analisis
-- **Langkah**:
-  1. Coba drag multiple files ke drop zone
-  2. Coba select multiple files dari file picker
-- **Expected Result**: 
-  - Sistem hanya menerima satu file
-  - File pertama yang dipilih yang diproses
-  - Error message jika mencoba upload multiple files
-  - Interface menunjukkan "single file only"
+**Pass Criteria**: File CSV berhasil diupload dan tersimpan
 
 ---
 
-## 5. PREDICTION/ANALYSIS TESTING
+### TC004: CSV File Upload - Invalid File
+**Objective**: Memvalidasi penolakan file non-CSV
 
-### TC-PRED-001: Analisis File yang Sudah Diupload
-**Tujuan**: Memastikan analisis AI berfungsi
-- **Langkah**:
-  1. Upload file .bed yang valid
-  2. Klik tombol "Analisis Medis"
-  3. Tunggu proses analisis
-- **Expected Result**: 
-  - Loading indicator ditampilkan
-  - Proses analisis berjalan
-  - Hasil prediksi ditampilkan dalam popup/modal
-  - Hasil berisi: Risk Score, Confidence, Condition
+**Pre-conditions**:
+- Berada di dashboard page
 
-### TC-PRED-002: Analisis Tanpa Upload File
-**Tujuan**: Memastikan analisis tidak bisa dilakukan tanpa file
-- **Langkah**:
-  1. Klik tombol "Analisis Medis" tanpa upload file
-- **Expected Result**: 
-  - Tombol disabled atau error message
-  - Analisis tidak dijalankan
+**Test Steps**:
+1. Coba upload file dengan format selain CSV (.txt, .xlsx, .pdf)
+2. Periksa error message yang muncul
+3. Verifikasi tombol analisis tetap disabled
 
-### TC-PRED-003: Handling Error Analisis
-**Tujuan**: Memastikan error handling saat analisis gagal
-- **Langkah**:
-  1. Upload file .bed yang corrupt atau invalid content
-  2. Jalankan analisis
-- **Expected Result**: 
-  - Error message yang informatif
-  - Tidak crash aplikasi
-  - User dapat mencoba lagi
+**Expected Results**:
+- Error message: "Invalid file type, only CSV allowed"
+- Upload ditolak dengan feedback yang jelas
+- Tombol analisis tetap tidak aktif
+- Tidak ada file tersimpan di uploads folder
 
-### TC-PRED-004: Format Hasil Prediksi
-**Tujuan**: Memastikan hasil prediksi ditampilkan dengan benar
-- **Langkah**:
-  1. Jalankan analisis yang berhasil
-  2. Periksa format hasil dalam popup
-- **Expected Result**: 
-  - Risk Score ditampilkan
-  - Confidence dalam persentase
-  - Predicted Condition jelas
-  - Medical disclaimer ditampilkan
-  - Tombol close berfungsi
-
-### TC-PRED-005: Simpan Hasil ke History
-**Tujuan**: Memastikan hasil prediksi tersimpan ke history
-- **Langkah**:
-  1. Jalankan analisis
-  2. Periksa apakah hasil tersimpan
-  3. Akses halaman history
-- **Expected Result**: 
-  - Hasil analisis tersimpan otomatis
-  - Dapat diakses dari history
-  - Data lengkap tersimpan
+**Pass Criteria**: File non-CSV ditolak dengan error message yang tepat
 
 ---
 
-## 6. ABOUT PAGE TESTING
+### TC005: AI Prediction - Successful Analysis
+**Objective**: Memvalidasi prediksi AI menggunakan model Decision Tree lokal
 
-### TC-ABOUT-001: Akses Halaman About
-**Tujuan**: Memastikan halaman about dapat diakses
-- **Langkah**:
-  1. Dari dashboard atau landing page, klik menu "About"
-  2. Atau akses langsung /about
-- **Expected Result**: 
-  - Halaman about terbuka
-  - Konten informasi medis ditampilkan
-  - Layout responsive
+**Pre-conditions**:
+- File CSV valid telah diupload
+- Tombol "🩺 Analisis Medis" aktif
 
-### TC-ABOUT-002: Konten Informasi Medis
-**Tujuan**: Memastikan konten medis lengkap dan akurat
-- **Langkah**:
-  1. Scroll dan baca semua konten
-  2. Periksa section "Urgensi"
-  3. Periksa section "Karakteristik Klinis"
-  4. Periksa section "Pendekatan"
-- **Expected Result**: 
-  - Semua konten terbaca dengan jelas
-  - Gambar dan formatting benar
-  - Informasi medis akurat dan lengkap
+**Test Steps**:
+1. Klik tombol "🩺 Analisis Medis"
+2. Periksa loading screen dengan medical animation
+3. Tunggu hasil prediksi muncul dalam popup
+4. Verifikasi format hasil prediksi
 
-### TC-ABOUT-003: Navigasi dalam About Page
-**Tujuan**: Memastikan navigasi dalam halaman about
-- **Langkah**:
-  1. Periksa navbar (berbeda untuk user login/tidak login)
-  2. Scroll ke berbagai section
-  3. Periksa link eksternal jika ada
-- **Expected Result**: 
-  - Navbar sesuai status login
-  - Smooth scrolling
-  - Link eksternal berfungsi (buka tab baru)
+**Expected Results**:
+- Loading screen muncul dengan animation
+- Popup hasil berisi:
+  - Prediction: "case" atau "ctrl"
+  - Confidence: 75.0% - 95.0%
+  - Sample: nama file CSV
+- Medical disclaimer ditampilkan
+- Keyboard shortcut ESC untuk close popup
 
-### TC-ABOUT-004: Responsive Design About
-**Tujuan**: Memastikan about page responsive
-- **Langkah**:
-  1. Buka di desktop
-  2. Resize browser window
-  3. Buka di mobile/tablet
-- **Expected Result**: 
-  - Layout menyesuaikan ukuran layar
-  - Text tetap terbaca
-  - Gambar tidak overflow
+**Pass Criteria**: Prediksi berhasil dengan hasil yang valid dan confidence realistis
 
 ---
 
-## 7. ARCHITECTURE PAGE TESTING
+### TC006: Confidence Score Validation
+**Objective**: Memvalidasi confidence score dalam range yang realistis
 
-### TC-ARCH-001: Akses Halaman Architecture
-**Tujuan**: Memastikan halaman architecture dapat diakses (hanya setelah login)
-- **Langkah**:
-  1. Login terlebih dahulu
-  2. Akses /architecture
-- **Expected Result**: 
-  - Halaman architecture terbuka
-  - Diagram arsitektur ditampilkan
-  - Informasi teknis lengkap
+**Pre-conditions**:
+- Beberapa file CSV test tersedia
 
-### TC-ARCH-002: Akses Architecture Tanpa Login
-**Tujuan**: Memastikan architecture page protected
-- **Langkah**:
-  1. Logout atau akses tanpa login
-  2. Coba akses /architecture
-- **Expected Result**: 
-  - Redirect ke halaman login
-  - Architecture page tidak dapat diakses
+**Test Steps**:
+1. Upload dan analisis file bc10.csv
+2. Catat confidence score yang dihasilkan
+3. Upload dan analisis file bc11.csv
+4. Catat confidence score yang dihasilkan
+5. Ulangi untuk 3-5 file berbeda
 
-### TC-ARCH-003: Konten Architecture
-**Tujuan**: Memastikan konten arsitektur lengkap
-- **Langkah**:
-  1. Periksa diagram "Cloud Infrastructure Architecture"
-  2. Periksa diagram "Machine Learning Pipeline Architecture"
-  3. Periksa deskripsi komponen
-- **Expected Result**: 
-  - Kedua diagram terlihat jelas
-  - Deskripsi komponen lengkap dan akurat
-  - Gambar tidak broken
+**Expected Results**:
+- Confidence score dalam range 75.0% - 95.0%
+- Variasi confidence berdasarkan kualitas data
+- Tidak ada confidence 100% (unrealistic)
+- Consistency untuk file yang sama
 
-### TC-ARCH-004: Tombol Kembali
-**Tujuan**: Memastikan tombol kembali berfungsi
-- **Langkah**:
-  1. Klik tombol "Kembali"
-- **Expected Result**: 
-  - Kembali ke halaman sebelumnya (dashboard)
-  - Navigasi berfungsi dengan benar
+**Pass Criteria**: Semua confidence score dalam range realistis 75-95%
 
 ---
 
-## 8. HISTORY PAGE TESTING
+### TC007: History Storage dan Retrieval
+**Objective**: Memvalidasi penyimpanan dan pengambilan history prediksi
 
-### TC-HIST-001: Akses Halaman History
-**Tujuan**: Memastikan halaman history dapat diakses (hanya setelah login)
-- **Langkah**:
-  1. Login terlebih dahulu
-  2. Klik menu "History" atau akses /history
-- **Expected Result**: 
-  - Halaman history terbuka
-  - Tabel history ditampilkan
-  - Loading indicator muncul saat load data
+**Pre-conditions**:
+- Minimal 2 prediksi telah dilakukan
 
-### TC-HIST-002: Akses History Tanpa Login
-**Tujuan**: Memastikan history page protected
-- **Langkah**:
-  1. Logout atau akses tanpa login
-  2. Coba akses /history
-- **Expected Result**: 
-  - Redirect ke halaman login
-  - History page tidak dapat diakses
+**Test Steps**:
+1. Akses halaman History
+2. Periksa daftar prediksi yang tersimpan
+3. Klik "Cek History" pada salah satu entry
+4. Verifikasi detail prediksi dalam popup
+5. Periksa file `static/history.json`
 
-### TC-HIST-003: Tampilan History Kosong
-**Tujuan**: Memastikan handling ketika belum ada history
-- **Langkah**:
-  1. Akses history dengan user baru (belum pernah analisis)
-- **Expected Result**: 
-  - Pesan "Belum ada riwayat prediksi" ditampilkan
-  - Icon inbox atau indicator kosong
-  - Layout tetap rapi
+**Expected Results**:
+- History page menampilkan list prediksi
+- Setiap entry berisi tanggal dan nomor urut
+- Detail popup menampilkan prediction, confidence, filename
+- File JSON berisi data history yang valid
+- Format timestamp ISO yang benar
 
-### TC-HIST-004: Tampilan History dengan Data
-**Tujuan**: Memastikan history ditampilkan dengan benar
-- **Langkah**:
-  1. Lakukan beberapa analisis terlebih dahulu
-  2. Akses halaman history
-- **Expected Result**: 
-  - Tabel history berisi data prediksi
-  - Kolom: No, Tanggal Upload, Aksi
-  - Tanggal dalam format Indonesia
-  - Tombol "Cek History" tersedia
-
-### TC-HIST-005: Detail History
-**Tujuan**: Memastikan detail history dapat dilihat
-- **Langkah**:
-  1. Dari tabel history, klik tombol "Cek History"
-  2. Periksa popup detail
-- **Expected Result**: 
-  - Popup detail terbuka
-  - Menampilkan Risk Score, Confidence, Condition
-  - Medical disclaimer ditampilkan
-  - Tombol close berfungsi
-
-### TC-HIST-006: Navigasi History
-**Tujuan**: Memastikan navigasi di halaman history
-- **Langkah**:
-  1. Periksa navbar (Dashboard, History, Logout)
-  2. Klik menu Dashboard → kembali ke dashboard
-  3. Klik menu Logout → logout
-- **Expected Result**: 
-  - Semua navigasi berfungsi
-  - Active state pada menu History
+**Pass Criteria**: History tersimpan dan dapat diakses dengan benar
 
 ---
 
-## 9. PERFORMANCE TESTING
+### TC008: Sample Data Download
+**Objective**: Memvalidasi download kumpulan test data ZIP
 
-### TC-PERF-001: Page Load Time
-**Tujuan**: Memastikan halaman load dengan cepat
-- **Langkah**:
-  1. Ukur waktu load setiap halaman
-  2. Periksa dengan network throttling
-- **Expected Result**: 
-  - Halaman load < 3 detik (normal network)
-  - Graceful degradation pada slow network
-  - Loading indicators ditampilkan
+**Pre-conditions**:
+- File `kumpulan_test_data_csv.zip` tersedia di model folder
 
-### TC-PERF-002: File Upload Performance
-**Tujuan**: Memastikan upload single file tidak timeout
-- **Langkah**:
-  1. Upload file .bed ukuran normal (< 5MB)
-  2. Monitor progress upload
-- **Expected Result**: 
-  - Upload berhasil dalam waktu wajar (< 10 detik)
-  - Progress indicator berfungsi
-  - Tidak ada timeout error untuk file ukuran normal
+**Test Steps**:
+1. Klik tombol "📥 Unduh Test Data (ZIP)"
+2. Periksa proses download
+3. Extract file ZIP yang didownload
+4. Verifikasi isi file CSV dalam ZIP
 
-### TC-PERF-003: Prediction Performance
-**Tujuan**: Memastikan analisis AI tidak terlalu lama
-- **Langkah**:
-  1. Jalankan analisis dengan berbagai file
-  2. Monitor waktu proses
-- **Expected Result**: 
-  - Analisis selesai dalam waktu wajar (< 30 detik)
-  - Loading indicator informatif
-  - Tidak ada timeout
+**Expected Results**:
+- Download dimulai otomatis
+- File ZIP berhasil didownload
+- ZIP berisi multiple file CSV (bc10.csv, bc11.csv, dll)
+- Setiap CSV memiliki format yang valid untuk testing
 
-### TC-PERF-004: Concurrent Users
-**Tujuan**: Memastikan aplikasi handle multiple users dengan single file upload
-- **Langkah**:
-  1. Simulasi 2-3 users login bersamaan
-  2. Masing-masing upload satu file dan analisis
-- **Expected Result**: 
-  - Aplikasi tetap responsif
-  - Tidak ada conflict antar user
-  - Setiap user dapat upload dan analisis file masing-masing
-  - Performance degradation minimal
+**Pass Criteria**: Sample data berhasil didownload dan berisi file test yang valid
 
 ---
 
-## 10. RESPONSIVE DESIGN TESTING
+## 3. Test Cases - User Experience
 
-### TC-RESP-001: Desktop View
-**Tujuan**: Memastikan tampilan desktop optimal
-- **Langkah**:
-  1. Test di resolusi 1920x1080, 1366x768
-  2. Periksa semua halaman
-- **Expected Result**: 
-  - Layout rapi dan proporsional
-  - Semua element terlihat
-  - Navigation mudah digunakan
+### TC009: Responsive Design Validation
+**Objective**: Memvalidasi tampilan responsive di berbagai device
 
-### TC-RESP-002: Tablet View
-**Tujuan**: Memastikan tampilan tablet optimal
-- **Langkah**:
-  1. Test di resolusi tablet (768x1024)
-  2. Periksa portrait dan landscape
-- **Expected Result**: 
-  - Layout menyesuaikan dengan baik
-  - Touch-friendly interface
-  - Navbar collapse berfungsi
+**Test Steps**:
+1. Akses aplikasi di desktop (1920x1080)
+2. Akses aplikasi di tablet (768x1024)
+3. Akses aplikasi di mobile (375x667)
+4. Test semua fitur di setiap ukuran layar
 
-### TC-RESP-003: Mobile View
-**Tujuan**: Memastikan tampilan mobile optimal
-- **Langkah**:
-  1. Test di resolusi mobile (375x667, 414x896)
-  2. Periksa semua fitur
-- **Expected Result**: 
-  - Layout mobile-first
-  - Text tetap readable
-  - Touch targets cukup besar
-  - Upload area tetap usable
+**Expected Results**:
+- Layout menyesuaikan dengan ukuran layar
+- Semua tombol dan form accessible
+- Text readable tanpa horizontal scroll
+- Navigation menu berfungsi di mobile
 
-### TC-RESP-004: Cross-Browser Compatibility
-**Tujuan**: Memastikan kompatibilitas browser
-- **Langkah**:
-  1. Test di Chrome, Firefox, Safari, Edge
-  2. Periksa semua fitur utama
-- **Expected Result**: 
-  - Konsisten di semua browser
-  - Tidak ada broken features
-  - CSS dan JS berfungsi normal
+**Pass Criteria**: Aplikasi fully responsive di semua device sizes
 
 ---
 
-## 11. ACCESSIBILITY TESTING
+### TC010: Medical Theme dan Branding
+**Objective**: Memvalidasi konsistensi medical theme dan branding
 
-### TC-ACC-001: Keyboard Navigation
-**Tujuan**: Memastikan aplikasi dapat digunakan dengan keyboard
-- **Langkah**:
-  1. Navigate menggunakan Tab key
-  2. Submit form dengan Enter
-  3. Close modal dengan Escape
-- **Expected Result**: 
-  - Semua element dapat diakses dengan keyboard
-  - Focus indicator jelas
-  - Logical tab order
+**Test Steps**:
+1. Periksa color scheme medical (biru, hijau, merah untuk medical elements)
+2. Verifikasi medical icons dan imagery
+3. Periksa medical disclaimer di setiap hasil
+4. Validasi branding YARSI AI
 
-### TC-ACC-002: Screen Reader Compatibility
-**Tujuan**: Memastikan kompatibilitas dengan screen reader
-- **Langkah**:
-  1. Test dengan screen reader
-  2. Periksa alt text pada gambar
-  3. Periksa label pada form
-- **Expected Result**: 
-  - Content dapat dibaca screen reader
-  - Alt text informatif
-  - Form labels jelas
+**Expected Results**:
+- Consistent medical color palette
+- Appropriate medical icons (stethoscope, heartbeat, dll)
+- Medical disclaimer visible dan jelas
+- YARSI branding prominent dan professional
 
-### TC-ACC-003: Color Contrast
-**Tujuan**: Memastikan kontras warna memadai
-- **Langkah**:
-  1. Periksa kontras text dan background
-  2. Test dengan color blindness simulator
-- **Expected Result**: 
-  - Kontras memenuhi standar WCAG
-  - Readable untuk color blind users
-  - Information tidak hanya bergantung pada warna
+**Pass Criteria**: Theme medical konsisten dan professional
 
 ---
 
-## KRITERIA KEBERHASILAN UAT
+## 4. Test Cases - Performance
 
-### ✅ PASS CRITERIA:
-- Semua test case critical (TC-AUTH, TC-UPLOAD, TC-PRED, TC-HIST) PASS
-- Minimal 90% dari semua test case PASS
-- Performance memenuhi standar (load time < 3s, analysis < 30s)
-- Responsive design berfungsi di semua device
-- Fitur utama (Login, Register, Predict, History) berfungsi dengan baik
+### TC011: Model Inference Performance
+**Objective**: Memvalidasi performance prediksi model lokal
 
-### ❌ FAIL CRITERIA:
-- Ada test case critical yang FAIL
-- Performance tidak memenuhi standar
-- Aplikasi crash atau tidak stabil
-- Fitur utama tidak berfungsi
+**Test Steps**:
+1. Upload file CSV berukuran kecil (< 1MB)
+2. Catat waktu dari klik "Analisis" hingga hasil muncul
+3. Upload file CSV berukuran sedang (1-5MB)
+4. Catat waktu prediksi
+5. Ulangi test 5 kali untuk setiap ukuran
 
----
+**Expected Results**:
+- Prediksi file kecil: < 3 detik
+- Prediksi file sedang: < 5 detik
+- Consistent performance across multiple runs
+- No memory leaks atau performance degradation
 
-## ENVIRONMENT TESTING
-
-### Test Environment:
-- **OS**: Windows 10/11, macOS, Ubuntu
-- **Browser**: Chrome (latest), Firefox (latest), Safari (latest), Edge (latest)
-- **Device**: Desktop, Tablet, Mobile
-- **Network**: Fast, Slow, Offline
-- **Screen Resolution**: 1920x1080, 1366x768, 768x1024, 375x667
-
-### Test Data:
-- **Valid .bed files**: Small to medium size (< 5MB)
-- **Invalid files**: .txt, .csv, .jpg, .exe
-- **User accounts**: Valid, invalid, new registration
-- **Network conditions**: Normal, slow, disconnected
-- **File quantity**: Single file per test case (no multiple files)
+**Pass Criteria**: Response time prediksi dalam batas yang acceptable
 
 ---
 
-## SIGN-OFF
+### TC012: Concurrent User Simulation
+**Objective**: Memvalidasi handling multiple requests simultan
 
-**Tester**: _________________ **Date**: _________
+**Test Steps**:
+1. Buka 3 browser tabs berbeda
+2. Upload file berbeda di setiap tab secara bersamaan
+3. Jalankan prediksi di semua tab dalam waktu bersamaan
+4. Periksa hasil di setiap tab
 
-**Product Owner**: _________________ **Date**: _________
+**Expected Results**:
+- Semua prediksi berhasil diproses
+- Tidak ada interference antar session
+- Hasil prediksi sesuai dengan file masing-masing
+- No server errors atau crashes
 
-**Technical Lead**: _________________ **Date**: _________
-
-**Medical Advisor**: _________________ **Date**: _________
+**Pass Criteria**: Sistem dapat handle multiple concurrent requests
 
 ---
 
-*Dokumen ini mencakup 11 kategori testing dengan fokus pada platform web FE dan BE (Login, Register, Predict, History) untuk memastikan Platform Deteksi Disabilitas Intelektual berfungsi dengan baik untuk digunakan oleh tenaga medis profesional.*
+## 5. Test Cases - Error Handling
+
+### TC013: Model File Missing
+**Objective**: Memvalidasi error handling ketika model files tidak tersedia
+
+**Test Steps**:
+1. Backup dan hapus sementara file model dari deployment_artifacts
+2. Restart aplikasi
+3. Coba akses dashboard dan lakukan prediksi
+
+**Expected Results**:
+- Console menampilkan "❌ Failed to load local model"
+- Aplikasi tetap berjalan tanpa crash
+- Error message yang informatif saat prediksi
+- Graceful degradation tanpa model
+
+**Pass Criteria**: Error handling yang proper untuk missing model
+
+---
+
+### TC014: Corrupted CSV File
+**Objective**: Memvalidasi handling file CSV yang corrupt atau invalid format
+
+**Test Steps**:
+1. Buat file CSV dengan format yang salah (missing headers, invalid data)
+2. Upload file tersebut
+3. Coba lakukan prediksi
+4. Periksa error message yang muncul
+
+**Expected Results**:
+- Upload mungkin berhasil (file extension valid)
+- Prediksi gagal dengan error message yang jelas
+- Tidak ada crash atau unhandled exception
+- User mendapat feedback yang informatif
+
+**Pass Criteria**: Corrupted files handled dengan error message yang jelas
+
+---
+
+## 6. Test Cases - Security
+
+### TC015: File Upload Security
+**Objective**: Memvalidasi keamanan file upload
+
+**Test Steps**:
+1. Coba upload file dengan nama yang mengandung special characters
+2. Coba upload file dengan path traversal (../../../etc/passwd)
+3. Coba upload file executable dengan extension .csv
+4. Periksa file yang tersimpan di uploads folder
+
+**Expected Results**:
+- Filename di-sanitize dengan secure_filename()
+- Path traversal attempts ditolak
+- File executable tidak dapat dieksekusi
+- Semua file tersimpan dengan nama yang aman
+
+**Pass Criteria**: File upload secure dari common attack vectors
+
+---
+
+## 7. Acceptance Criteria
+
+### 7.1 Functional Acceptance
+- ✅ Model Decision Tree berhasil dimuat dan berfungsi
+- ✅ CSV upload dan validation bekerja dengan benar
+- ✅ Prediksi AI menghasilkan hasil yang akurat
+- ✅ Confidence score dalam range realistis (75-95%)
+- ✅ History system menyimpan dan menampilkan data dengan benar
+- ✅ Sample data download berfungsi
+- ✅ Responsive design di semua device
+
+### 7.2 Performance Acceptance
+- ✅ Response time prediksi < 5 detik
+- ✅ Support file CSV hingga 5MB
+- ✅ Concurrent user handling yang stabil
+- ✅ Memory usage yang optimal
+
+### 7.3 Security Acceptance
+- ✅ File upload security yang memadai
+- ✅ Input validation dan sanitization
+- ✅ Error handling yang proper
+- ✅ No sensitive information exposure
+
+### 7.4 Medical Compliance Acceptance
+- ✅ Medical disclaimer di setiap hasil
+- ✅ Appropriate medical terminology
+- ✅ Professional medical theme
+- ✅ Audit trail untuk tracking
+
+---
+
+## 8. Test Execution Summary
+
+### 8.1 Test Environment Setup
+```bash
+# Setup testing environment
+cd "Last Man Standings/web"
+pip install -r requirements.txt
+python app.py
+
+# Verify model loading
+# Check console for "✅ Local model loaded successfully"
+```
+
+### 8.2 Test Data Preparation
+- Download sample CSV files dari ZIP
+- Prepare invalid files untuk negative testing
+- Setup different file sizes untuk performance testing
+
+### 8.3 Test Execution Checklist
+- [ ] All functional test cases passed
+- [ ] Performance benchmarks met
+- [ ] Security tests completed
+- [ ] User experience validated
+- [ ] Medical compliance verified
+- [ ] Documentation updated
+
+### 8.4 Sign-off Criteria
+- **Technical Lead**: All technical requirements met
+- **Medical Researcher**: Clinical accuracy validated
+- **Quality Assurance**: All test cases passed
+- **Project Manager**: Deliverables completed
+
+---
+
+*UAT Test Cases ini akan dieksekusi oleh tim peneliti medis dan quality assurance untuk memastikan platform memenuhi standar penelitian medis dan technical requirements.*
