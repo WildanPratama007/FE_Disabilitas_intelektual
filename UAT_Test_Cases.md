@@ -388,7 +388,7 @@
 ### 8.1 Test Environment Setup
 ```bash
 # Setup testing environment
-cd "Last Man Standings/web"
+cd "FE_Disabilitas_Intelektual/web"
 pip install -r requirements.txt
 python app.py
 

@@ -40,7 +40,7 @@ Platform web standalone untuk deteksi dini disabilitas intelektual menggunakan a
 
 1. **Setup Project Structure**
 ```bash
-Last Man Standings/
+FE_Disabilitas_Intelektual/
 ├── web/                    # Frontend Application
 ├── model/                  # ML Model Deployment
 └── be/                     # Backend (placeholder)
@@ -71,7 +71,7 @@ python app.py
 ## 📁 Struktur Proyek
 
 ```
-Last Man Standings/
+FE_Disabilitas_Intelektual/
 ├── web/                          # Frontend Application
 │   ├── app.py                   # Flask app dengan model integration
 │   ├── templates/
@@ -229,7 +229,7 @@ model_predictor = ModelPredictor(model_path)
 ## 🚀 Deployment
 
 ### Standalone Deployment
-1. **Copy Project**: Seluruh folder "Last Man Standings"
+1. **Copy Project**: Seluruh folder "FE_Disabilitas_Intelektual"
 2. **Install Dependencies**: `pip install -r requirements.txt`
 3. **Run Application**: `python web/app.py`
 4. **Access**: Browser ke `http://localhost:8004`
