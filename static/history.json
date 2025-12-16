@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "filename": "bc10.csv",
+    "prediction": "case",
+    "confidence": 100.0,
+    "timestamp": "2025-12-15T22:54:56.801138",
+    "sample_id": "bc10.csv"
+  },
+  {
+    "id": 2,
+    "filename": "bc17.csv",
+    "prediction": "case",
+    "confidence": 100.0,
+    "timestamp": "2025-12-15T22:55:18.826764",
+    "sample_id": "bc17.csv"
+  }
+]

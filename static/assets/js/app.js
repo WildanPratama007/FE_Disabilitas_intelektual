@@ -21,6 +21,10 @@ function initializeFileUpload() {
     e.preventDefault();
     dropZone.style.background = 'rgba(255,255,255,0.1)';
     const files = e.dataTransfer.files;
+    if (files.length > 1) {
+      showSingleFileModal();
+      return;
+    }
     if (files.length > 0) {
       fileInput.files = files;
       handleFileUpload();
@@ -28,6 +32,11 @@ function initializeFileUpload() {
   });
 
   fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 1) {
+      showSingleFileModal();
+      fileInput.value = ''; // Reset file input
+      return;
+    }
     if (fileInput.files.length > 0) {
       handleFileUpload();
     }
@@ -58,8 +67,8 @@ function handleFileUpload() {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.success) {
-        uploadedFileName = data.filename;
+      if (data.status === 'success' || data.success) {
+        uploadedFileName = data.data ? data.data.filename : data.filename;
         const predictBtn = document.getElementById('predictBtn');
         predictBtn.disabled = false;
         predictBtn.style.background = '#22b3c1';
@@ -67,8 +76,9 @@ function handleFileUpload() {
 
         dropZone.innerHTML = `
           <div style="text-align: center;">
-            <i class="fa fa-check-circle" style="font-size: 32px; margin-bottom: 10px; color: #4CAF50;"></i>
-            <p style="margin: 10px 0;">File berhasil diupload: ${data.filename}</p>
+            <i class="fa fa-check-circle" style="font-size: 32px; margin-bottom: 10px; color: #2ECC71;"></i>
+            <p style="margin: 10px 0;">📋 Data medis berhasil diupload: ${data.data ? data.data.original_name : data.filename}</p>
+            <p style="margin: 5px 0; font-size: 12px; color: #4c4f51ff;">✅ Siap untuk analisis klinis</p>
           </div>
         `;
       } else {
@@ -97,26 +107,89 @@ function predictImage() {
     return;
   }
 
-  fetch('/predict', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        filename: uploadedFileName
-      })
+  // Show loading screen
+  showLoadingScreen();
+
+  fetch(`/upload/predict?file_name=${uploadedFileName}`, {
+      method: 'GET'
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
-      showResultPopup(data.prediction, data.image_path);
+      console.log('Predict response:', data);
+      // Hide loading screen
+      hideLoadingScreen();
+      
+      if (data.success) {
+        const prediction = data.prediction;
+        showResultPopup(prediction, null);
+      } else {
+        alert('Prediction failed: ' + (data.message || 'Unknown error'));
+      }
     })
     .catch(error => {
-      alert('Error: ' + error);
+      // Hide loading screen on error
+      hideLoadingScreen();
+      console.error('Prediction error:', error);
+      alert('Error: ' + error.message);
     });
+}
+
+// Loading Screen Functions
+function showLoadingScreen() {
+  const loadingScreen = document.createElement('div');
+  loadingScreen.id = 'loadingScreen';
+  loadingScreen.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 2000; display: flex;
+    align-items: center; justify-content: center;
+  `;
+  
+  loadingScreen.innerHTML = `
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid #0066CC; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <i class="fa fa-stethoscope" style="color: #0066CC; font-size: 24px;"></i>
+        <h3 style="color: #0066CC; margin: 0;">🔬 Analisis Medis</h3>
+        <i class="fa fa-heartbeat" style="color: #E74C3C; font-size: 24px;"></i>
+      </div>
+      <div style="margin: 30px 0;">
+        <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #0066CC; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+        <p style="color: #0066CC; font-weight: 600; margin: 10px 0;">Sedang menganalisis data medis...</p>
+        <p style="color: #666; font-size: 14px; margin: 5px 0;">Mohon tunggu, proses ini memerlukan waktu beberapa detik</p>
+      </div>
+      <div style="background: #E3F2FD; padding: 15px; border-radius: 8px; border-left: 4px solid #0066CC;">
+        <p style="color: #0066CC; font-size: 12px; margin: 0;">🤖 AI sedang memproses data genomik untuk deteksi disabilitas intelektual</p>
+      </div>
+    </div>
+  `;
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  document.body.appendChild(loadingScreen);
+}
+
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('loadingScreen');
+  if (loadingScreen) {
+    loadingScreen.remove();
+  }
 }
 
 function showResultPopup(prediction, imagePath) {
   const popup = document.createElement('div');
+  popup.id = 'resultPopup';
   popup.style.cssText = `
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: rgba(0,0,0,0.8); z-index: 1000; display: flex; 
@@ -124,36 +197,114 @@ function showResultPopup(prediction, imagePath) {
   `;
 
   popup.innerHTML = `
-    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; text-align: center; position: relative;">
-      <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-      <h3 style="color: #333; margin-bottom: 20px;">Hasil Analisis Data CSV</h3>
-      <div style="color: #333; font-size: 16px; line-height: 1.5;">${prediction}</div>
-      <button onclick="this.parentElement.parentElement.remove()" style="background: #22b3c1; color: white; padding: 10px 25px; border: none; border-radius: 25px; margin-top: 20px; cursor: pointer;">Tutup</button>
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border-radius: 20px; max-width: 550px; text-align: center; position: relative; border: 3px solid #0066CC; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
+      <button onclick="closeResultPopup()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #E74C3C;">&times;</button>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <i class="fa fa-stethoscope" style="color: #0066CC; font-size: 24px;"></i>
+        <h3 style="color: #0066CC; margin: 0;">📋 Laporan Diagnostik AI</h3>
+        <i class="fa fa-heartbeat" style="color: #E74C3C; font-size: 24px;"></i>
+      </div>
+      <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #0066CC;">
+        <div style="color: #0066CC; font-size: 16px; line-height: 1.6; font-weight: 500;">${prediction}</div>
+      </div>
+      <div style="background: #FFF3CD; padding: 10px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #FFC107;">
+        <p style="color: #856404; font-size: 12px; margin: 0;">⚠️ <strong>Catatan Medis:</strong> Hasil ini merupakan skrining awal. Diperlukan evaluasi lanjutan oleh tenaga medis profesional.</p>
+      </div>
+      <button onclick="closeResultPopup()" style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 12px 30px; border: 2px solid white; border-radius: 25px; margin-top: 10px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);">📄 Tutup Laporan</button>
     </div>
   `;
 
+  // Add ESC key event listener
+  function handleEscKey(event) {
+    if (event.key === 'Escape') {
+      closeResultPopup();
+    }
+  }
+  
+  document.addEventListener('keydown', handleEscKey);
+  popup.addEventListener('remove', () => {
+    document.removeEventListener('keydown', handleEscKey);
+  });
+
   document.body.appendChild(popup);
+}
+
+function closeResultPopup() {
+  const popup = document.getElementById('resultPopup');
+  if (popup) {
+    popup.remove();
+  }
+}
+
+function showSingleFileModal() {
+  const modal = document.createElement('div');
+  modal.id = 'singleFileModal';
+  modal.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.8); z-index: 1000; display: flex; 
+    align-items: center; justify-content: center;
+  `;
+
+  modal.innerHTML = `
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border-radius: 20px; max-width: 450px; text-align: center; position: relative; border: 3px solid #E74C3C; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);">
+      <button onclick="closeSingleFileModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #E74C3C;">&times;</button>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <i class="fa fa-exclamation-triangle" style="color: #E74C3C; font-size: 24px;"></i>
+        <h3 style="color: #E74C3C; margin: 0;">⚠️ Upload Terbatas</h3>
+        <i class="fa fa-file-o" style="color: #E74C3C; font-size: 24px;"></i>
+      </div>
+      <div style="background: #FFEBEE; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #E74C3C;">
+        <div style="color: #C62828; font-size: 16px; line-height: 1.6; font-weight: 500;">
+          Hanya Bisa Single File<br>
+          <span style="font-size: 14px; font-weight: normal;">Sistem hanya mendukung upload satu file .bed per analisis</span>
+        </div>
+      </div>
+      <div style="background: #FFF3CD; padding: 10px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #FFC107;">
+        <p style="color: #856404; font-size: 12px; margin: 0;">💡 <strong>Tips:</strong> Pilih satu file .bed untuk analisis genomik yang optimal.</p>
+      </div>
+      <button onclick="closeSingleFileModal()" style="background: linear-gradient(135deg, #E74C3C 0%, #C62828 100%); color: white; padding: 12px 30px; border: 2px solid white; border-radius: 25px; margin-top: 10px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">📄 Mengerti</button>
+    </div>
+  `;
+
+  // Add ESC key event listener
+  function handleEscKey(event) {
+    if (event.key === 'Escape') {
+      closeSingleFileModal();
+    }
+  }
+  
+  document.addEventListener('keydown', handleEscKey);
+  modal.addEventListener('remove', () => {
+    document.removeEventListener('keydown', handleEscKey);
+  });
+
+  document.body.appendChild(modal);
+}
+
+function closeSingleFileModal() {
+  const modal = document.getElementById('singleFileModal');
+  if (modal) {
+    modal.remove();
+  }
 }
 
 // Team Carousel Functionality
 let slideIndex = 1;
 let isMobile = window.innerWidth <= 768;
-let totalSlides = isMobile ? Math.ceil(9 / 2) : 3;
+let totalSlides = 2;
 
 const teamMembers = [
-  { initials: 'CP', name: 'Chandra Prasteyo Utomo', role: 'Lead AI Researcher', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-  { initials: 'UA', name: 'Ummi Azizah Rachmawati', role: 'UI/UX', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-  { initials: 'MF', name: 'Muhamad Fathurahman', role: 'Software Developer', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-  { initials: 'SC', name: 'Sri Chusri Haryanti', role: 'UI/UX Designer', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-  { initials: 'IP', name: 'Ibu Puspa', role: 'Data Scientist', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
-  { initials: 'AH', name: 'Alim El Hakim', role: 'Backend Developer', gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
-  { initials: 'NI', name: 'Nashuha Insani', role: 'AI Engineer', gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' },
-  { initials: 'MW', name: 'Muhammad Wildan Pratama', role: 'FrontEnd Developer', gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
-  { initials: 'MM', name: 'Mufid Farhan Muhana', role: 'BackEnd Developer', gradient: 'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)' }
+  { initials: 'S', name: 'Sultana', role: 'Ketua Pengusul', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+  { initials: 'AH', name: 'Ahmad Rusdan Handoyo Utomo', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+  { initials: 'CP', name: 'Chandra Prasetyo Utomo', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+  { initials: 'KP', name: 'Kinasih Prayuni', role: 'Anggota', org: 'Universitas YARSI', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+  { initials: 'SP', name: 'Susanti PhD', role: 'Anggota', org: 'Pathgen', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
 ];
 
 function initializeTeamCarousel() {
   const slides = document.getElementById('teamSlides');
+  if (!slides) return; // Exit if no carousel found
+  
   const dots = document.querySelectorAll('.dot');
 
   function reorganizeForMobile() {
@@ -164,8 +315,8 @@ function initializeTeamCarousel() {
       const slidesContainer = document.getElementById('teamSlides');
       slidesContainer.innerHTML = '';
 
-      const totalSlides = Math.ceil(teamMembers.length / 2);
-      for (let i = 0; i < totalSlides; i++) {
+      const totalMobileSlides = Math.ceil(teamMembers.length / 2);
+      for (let i = 0; i < totalMobileSlides; i++) {
         const slide = document.createElement('div');
         slide.className = 'team-slide mobile-slide';
         slide.style.cssText = 'min-width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;';
@@ -183,6 +334,7 @@ function initializeTeamCarousel() {
                 <div style="width: 120px; height: 120px; border-radius: 50%; background: ${member.gradient}; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: bold;">${member.initials}</div>
                 <h4 style="color: white; margin-bottom: 8px; font-size: 16px; line-height: 1.2;">${member.name}</h4>
                 <p style="color: #ccc; margin-bottom: 5px; font-size: 14px;">${member.role}</p>
+                <p style="color: #aaa; font-size: 12px;">${member.org}</p>
               </div>
             `;
             slide.appendChild(memberDiv);
@@ -191,11 +343,13 @@ function initializeTeamCarousel() {
 
         slidesContainer.appendChild(slide);
       }
+      totalSlides = totalMobileSlides;
     } else {
       const teamSlides = document.querySelectorAll('.team-slide:not(.mobile-slide)');
       teamSlides.forEach(slide => slide.style.display = 'flex');
       const mobileSlides = document.querySelectorAll('.mobile-slide');
       mobileSlides.forEach(slide => slide.remove());
+      totalSlides = 2;
     }
   }
 
@@ -231,7 +385,6 @@ function initializeTeamCarousel() {
     const newIsMobile = window.innerWidth <= 768;
     if (newIsMobile !== isMobile) {
       isMobile = newIsMobile;
-      totalSlides = isMobile ? Math.ceil(9 / 2) : 3;
       slideIndex = 1;
       reorganizeForMobile();
       showSlide(slideIndex);
@@ -251,7 +404,12 @@ function initializeTeamCarousel() {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  initializeFileUpload();
+  // Only initialize file upload if elements exist
+  if (dropZone && fileInput) {
+    initializeFileUpload();
+  }
+  
+  // Always initialize team carousel
   initializeTeamCarousel();
 });
 

@@ -1,7 +1,165 @@
-/* Custom CSS for ML Disability Detection App */
+/* Medical Healthcare Platform CSS */
 
-h2, h3, h4, h5 {
+/* Force Light Mode - Override Dark Mode Detection */
+* {
+  color-scheme: light !important;
+}
+
+body {
+  background: #fff !important;
+  color: #333 !important;
+}
+
+/* Banner text colors - force white */
+#section-1 h1, #section-1 h2 {
   color: white !important;
+}
+
+/* Tim Peneliti section - force blue background and white text */
+#about-us {
+  background: linear-gradient(135deg, var(--medical-dark-blue) 0%, var(--medical-blue) 50%, var(--medical-teal) 100%) !important;
+}
+
+#about-us h2, #about-us h4, #about-us p {
+  color: white !important;
+}
+
+/* Contact section - force dark background and white text */
+#contact-us {
+  background: #2a2a2a !important;
+}
+
+#contact-us h2, #contact-us h4, #contact-us p {
+  color: white !important;
+}
+
+/* Footer - force blue background and white text */
+footer {
+  background-color: #0066CC !important;
+}
+
+footer p, footer p a {
+  color: white !important;
+}
+
+/* Force light mode on all elements */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #fff !important;
+    color: #333 !important;
+  }
+  
+  /* Banner specific overrides */
+  #section-1 h1, #section-1 h2 {
+    color: white !important;
+  }
+  
+  /* Tim Peneliti section override */
+  #about-us {
+    background: linear-gradient(135deg, #003D7A 0%, #0066CC 50%, #17A2B8 100%) !important;
+  }
+  
+  #about-us h2, #about-us h4, #about-us p {
+    color: white !important;
+  }
+  
+  /* Contact section override */
+  #contact-us {
+    background: #2a2a2a !important;
+  }
+  
+  #contact-us h2, #contact-us h4, #contact-us p {
+    color: white !important;
+  }
+  
+  /* Footer override */
+  footer {
+    background-color: #0066CC !important;
+  }
+  
+  footer p, footer p a {
+    color: white !important;
+  }
+}
+
+/* Medical Color Scheme */
+:root {
+  --medical-blue: #0066CC;
+  --medical-green: #2ECC71;
+  --medical-red: #E74C3C;
+  --medical-purple: #9B59B6;
+  --medical-teal: #17A2B8;
+  --medical-white: #FFFFFF;
+  --medical-light-blue: #E3F2FD;
+  --medical-dark-blue: #003D7A;
+}
+
+/* Medical Background Pattern */
+body {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0, 102, 204, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(46, 204, 113, 0.05) 0%, transparent 50%);
+}
+
+/* Medical Header Styling */
+.header-area {
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-dark-blue) 100%);
+  box-shadow: 0 2px 10px rgba(0, 102, 204, 0.2);
+}
+
+/* Medical Button Styling */
+.main-button {
+  margin: 20px 0 25px 0;
+}
+
+.main-button a {
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+  border: 2px solid var(--medical-white);
+  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+  display: inline-block;
+  padding: 8px 15px;
+}
+
+.main-button a:hover {
+  background: linear-gradient(135deg, var(--medical-dark-blue) 0%, var(--medical-blue) 100%);
+  transform: translateY(-2px);
+}
+
+/* Content spacing improvements */
+.right-content {
+  padding: 20px 30px 20px 0;
+}
+
+.right-content p {
+  margin: 15px 0 20px 0;
+  line-height: 1.6;
+}
+
+.right-content .info {
+  margin: 20px 0;
+}
+
+.text-button {
+  margin-top: 25px;
+}
+
+/* Additional spacing for content area */
+.visit-country .items {
+  padding-right: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.visit-country .items .row {
+  justify-content: center;
+}
+
+.visit-country .items .col-lg-12 {
+  max-width: 100%;
+}
+
+ h3, h5, h6 {
+  color: #333 !important;
 }
 
 html {
@@ -17,22 +175,30 @@ html {
 
 /* Drop Zone Styles */
 #dropZone {
-  border: 2px dashed #fff;
-  padding: 20px;
+  border: 3px dashed var(--medical-blue);
+  padding: 25px;
   text-align: center;
   color: white;
-  border-radius: 10px;
+  border-radius: 15px;
   margin-top: 20px;
   cursor: pointer;
-  background: rgba(255,255,255,0.1);
-  max-width: 400px;
+  background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(23, 162, 184, 0.1) 100%);
+  max-width: 450px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   position: relative;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.2);
+  transition: all 0.3s ease;
+}
+
+#dropZone:hover {
+  border-color: var(--medical-green);
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(0, 102, 204, 0.1) 100%);
+  transform: translateY(-2px);
 }
 
 #dropZone i {
@@ -46,23 +212,88 @@ html {
 
 /* Predict Button */
 #predictBtn {
-  background: #ccc;
+  background: linear-gradient(135deg, #ccc 0%, #999 100%);
   color: white;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 25px;
-  font-size: 14px;
+  padding: 15px 35px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: not-allowed;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #predictBtn:enabled {
-  background: #22b3c1;
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+  border-color: var(--medical-white);
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+}
+
+#predictBtn:enabled:hover {
+  background: linear-gradient(135deg, var(--medical-dark-blue) 0%, var(--medical-blue) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 102, 204, 0.5);
 }
 
 .predict-container {
   text-align: center;
   margin-top: 20px;
+}
+
+/* Image standardization */
+.visit-country .item .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  overflow: hidden;
+}
+
+.visit-country .item .image img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Center content in items */
+.visit-country .item {
+  display: flex;
+  align-items: center;
+  min-height: 250px;
+  margin-bottom: 30px;
+}
+
+.visit-country .item .row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Medical Icons Styling */
+.fa-stethoscope, .fa-user-md, .fa-heartbeat, .fa-file-medical {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Medical Info Cards */
+.visit-country .item {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 102, 204, 0.05) 100%);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 102, 204, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.1);
+  transition: all 0.3s ease;
+}
+
+.visit-country .item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 102, 204, 0.2);
+}
+
+/* Medical Team Section */
+.call-to-action {
+  background: linear-gradient(135deg, var(--medical-dark-blue) 0%, var(--medical-blue) 50%, var(--medical-teal) 100%);
 }
 
 /* Team carousel responsive layout */
@@ -91,6 +322,8 @@ html {
     width: 100px !important;
     height: 100px !important;
     font-size: 32px !important;
+    border: 3px solid var(--medical-white) !important;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3) !important;
   }
 
   .desktop-dot {

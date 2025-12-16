@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Arsitektur - Platform Deteksi Disabilitas Intelektual</title>
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/navbar-custom.css') }}">
+
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <nav class="navbar navbar-expand-lg" style="border-bottom: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard">
+        <img src="{{ url_for('static', filename='assets/images/strokeyarsiai.png') }}" alt="YARSI AI Logo" height="40">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/architecture">Arsitektur</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link logout-btn" href="/logout" 
+               style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); 
+                      color: white !important; 
+                      padding: 8px 20px !important; 
+                      border-radius: 25px; 
+                      margin-left: 10px;
+                      font-weight: 600;
+                      transition: all 0.3s ease;
+                      border: 2px solid rgba(255,255,255,0.3);"
+               onmouseover="this.style.background='linear-gradient(135deg, #C0392B 0%, #A93226 100%)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(231, 76, 60, 0.4)'"
+               onmouseout="this.style.background='linear-gradient(135deg, #E74C3C 0%, #C0392B 100%)'; this.style.transform='translateY(0px)'; this.style.boxShadow='none'">
+              <i class="fa fa-sign-out" style="margin-right: 5px;"></i>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ***** Architecture Section Start ***** -->
+  <section style="margin-top: -1px; min-height: 90vh; padding: 100px 0 50px 0; background: #ffffff;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3); border: 2px solid rgba(0, 102, 204, 0.2);">
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 40px;">
+              <div style="background: rgba(0, 102, 204, 0.1); border: 2px solid #0066CC; border-radius: 50px; padding: 8px 20px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fa fa-cloud" style="color: #0066CC;"></i>
+                <span style="color: #0066CC; font-size: 12px; font-weight: 600;">SYSTEM ARCHITECTURE</span>
+                <i class="fa fa-server" style="color: #2ECC71;"></i>
+              </div>
+              <h2 style="color: #0066CC; margin-bottom: 10px;">Arsitektur Cloud dan Machine Learning</h2>
+              <p style="color: #666; font-size: 14px;">Infrastruktur scalable untuk sistem AI deteksi disabilitas intelektual</p>
+            </div>
+
+            <!-- Cloud Architecture -->
+            <div style="margin-bottom: 50px;">
+              <h3 style="color: #0066CC; margin-bottom: 20px; text-align: center;">
+                <i class="fa fa-cloud"></i> Cloud Infrastructure Architecture
+              </h3>
+              <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ url_for('static', filename='assets/images/Ars-Cc.png') }}" 
+                     alt="Cloud Architecture" 
+                     style="max-width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+              </div>
+              <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; border-left: 4px solid #0066CC;">
+                <h4 style="color: #0066CC; margin-bottom: 15px;">Komponen Cloud Infrastructure:</h4>
+                <ul style="color: #333; line-height: 1.8;">
+                  <li><strong>AWS Lightsail – App Container:</strong> Kontainer web/API yang diakses pengguna.</li>
+                  <li><strong>PostgreSQL Database (Lightsail):</strong> Penyimpanan data aplikasi, terhubung langsung ke App Container.</li>
+                  <li><strong>Amazon S3 Storage:</strong> Penyimpanan objek untuk input/output (unggah data dari app, ambil hasil prediksi).</li>
+                  <li><strong>AWS Lambda – Predict Function:</strong> Fungsi yang memanggil proses inferensi dan mengorkestrasi request ke SageMaker.</li>
+                  <li><strong>Amazon SageMaker:</strong> Endpoint/model ML untuk menjalankan prediksi.</li>
+                  <li><strong>Client Access & Routing:</strong> Users ⇢ App Container (request), App Container ⇄ S3; alur S3 ⇢ Lambda ⇢ SageMaker ⇢ S3.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- ML Architecture -->
+            <div style="margin-bottom: 30px;">
+              <h3 style="color: #2ECC71; margin-bottom: 20px; text-align: center;">
+                <i class="fa fa-brain"></i> Machine Learning Pipeline Architecture
+              </h3>
+              <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ url_for('static', filename='assets/images/Ars-Ml.jpg') }}" 
+                     alt="ML Architecture" 
+                     style="max-width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+              </div>
+              <div style="background: #E8F5E8; padding: 20px; border-radius: 10px; border-left: 4px solid #2ECC71;">
+                <h4 style="color: #2ECC71; margin-bottom: 15px;">Komponen ML Pipeline:</h4>
+                <ul style="color: #333; line-height: 1.8;">
+                  <li><strong>Data Source:</strong> Variant Dataset</li>
+                  <li><strong>Storage & Preprocessing:</strong> Amazon S3 (Data Preprocessing)</li>
+                  <li><strong>Model Training:</strong> Amazon SageMaker Notebook</li>
+                  <li><strong>Model Serving/Deployment:</strong> Amazon SageMaker Endpoint</li>
+                  <li><strong>Inference Input:</strong> Client Input Data (.bed) → S3 (trigger event)</li>
+                  <li><strong>Inference Orchestration:</strong> AWS Lambda Function (AI Predict)</li>
+                  <li><strong>Prediction Output:</strong> S3 (hasil prediksi .json)</li>
+                  <li><strong>Client Application:</strong> Client Web App (mengonsumsi hasil)</li>
+                  <li><strong>Monitoring:</strong> Amazon CloudWatch (pipeline monitoring)</li>
+                  <li><strong>Security & Access:</strong> AWS IAM (access control & permissions)</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Technical Specifications
+            <div style="background: #FFF3CD; padding: 20px; border-radius: 10px; border-left: 4px solid #FFC107; margin-bottom: 20px;">
+              <h4 style="color: #856404; margin-bottom: 15px;">
+                <i class="fa fa-cogs"></i> Technical Specifications
+              </h4>
+              <div class="row">
+                <div class="col-md-6">
+                  <h5 style="color: #856404;">Cloud Platform:</h5>
+                  <ul style="color: #333; font-size: 14px;">
+                    <li>AWS Cloud</li>
+                    <li>PostgreSQL</li>
+                    <li>Lambda Function</li>
+                    <li>AWS Lightsail</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h5 style="color: #856404;">ML Framework:</h5>
+                  <ul style="color: #333; font-size: 14px;">
+                    <li>TensorFlow/PyTorch/Scikit-Learn</li>
+                    <li>MLflow Model Management</li>
+                    <li>Apache Airflow Pipeline</li>
+                    <li>NVIDIA GPU Acceleration</li>
+                  </ul>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+              <button onclick="window.history.back()" 
+                      style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 12px 30px; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);">
+                <i class="fa fa-arrow-left"></i> Kembali
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: linear-gradient(135deg, #4063ff 0%, #0004ff 100%); text-align: center; padding: 20px 0;border-top: 2px solid rgb(255, 255, 255);">
+    <div class="container">
+      <p style="color: #fff; margin: 0; font-size: 14px;">
+        Copyright © 2025. YARSI AI Medical Platform. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
+
+</body>
+
+</html>

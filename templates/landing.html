@@ -2,30 +2,22 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <title>Platform Deteksi Disabilitas Intelektual</title>
-
+  
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatem.css') }}">
-
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/navbar-custom.css') }}">
-
 
 </head>
 
 <body>
-
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -40,7 +32,7 @@
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg" style="border-bottom: 2px solid rgb(255, 255, 255);">
     <div class="container">
       <a class="navbar-brand" href="/">
         <img src="{{ url_for('static', filename='assets/images/strokeyarsiai.png') }}" alt="YARSI AI Logo" height="40">
@@ -53,7 +45,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="/dashboard">Dashboard</a>
+            <a class="nav-link active" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#about-us">About</a>
@@ -62,19 +54,7 @@
             <a class="nav-link" href="#contact-us">Contact</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link logout-btn" href="/logout" 
-               style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); 
-                      color: white !important; 
-                      padding: 8px 20px !important; 
-                      border-radius: 25px; 
-                      margin-left: 10px;
-                      font-weight: 600;
-                      transition: all 0.3s ease;
-                      border: 2px solid rgba(255,255,255,0.3);"
-               onmouseover="this.style.background='linear-gradient(135deg, #C0392B 0%, #A93226 100%)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(231, 76, 60, 0.4)'"
-               onmouseout="this.style.background='linear-gradient(135deg, #E74C3C 0%, #C0392B 100%)'; this.style.transform='translateY(0px)'; this.style.boxShadow='none'">
-              <i class="fa fa-sign-out" style="margin-right: 5px;"></i>Logout
-            </a>
+            <a class="nav-link" href="/login">Login</a>
           </li>
         </ul>
       </div>
@@ -110,23 +90,18 @@
                 <div class="col-lg-12">
                   <div class="more-info">
                     <div class="row">
-                      <div class="col-lg-12">
-                        <form method="POST" enctype="multipart/form-data" action="/upload" id="uploadForm">
-                          <div id="dropZone">
-                            <i class="fa fa-stethoscope" style="color: #0066CC;"></i>
-                            <p>Upload Data Medis (.csv) untuk Evaluasi Klinis</p>
-                            <input type="file" name="file" id="fileInput" accept=".csv" style="display: none;" required>
+                      <div class="col-lg-12" style="text-align: center;">
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; margin: 20px 0;">
+                          <h3 style="color: white; margin-bottom: 20px;">🩺 Platform AI untuk Deteksi Dini</h3>
+                          <p style="color: #1f75b3; font-size: 16px; line-height: 1.6;">
+                            Sistem kecerdasan buatan canggih yang menggunakan teknologi Nanopore NextGen Sequencing 
+                            untuk analisis metilasi DNA dalam mendeteksi disabilitas intelektual pada anak.
+                          </p>
+                          <div style="margin-top: 30px;">
+                            <a href="/login" style="background: linear-gradient(135deg, #0066CC 0%, #17A2B8 100%); color: white; padding: 15px 30px; border: none; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);">
+                              🚀 Mulai Analisis
+                            </a>
                           </div>
-                        </form>
-
-                        <div class="predict-container">
-                          <button onclick="predictImage()" id="predictBtn" disabled style="background: #0066CC; border: 2px solid #ffffff;">🩺 Analisis Medis</button>
-                        </div>
-                        
-                        <div class="sample-download-container" style="margin-top: 20px; text-align: center;">
-                          <a href="{{ url_for('download_sample') }}" style="background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%); color: white; padding: 12px 25px; border: none; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                            📥 Unduh Test Data (ZIP)
-                          </a>
                         </div>
                       </div>
                     </div>
@@ -137,14 +112,6 @@
           </div>
         </div>
       </div>
-      <nav>
-        <!-- <div class="controls">
-          <label for="banner1"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">1</span></label>
-          <label for="banner2"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">2</span></label>
-          <label for="banner3"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">3</span></label>
-          <label for="banner4"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">4</span></label>
-        </div> -->
-      </nav>
     </div>
   </section>
   <!-- ***** Main Banner Area End ***** -->
@@ -155,8 +122,7 @@
         <div class="col-lg-5">
           <div class="section-heading">
             <h2 style="color: #333;">📋 Informasi Klinis Disabilitas Intelektual</h2>
-            <p style="color: #666;">Skrining medis dini sangat penting untuk diagnosis yang akurat dan intervensi terapeutik yang tepat sasaran.
-            </p>
+            <p style="color: #666;">Skrining medis dini sangat penting untuk diagnosis yang akurat dan intervensi terapeutik yang tepat sasaran.</p>
           </div>
         </div>
       </div>
@@ -185,38 +151,6 @@
                           <li><i class="fa fa-stethoscope" style="color: #2ECC71;"></i> Skrining Medis</li>
                           <li><i class="fa fa-heartbeat" style="color: #E74C3C;"></i> Terapi Rehabilitasi</li>
                         </ul>
-                        <div class="text-button">
-                          <a href="/about">Butuh Bantuan ? <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-10">
-                <div class="item">
-                  <div class="row">
-                    <div class="col-lg-4 col-sm-5">
-                      <div class="image" style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                        <img src="{{ url_for('static', filename='assets/images/riwayat.png') }}" alt="">
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-sm-7" style="display: flex; align-items: center;">
-                      <div class="right-content">
-                        <h4>📊 History Prediksi</h4>
-                        <span>Prediction History</span>
-                        <div class="main-button">
-                          <a href="/history">Cek History</a>
-                        </div>
-                        <p>Riwayat lengkap hasil prediksi AI untuk tracking akurasi dan monitoring performa model dalam deteksi disabilitas intelektual.</p>
-                        <ul class="info">
-                          <li><i class="fa fa-history" style="color: #0066CC;"></i> Log Prediksi</li>
-                          <li><i class="fa fa-database" style="color: #2ECC71;"></i> Data Archive</li>
-                          <li><i class="fa fa-line-chart" style="color: #9B59B6;"></i> Trend Analysis</li>
-                        </ul>
-                        <div class="text-button">
-                          <a href="/history">Lihat History ? <i class="fa fa-arrow-right"></i></a>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -235,7 +169,7 @@
                         <h4>🩺 Arsitektur Cloud dan <br>Machine Learning</h4>
                         <span>System Architecture</span>
                         <div class="main-button">
-                          <a href="/architecture">Lihat Arsitektur</a>
+                          <a href="/login">Akses Sistem</a>
                         </div>
                         <p>Infrastruktur cloud computing dan machine learning untuk sistem AI deteksi disabilitas intelektual dengan teknologi scalable dan secure.</p>
                         <ul class="info">
@@ -243,22 +177,10 @@
                           <li><i class="fa fa-server" style="color: #2ECC71;"></i> ML Pipeline</li>
                           <li><i class="fa fa-shield" style="color: #27AE60;"></i> Security Layer</li>
                         </ul>
-                        <div class="text-button">
-                          <a href="/architecture">Lihat Detail ? <i class="fa fa-arrow-right"></i></a>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-lg-12">
-                <ul class="page-numbers">
-                  <li><a href="#"><i class="fa fa-arrow-left"></i></a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <!-- <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li> -->
-                  <li><a href="#"><i class="fa fa-arrow-right"></i></a></li>
-                </ul>
               </div>
             </div>
           </div>
@@ -427,27 +349,18 @@
         <div class="col-lg-6">
           <div style="color: white;">
             <h4 style="color: #22b3c1; margin-bottom: 20px;">Mitra Kami</h4>
-            <div class="partners-grid"
-              style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: center;">
-              <div class="partner-logo"
-                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
-                <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="Partner 1"
-                  style="max-width: 100%; height: 60px; object-fit: contain;">
+            <div class="partners-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: center;">
+              <div class="partner-logo" style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/yarsiai.png') }}" alt="Partner 1" style="max-width: 100%; height: 60px; object-fit: contain;">
               </div>
-              <div class="partner-logo"
-                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
-                <img src="{{ url_for('static', filename='assets/images/ptpathgen.png') }}" alt="Partner 2"
-                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              <div class="partner-logo" style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/ptpathgen.png') }}" alt="Partner 2" style="max-width: 100%; height: 60px; object-fit: contain;">
               </div>
-              <div class="partner-logo"
-                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
-                <img src="{{ url_for('static', filename='assets/images/fti.png') }}" alt="Partner 3"
-                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              <div class="partner-logo" style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/fti.png') }}" alt="Partner 3" style="max-width: 100%; height: 60px; object-fit: contain;">
               </div>
-              <div class="partner-logo"
-                style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
-                <img src="{{ url_for('static', filename='assets/images/dikti.png') }}" alt="Partner 4"
-                  style="max-width: 100%; height: 60px; object-fit: contain;">
+              <div class="partner-logo" style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                <img src="{{ url_for('static', filename='assets/images/dikti.png') }}" alt="Partner 4" style="max-width: 100%; height: 60px; object-fit: contain;">
               </div>
             </div>
           </div>
@@ -465,17 +378,11 @@
     </div>
   </footer>
 
-
   <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
   <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-
-
   <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
-
-
 </body>
 
 </html>

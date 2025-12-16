@@ -1,0 +1,62 @@
+# SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK
+## Platform Deteksi Disabilitas Intelektual Berbasis AI
+
+---
+
+## BAB 1 SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK
+
+### 1.1 Pendahuluan
+
+#### 1.1.1 Siklus Hidup Pengembangan Aplikasi
+
+Platform Deteksi Disabilitas Intelektual dikembangkan menggunakan metodologi Software Development Life Cycle (SDLC) dengan pendekatan Agile Development yang memungkinkan pengembangan iteratif dan responsif terhadap perubahan kebutuhan. Siklus pengembangan dimulai dari fase perencanaan dan analisis dimana tim melakukan identifikasi mendalam terhadap kebutuhan medis untuk deteksi disabilitas intelektual, menganalisis teknologi Nanopore NextGen Sequencing yang akan digunakan, melakukan studi kelayakan implementasi AI/ML untuk analisis genomik, serta mendefinisikan scope dan timeline pengembangan yang realistis.
+
+Fase kedua adalah desain sistem yang mencakup perancangan arsitektur cloud computing menggunakan AWS, desain machine learning pipeline untuk analisis metilasi DNA, perancangan antarmuka pengguna (UI/UX) yang user-friendly untuk tenaga medis, serta desain database dan API architecture yang scalable dan secure. Fase implementasi melibatkan pengembangan frontend menggunakan Flask Web Framework, implementasi backend API dengan Python, integrasi model machine learning menggunakan TensorFlow dan Scikit-learn, serta pengembangan sistem autentikasi dan otorisasi yang robust.
+
+Fase testing dan quality assurance memastikan kualitas sistem melalui unit testing untuk setiap komponen, integration testing untuk API dan database, User Acceptance Testing (UAT) dengan tenaga medis sebagai end user, serta security testing dan performance testing untuk memastikan sistem aman dan performant. Fase terakhir adalah deployment dan maintenance yang meliputi deployment ke cloud infrastructure AWS, implementasi monitoring dan logging sistem, maintenance dan update berkala, serta penyediaan support dan dokumentasi pengguna yang komprehensif.
+
+#### 1.1.2 Tujuan Penulisan Spesifikasi Kebutuhan Perangkat Lunak
+
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SRS) ini disusun dengan tujuan utama untuk mendokumentasikan kebutuhan sistem secara komprehensif, dimana setiap kebutuhan fungsional dan non-fungsional platform didefinisikan secara detail untuk menyediakan referensi lengkap bagi tim pengembang, stakeholder, dan pengguna, serta memastikan pemahaman yang sama antara semua pihak terkait dalam pengembangan platform medis ini.
+
+Sebagai panduan pengembangan, dokumen ini memberikan blueprint yang jelas untuk proses pengembangan aplikasi, menjadi acuan utama dalam implementasi fitur-fitur sistem, dan memfasilitasi estimasi waktu serta resource yang dibutuhkan untuk menyelesaikan proyek. Dokumen ini juga berfungsi sebagai basis testing dan validasi dengan menyediakan kriteria yang jelas untuk User Acceptance Testing (UAT), menjadi dasar untuk verifikasi dan validasi sistem, serta memastikan kualitas dan keandalan platform medis sesuai dengan standar yang ditetapkan.
+
+Dari segi komunikasi stakeholder, dokumen SRS ini memfasilitasi komunikasi yang efektif antara tim teknis dan non-teknis, menyediakan dokumentasi formal untuk proses approval dan sign-off, serta menjadi kontrak kerja yang mengikat antara pengembang dan client untuk memastikan deliverable sesuai dengan ekspektasi dan kebutuhan yang telah disepakati bersama.
+
+#### 1.1.3 Cakupan Produk
+
+Platform Deteksi Disabilitas Intelektual Berbasis AI merupakan platform web-based yang menggunakan teknologi Artificial Intelligence dan Machine Learning untuk menganalisis data genomik dalam format file .bed dari Nanopore NextGen Sequencing guna mendeteksi potensi disabilitas intelektual pada anak. Platform ini dikembangkan khusus untuk tenaga medis profesional di lingkungan klinis dengan fokus pada kemudahan penggunaan, akurasi analisis, dan keamanan data medis yang tinggi.
+
+Cakupan fungsional platform mencakup sistem autentikasi dan manajemen user yang memungkinkan registrasi dan login tenaga medis dengan manajemen session dan keamanan akses yang ketat serta validasi kredensial dan otorisasi yang sesuai dengan standar medis. Platform juga menyediakan fitur upload dan manajemen file genomik yang mendukung upload file .bed (Browser Extensible Data), validasi format dan integritas file secara otomatis, serta penyimpanan aman file medis dengan enkripsi dan backup yang terjamin.
+
+Inti dari platform adalah analisis AI/ML untuk deteksi yang melakukan pemrosesan data metilasi DNA menggunakan algoritma machine learning canggih, menghasilkan risk score dan confidence level yang akurat, serta menyediakan interpretasi hasil yang mudah dipahami oleh tenaga medis. Platform dilengkapi dengan sistem pelaporan dan visualisasi hasil yang menampilkan hasil analisis dalam format medis yang standar, memberikan risk assessment dan rekomendasi klinis yang relevan, serta menyertakan medical disclaimer dan panduan interpretasi yang komprehensif.
+
+Fitur riwayat dan tracking analisis memungkinkan penyimpanan history prediksi untuk setiap user, tracking detail per user dan per analisis, serta kemampuan export dan dokumentasi hasil untuk keperluan medis lebih lanjut. Platform juga menyediakan informasi medis dan edukasi yang mencakup informasi lengkap tentang disabilitas intelektual, panduan penggunaan platform yang user-friendly, serta dokumentasi arsitektur sistem dan metodologi yang digunakan.
+
+Dari segi teknis, platform dibangun menggunakan Flask Web Application dengan HTML5, CSS3, dan JavaScript untuk frontend, Python dengan Flask Framework untuk backend, PostgreSQL untuk data persistence, TensorFlow dan Scikit-learn untuk model prediksi AI/ML, AWS infrastructure termasuk Lightsail, S3, Lambda, dan SageMaker untuk cloud computing, serta implementasi JWT authentication, HTTPS, dan data encryption untuk keamanan. Batasan cakupan meliputi dukungan hanya untuk file format .bed, sistem yang dirancang untuk single file upload per analisis, target user yang terbatas pada tenaga medis profesional, dan hasil analisis yang bersifat skrining awal bukan diagnosis definitif.
+
+#### 1.1.4 Definisi, Singkatan, dan Akronim
+
+Dalam konteks medis, disabilitas intelektual didefinisikan sebagai gangguan neurodevelopmental dengan keterbatasan signifikan dalam fungsi intelektual dan perilaku adaptif yang mempengaruhi kemampuan individu dalam aktivitas sehari-hari. Metilasi DNA merupakan modifikasi epigenetik yang mempengaruhi ekspresi gen tanpa mengubah sekuens DNA itu sendiri, dimana proses ini menjadi fokus utama analisis dalam platform ini. Nanopore Sequencing adalah teknologi sequencing DNA generasi ketiga yang dapat membaca molekul DNA secara real-time dengan akurasi tinggi dan kemampuan untuk mendeteksi modifikasi epigenetik seperti metilasi.
+
+Dari segi teknis, BED File (Browser Extensible Data) adalah format standar untuk menyimpan data genomik yang berisi informasi posisi dan karakteristik sekuens DNA. Risk Score merupakan nilai numerik yang menunjukkan tingkat risiko disabilitas intelektual berdasarkan analisis AI, sedangkan Confidence Level menunjukkan tingkat kepercayaan model AI terhadap prediksi yang dihasilkan, dimana semakin tinggi nilai confidence level menunjukkan semakin akurat prediksi tersebut.
+
+Singkatan dan akronim yang digunakan dalam platform ini meliputi AI (Artificial Intelligence) untuk kecerdasan buatan yang digunakan dalam analisis data, ML (Machine Learning) untuk pembelajaran mesin yang memungkinkan sistem melakukan prediksi, API (Application Programming Interface) untuk interface komunikasi antar sistem, SRS (Software Requirements Specification) untuk dokumen spesifikasi kebutuhan ini, UAT (User Acceptance Testing) untuk testing penerimaan pengguna, UI/UX (User Interface/User Experience) untuk antarmuka dan pengalaman pengguna, JWT (JSON Web Token) untuk token autentikasi, HTTPS (HyperText Transfer Protocol Secure) untuk protokol komunikasi aman, AWS (Amazon Web Services) untuk platform cloud computing, S3 (Simple Storage Service) untuk layanan penyimpanan cloud, NGS (Next Generation Sequencing) untuk teknologi sequencing DNA modern, DI (Disabilitas Intelektual) untuk kondisi medis yang menjadi target deteksi, YARSI (Yayasan Rumah Sakit Islam) sebagai institusi pengembang, REST (Representational State Transfer) untuk arsitektur API, JSON (JavaScript Object Notation) untuk format pertukaran data, CSS (Cascading Style Sheets) untuk bahasa styling web, HTML (HyperText Markup Language) untuk bahasa markup web, JS (JavaScript) untuk bahasa pemrograman web, SQL (Structured Query Language) untuk bahasa query database, CRUD (Create, Read, Update, Delete) untuk operasi dasar database, MVC (Model-View-Controller) untuk pola arsitektur aplikasi, dan SDLC (Software Development Life Cycle) untuk siklus pengembangan perangkat lunak.
+
+Istilah khusus platform mencakup Medical Dashboard sebagai antarmuka utama untuk tenaga medis, Genomic Analysis untuk proses analisis data genomik menggunakan AI, Clinical Report untuk laporan hasil analisis yang digunakan untuk keperluan medis, Prediction History untuk riwayat analisis dan prediksi yang telah dilakukan oleh user, dan Medical Disclaimer sebagai peringatan bahwa hasil analisis merupakan skrining awal yang memerlukan konfirmasi lebih lanjut dari tenaga medis profesional.
+
+#### 1.1.5 Deskripsi Umum Bab
+
+Dokumen SRS ini disusun dalam struktur bab yang saling terkait dan komprehensif untuk memberikan gambaran lengkap tentang Platform Deteksi Disabilitas Intelektual, dimulai dari BAB 1 yang membahas spesifikasi kebutuhan perangkat lunak termasuk pendahuluan dan latar belakang pengembangan, tujuan, cakupan, dan definisi istilah, serta metodologi pengembangan dan siklus hidup aplikasi yang memberikan fondasi pemahaman untuk bab-bab selanjutnya.
+
+BAB 2 akan membahas deskripsi umum sistem yang mencakup perspektif produk dalam ekosistem medis, fungsi-fungsi utama platform, karakteristik pengguna dan batasan sistem, serta asumsi dan dependensi teknologi yang diperlukan. BAB 3 akan menguraikan kebutuhan fungsional secara detail termasuk spesifikasi fitur-fitur sistem, use case dan skenario penggunaan, interface requirements dan integrasi, serta kebutuhan data dan pemrosesan yang spesifik untuk analisis genomik.
+
+BAB 4 akan membahas kebutuhan non-fungsional yang mencakup performance dan scalability requirements untuk memastikan sistem dapat menangani beban kerja yang tinggi, security dan privacy requirements untuk melindungi data medis sensitif, usability dan accessibility requirements untuk memastikan kemudahan penggunaan bagi tenaga medis, serta reliability dan availability requirements untuk menjamin sistem dapat diandalkan dalam lingkungan medis yang kritis.
+
+BAB 5 akan menguraikan arsitektur dan desain sistem secara komprehensif termasuk arsitektur cloud dan infrastructure yang digunakan, machine learning pipeline design untuk proses analisis AI, database design dan data flow untuk manajemen data yang efisien, serta API design dan integration points untuk memastikan interoperabilitas sistem. Setiap bab dimulai dengan overview dan objektif yang jelas, diikuti pembahasan detail dengan contoh dan ilustrasi yang relevan, referensi ke bab lain yang terkait untuk memastikan konsistensi, dan diakhiri dengan summary dan key points untuk memudahkan pemahaman.
+
+Dokumen ini ditujukan untuk berbagai audience dengan kebutuhan yang berbeda, dimana tim pengembang menggunakannya sebagai panduan implementasi teknis, project manager memanfaatkannya untuk planning dan tracking progress, stakeholder medis menggunakannya untuk validasi kebutuhan klinis, quality assurance menggunakannya sebagai basis untuk testing strategy, dan system administrator menggunakannya untuk deployment dan maintenance. Sebagai living document, SRS ini akan diupdate secara berkala seiring dengan perkembangan sistem, setiap perubahan akan didokumentasikan dengan version control yang ketat, review berkala akan dilakukan bersama stakeholder untuk memastikan relevansi, dan feedback dari UAT akan diintegrasikan ke dalam dokumen untuk perbaikan berkelanjutan.
+
+---
+
+*Dokumen ini merupakan living document yang akan terus berkembang sesuai dengan kebutuhan dan feedback dari stakeholder. Untuk informasi lebih lanjut atau klarifikasi, silakan hubungi tim pengembang Platform Deteksi Disabilitas Intelektual - YARSI AI.*
