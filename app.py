@@ -1,13 +1,14 @@
 """
-DI Frontend Application - Deploy Ready Version
-==============================================
+DI Frontend Application - BED Input Version
+============================================
 Flask web application untuk klasifikasi Disabilitas Intelektual.
+Input: File BED dari Nanopore sequencing (~1GB)
 
 Struktur Deploy:
-- DI-Deploy-Ready/
+- DI-Deploy-Ready-BED/
   - backend/      (API FastAPI)
   - frontend/     (Flask Web App) <- YOU ARE HERE
-  - model/        (KNN Model V2)
+  - model/        (KNN Model V2 + BED Preprocessor)
 """
 
 import os
@@ -33,11 +34,11 @@ app.secret_key = os.environ.get('SECRET_KEY', 'change-this-in-production')
 # API Configuration - can be overridden by environment variable
 API_BASE_URL = os.environ.get('API_BASE_URL', 'http://localhost:8000/api/v1')
 
-# Initialize local model predictor - V2
+# Initialize local model predictor - V2 BED
 ARTIFACTS_DIR = os.path.join(MODEL_DIR, 'deployment_artifacts')
 try:
     model_predictor = ModelPredictor(ARTIFACTS_DIR)
-    print("✅ Local model V2 (KNN) loaded successfully")
+    print("✅ Local model V2 (KNN + BED Preprocessor) loaded successfully")
 except Exception as e:
     print(f"❌ Failed to load local model: {e}")
     model_predictor = None
@@ -47,10 +48,14 @@ STATIC_FOLDER = 'static'
 UPLOAD_FOLDER = os.path.join(STATIC_FOLDER, 'uploads')
 HISTORY_FILE = os.path.join(STATIC_FOLDER, 'history.json')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024  # 2GB max upload
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024 * 1024  # 3GB max upload for BED files
 
-# Hanya izinkan CSV
-ALLOWED_EXTENSIONS = {'csv'}
+# Disable request size limit for werkzeug
+from werkzeug.serving import WSGIRequestHandler
+WSGIRequestHandler.protocol_version = "HTTP/1.1"
+
+# Izinkan BED files
+ALLOWED_EXTENSIONS = {'bed'}
 
 # History functions
 def load_history(user_email=None):
@@ -176,24 +181,39 @@ def upload_file():
             # Save file locally for model prediction
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
             
-            print(f"File saved locally: {file_path}")
+            # Stream save for large files - save directly without loading to memory
+            print(f"Saving BED file: {filename}")
+            
+            # Use chunk-based saving for large files
+            chunk_size = 8192  # 8KB chunks
+            with open(file_path, 'wb') as f:
+                while True:
+                    chunk = file.stream.read(chunk_size)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+            
+            file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
+            print(f"File saved: {file_path} ({file_size_mb:.1f} MB)")
             
             return jsonify({
                 'success': True,
                 'status': 'success',
-                'message': 'File uploaded successfully',
+                'message': f'BED file uploaded successfully ({file_size_mb:.1f} MB)',
                 'data': {
                     'filename': filename,
-                    'original_name': file.filename
+                    'original_name': file.filename,
+                    'size_mb': round(file_size_mb, 1)
                 }
             })
         except Exception as e:
             print(f"Upload error: {e}")
+            import traceback
+            traceback.print_exc()
             return jsonify({'success': False, 'message': f'Upload failed: {str(e)}'})
     
-    return jsonify({'success': False, 'message': 'Invalid file type, only CSV allowed'})
+    return jsonify({'success': False, 'message': 'Invalid file type, only BED files allowed'})
 
 @app.route('/upload/predict')
 def predict_proxy():
@@ -201,12 +221,16 @@ def predict_proxy():
     if not filename:
         return jsonify({'success': False, 'message': 'No filename provided'})
     
-    # Use local model
+    # Use local model with BED preprocessing
     if model_predictor:
         try:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             if os.path.exists(file_path):
-                result = model_predictor.predict_from_csv(file_path)
+                print(f"Starting BED prediction for: {filename}")
+                
+                # Use predict_from_bed for BED files
+                result = model_predictor.predict_from_bed(file_path, verbose=True)
+                
                 if result.get('status') == 'success':
                     # Save to history
                     history_entry = {
@@ -214,23 +238,31 @@ def predict_proxy():
                         'filename': filename,
                         'prediction': result.get('prediction'),
                         'confidence': result.get('confidence'),
+                        'processing_time': result.get('preprocessing_time_sec'),
                         'timestamp': datetime.now().isoformat(),
                         'sample_id': result.get('sample_id'),
                         'user_email': session.get('user_email', 'unknown')
                     }
                     save_history(history_entry)
                     
-                    prediction_text = f"Prediction: {result.get('prediction', 'N/A')}<br>Confidence: {result.get('confidence', 'N/A')}%<br>Sample: {result.get('sample_id', 'N/A')}"
+                    prediction_text = (
+                        f"Prediction: {result.get('prediction', 'N/A')}<br>"
+                        f"Confidence: {result.get('confidence', 'N/A')}%<br>"
+                        f"Processing Time: {result.get('preprocessing_time_sec', 'N/A')} sec<br>"
+                        f"Sample: {result.get('sample_id', 'N/A')}"
+                    )
                     return jsonify({
                         'success': True,
                         'prediction': prediction_text
                     })
                 else:
-                    return jsonify({'success': False, 'message': result.get('message', 'Local prediction failed')})
+                    return jsonify({'success': False, 'message': result.get('message', 'Prediction failed')})
             else:
                 return jsonify({'success': False, 'message': f'File not found: {filename}'})
         except Exception as e:
-            print(f"Local prediction error: {e}")
+            print(f"Prediction error: {e}")
+            import traceback
+            traceback.print_exc()
             return jsonify({'success': False, 'message': f'Prediction error: {str(e)}'})
     else:
         return jsonify({'success': False, 'message': 'Model not available'})
@@ -305,19 +337,18 @@ def about():
 
 @app.route('/download/sample')
 def download_sample():
-    # Use relative path to model test data
-    sample_dir = os.path.join(MODEL_DIR, 'test_data_csv')
+    # Check for sample BED files
+    sample_dir = os.path.join(MODEL_DIR, 'test_data_bed')
     
     if os.path.exists(sample_dir):
-        # Create zip file if not exists
-        import shutil
-        zip_path = os.path.join(STATIC_FOLDER, 'test_data_csv_v2.zip')
-        if not os.path.exists(zip_path):
-            shutil.make_archive(zip_path.replace('.zip', ''), 'zip', sample_dir)
-        return send_file(zip_path, as_attachment=True, download_name='test_data_csv_v2.zip')
-    else:
-        flash('Sample file not found!', 'error')
-        return redirect(url_for('dashboard'))
+        bed_files = [f for f in os.listdir(sample_dir) if f.endswith('.bed')]
+        if bed_files:
+            # Return first BED file as sample
+            sample_path = os.path.join(sample_dir, bed_files[0])
+            return send_file(sample_path, as_attachment=True)
+    
+    flash('Sample BED file not found!', 'error')
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     if not os.path.exists(STATIC_FOLDER):
@@ -325,13 +356,15 @@ if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
     
-    print(f"="*50)
-    print(f"DI Frontend - Deploy Ready")
-    print(f"="*50)
+    print(f"="*60)
+    print(f"DI Frontend - BED Input Version")
+    print(f"="*60)
     print(f"Base Directory: {BASE_DIR}")
     print(f"Model Directory: {MODEL_DIR}")
     print(f"API URL: {API_BASE_URL}")
     print(f"Model Status: {'✅ Ready' if model_predictor else '❌ Not available'}")
-    print(f"="*50)
+    print(f"Allowed File Types: BED")
+    print(f"Max Upload Size: 2GB")
+    print(f"="*60)
     
     app.run(debug=True, port=8004)

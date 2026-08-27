@@ -1,0 +1,61 @@
+[
+  {
+    "id": 1,
+    "filename": "bc07.csv",
+    "prediction": "case",
+    "confidence": 0,
+    "timestamp": "2026-08-27T14:16:50.044212",
+    "sample_id": "bc07.csv",
+    "user_email": "testing@gmail.com"
+  },
+  {
+    "id": 2,
+    "filename": "bc07.bed",
+    "prediction": "ctrl",
+    "confidence": 63.31,
+    "processing_time": 60.84,
+    "timestamp": "2026-08-27T14:46:10.131806",
+    "sample_id": "bc07.bed",
+    "user_email": "testing@gmail.com"
+  },
+  {
+    "id": 3,
+    "filename": "bc07.bed",
+    "prediction": "ctrl",
+    "confidence": 63.31,
+    "processing_time": 50.0,
+    "timestamp": "2026-08-27T14:56:32.366773",
+    "sample_id": "bc07.bed",
+    "user_email": "testing@gmail.com"
+  },
+  {
+    "id": 4,
+    "filename": "bc07.bed",
+    "prediction": "ctrl",
+    "confidence": 63.31,
+    "processing_time": 62.04,
+    "timestamp": "2026-08-27T15:09:09.329104",
+    "sample_id": "bc07.bed",
+    "user_email": "testing@gmail.com"
+  },
+  {
+    "id": 5,
+    "filename": "bc07.bed",
+    "prediction": "ctrl",
+    "confidence": 63.31,
+    "processing_time": 62.21,
+    "timestamp": "2026-08-27T15:23:25.139318",
+    "sample_id": "bc07.bed",
+    "user_email": "testing@gmail.com"
+  },
+  {
+    "id": 6,
+    "filename": "bc07.bed",
+    "prediction": "ctrl",
+    "confidence": 63.31,
+    "processing_time": 50.09,
+    "timestamp": "2026-08-27T15:29:00.353171",
+    "sample_id": "bc07.bed",
+    "user_email": "testing@gmail.com"
+  }
+]

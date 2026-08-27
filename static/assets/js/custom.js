@@ -40,18 +40,28 @@
         $(this).addClass('active');
           
           var data = $(this).attr('data-filter');
-          $grid.isotope({
-            filter: data
-          })
+          try {
+            if (typeof $grid !== 'undefined' && $grid.isotope) {
+              $grid.isotope({
+                filter: data
+              });
+            }
+          } catch(e) {
+            console.log('Isotope not available');
+          }
         });
 
-        var $grid = $(".grid").isotope({
-          	itemSelector: ".all",
-          	percentPosition: true,
-          	masonry: {
-            columnWidth: ".all"
+        try {
+          var $grid = $(".grid").isotope({
+            itemSelector: ".all",
+            percentPosition: true,
+            masonry: {
+              columnWidth: ".all"
+            }
+          });
+        } catch(e) {
+          console.log('Isotope not loaded');
         }
-    })
 
 	$(document).on("click", ".naccs .menu div", function() {
 		var numberIndex = $(this).index();
@@ -70,65 +80,72 @@
 		}
 	});
 
-	$('.owl-cites-town').owlCarousel({
-		items:4,
-		loop:true,
-		dots: false,
-		nav: true,
-		autoplay: true,
-		margin:30,
-		responsive:{
-			  0:{
-				  items:1
-			  },
-			  800:{
-				  items:2
-			  },
-			  1000:{
-				  items:4
-			}
-		}
-	})
+	// Wrap owlCarousel calls with try-catch
+	try {
+		if ($.fn.owlCarousel) {
+			$('.owl-cites-town').owlCarousel({
+				items:4,
+				loop:true,
+				dots: false,
+				nav: true,
+				autoplay: true,
+				margin:30,
+				responsive:{
+					  0:{
+						  items:1
+					  },
+					  800:{
+						  items:2
+					  },
+					  1000:{
+						  items:4
+					}
+				}
+			});
 
-	$('.owl-weekly-offers').owlCarousel({
-		items:3,
-		loop:true,
-		dots: false,
-		nav: true,
-		autoplay: true,
-		margin:15,
-		responsive:{
-			  0:{
-				  items:1
-			  },
-			  800:{
-				  items:2
-			  },
-			  1000:{
-				  items:3
-			}
-		}
-	})
+			$('.owl-weekly-offers').owlCarousel({
+				items:3,
+				loop:true,
+				dots: false,
+				nav: true,
+				autoplay: true,
+				margin:15,
+				responsive:{
+					  0:{
+						  items:1
+					  },
+					  800:{
+						  items:2
+					  },
+					  1000:{
+						  items:3
+					}
+				}
+			});
 
-	$('.owl-banner').owlCarousel({
-		items:1,
-		loop:true,
-		dots: false,
-		nav: true,
-		autoplay: true,
-		margin:30,
-		responsive:{
-			  0:{
-				  items:1
-			  },
-			  600:{
-				  items:1
-			  },
-			  1000:{
-				  items:1
-			}
+			$('.owl-banner').owlCarousel({
+				items:1,
+				loop:true,
+				dots: false,
+				nav: true,
+				autoplay: true,
+				margin:30,
+				responsive:{
+					  0:{
+						  items:1
+					  },
+					  600:{
+						  items:1
+					  },
+					  1000:{
+						  items:1
+					}
+				}
+			});
 		}
-	})
+	} catch(e) {
+		console.log('owlCarousel not loaded');
+	}
 
 	
 	

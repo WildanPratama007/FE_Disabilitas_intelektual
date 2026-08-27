@@ -1,11 +1,20 @@
 // ML Disability Detection App JavaScript
 
-// DOM Elements
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
+// DOM Elements - will be initialized after DOM loads
+let dropZone = null;
+let fileInput = null;
 
 // File Upload Functionality
 function initializeFileUpload() {
+  // Get elements inside this function to ensure DOM is ready
+  dropZone = document.getElementById('dropZone');
+  fileInput = document.getElementById('fileInput');
+  
+  if (!dropZone || !fileInput) {
+    console.error('Upload elements not found');
+    return;
+  }
+  
   dropZone.addEventListener('click', () => fileInput.click());
 
   dropZone.addEventListener('dragover', (e) => {
@@ -50,54 +59,148 @@ function initializeFileUpload() {
 
 let uploadedFileName = '';
 
+function formatFileSize(bytes) {
+  if (bytes >= 1073741824) {
+    return (bytes / 1073741824).toFixed(2) + ' GB';
+  } else if (bytes >= 1048576) {
+    return (bytes / 1048576).toFixed(2) + ' MB';
+  } else if (bytes >= 1024) {
+    return (bytes / 1024).toFixed(2) + ' KB';
+  } else {
+    return bytes + ' bytes';
+  }
+}
+
 function handleFileUpload() {
+  const file = fileInput.files[0];
+  const fileSize = formatFileSize(file.size);
+  
+  // Show upload progress UI
   dropZone.innerHTML = `
-    <div style="text-align: center;">
-      <i class="fa fa-spinner fa-spin" style="font-size:24px;color:#22b3c1;border:2px solid #22b3c1;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;"></i>
-      <p style="margin: 10px 0;">Uploading: ${fileInput.files[0].name}</p>
+    <div style="text-align: center; width: 100%; padding: 20px;">
+      <i class="fa fa-cloud-upload" style="font-size: 40px; color: #0066CC; margin-bottom: 15px;"></i>
+      <p style="margin: 10px 0; font-weight: 600; color: #333;">Uploading: ${file.name}</p>
+      <p style="margin: 5px 0; font-size: 12px; color: #666;">Size: ${fileSize}</p>
+      
+      <!-- Progress Bar Container -->
+      <div style="background: #e0e0e0; border-radius: 10px; height: 20px; width: 100%; margin: 15px 0; overflow: hidden;">
+        <div id="uploadProgressBar" style="background: linear-gradient(90deg, #0066CC, #22b3c1); height: 100%; width: 0%; border-radius: 10px; transition: width 0.3s ease;"></div>
+      </div>
+      
+      <!-- Progress Text -->
+      <p id="uploadProgressText" style="margin: 5px 0; font-size: 14px; color: #0066CC; font-weight: 600;">0%</p>
+      <p id="uploadSpeedText" style="margin: 5px 0; font-size: 11px; color: #888;"></p>
     </div>
   `;
 
   const formData = new FormData();
-  formData.append('file', fileInput.files[0]);
+  formData.append('file', file);
 
-  fetch('/upload', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success' || data.success) {
-        uploadedFileName = data.data ? data.data.filename : data.filename;
-        const predictBtn = document.getElementById('predictBtn');
-        predictBtn.disabled = false;
-        predictBtn.style.background = '#22b3c1';
-        predictBtn.style.cursor = 'pointer';
-
-        dropZone.innerHTML = `
-          <div style="text-align: center;">
-            <i class="fa fa-check-circle" style="font-size: 32px; margin-bottom: 10px; color: #2ECC71;"></i>
-            <p style="margin: 10px 0;">📋 Data medis berhasil diupload: ${data.data ? data.data.original_name : data.filename}</p>
-            <p style="margin: 5px 0; font-size: 12px; color: #4c4f51ff;">✅ Siap untuk analisis klinis</p>
-          </div>
-        `;
-      } else {
-        dropZone.innerHTML = `
-          <div style="text-align: center;">
-            <i class="fa fa-times-circle" style="font-size: 32px; margin-bottom: 10px; color: #dc3545;"></i>
-            <p style="margin: 10px 0;">Upload gagal: ${data.message}</p>
-          </div>
-        `;
+  // Use XMLHttpRequest for progress tracking
+  const xhr = new XMLHttpRequest();
+  let startTime = Date.now();
+  
+  // Track upload progress
+  xhr.upload.addEventListener('progress', function(e) {
+    if (e.lengthComputable) {
+      const percentComplete = Math.round((e.loaded / e.total) * 100);
+      const progressBar = document.getElementById('uploadProgressBar');
+      const progressText = document.getElementById('uploadProgressText');
+      const speedText = document.getElementById('uploadSpeedText');
+      
+      if (progressBar) {
+        progressBar.style.width = percentComplete + '%';
       }
-    })
-    .catch(error => {
-      dropZone.innerHTML = `
-        <div style="text-align: center;">
-          <i class="fa fa-times-circle" style="font-size: 32px; margin-bottom: 10px; color: #dc3545;"></i>
-          <p style="margin: 10px 0;">Error: ${error}</p>
-        </div>
-      `;
-    });
+      if (progressText) {
+        progressText.textContent = percentComplete + '%';
+      }
+      
+      // Calculate upload speed
+      const elapsedTime = (Date.now() - startTime) / 1000; // seconds
+      if (elapsedTime > 0 && speedText) {
+        const uploadSpeed = e.loaded / elapsedTime;
+        const remainingBytes = e.total - e.loaded;
+        const remainingTime = remainingBytes / uploadSpeed;
+        
+        let speedDisplay = formatFileSize(uploadSpeed) + '/s';
+        let timeDisplay = '';
+        
+        if (remainingTime < 60) {
+          timeDisplay = Math.round(remainingTime) + ' detik tersisa';
+        } else {
+          timeDisplay = Math.round(remainingTime / 60) + ' menit tersisa';
+        }
+        
+        speedText.textContent = speedDisplay + ' • ' + timeDisplay;
+      }
+    }
+  });
+
+  // Handle completion
+  xhr.addEventListener('load', function() {
+    if (xhr.status === 200) {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (data.status === 'success' || data.success) {
+          uploadedFileName = data.data ? data.data.filename : data.filename;
+          const predictBtn = document.getElementById('predictBtn');
+          predictBtn.disabled = false;
+          predictBtn.style.background = '#22b3c1';
+          predictBtn.style.cursor = 'pointer';
+
+          const fileSizeDisplay = data.data && data.data.size_mb ? `(${data.data.size_mb} MB)` : '';
+          
+          dropZone.innerHTML = `
+            <div style="text-align: center;">
+              <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #2ECC71, #27AE60); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <p style="margin: 10px 0; font-weight: 600; color: #2ECC71; font-size: 16px;">Upload Berhasil!</p>
+              <p style="margin: 5px 0; font-size: 13px; color: #333;">${data.data ? data.data.original_name : data.filename} ${fileSizeDisplay}</p>
+              <p style="margin: 10px 0; font-size: 12px; color: #666;">Klik "Analisis Medis" untuk memproses</p>
+            </div>
+          `;
+        } else {
+          showUploadError(data.message || 'Upload gagal');
+        }
+      } catch (e) {
+        showUploadError('Invalid response from server');
+      }
+    } else {
+      showUploadError('Server error: ' + xhr.status);
+    }
+  });
+
+  // Handle errors
+  xhr.addEventListener('error', function() {
+    showUploadError('Network error - pastikan koneksi stabil');
+  });
+
+  xhr.addEventListener('abort', function() {
+    showUploadError('Upload dibatalkan');
+  });
+
+  // Send request
+  xhr.open('POST', '/upload', true);
+  xhr.send(formData);
+}
+
+function showUploadError(message) {
+  dropZone.innerHTML = `
+    <div style="text-align: center;">
+      <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #E74C3C, #C0392B); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+      <p style="margin: 10px 0; font-weight: 600; color: #E74C3C; font-size: 16px;">Upload Gagal</p>
+      <p style="margin: 5px 0; font-size: 13px; color: #666;">${message}</p>
+      <p style="margin: 10px 0; font-size: 12px; color: #888;">Klik di sini untuk coba lagi</p>
+    </div>
+  `;
 }
 
 // Prediction Functionality
@@ -153,16 +256,16 @@ function showLoadingScreen() {
     <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid #0066CC; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);">
       <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
         <i class="fa fa-stethoscope" style="color: #0066CC; font-size: 24px;"></i>
-        <h3 style="color: #0066CC; margin: 0;">🔬 Analisis Medis</h3>
+        <h3 style="color: #0066CC; margin: 0;">🔬 Analisis BED File</h3>
         <i class="fa fa-heartbeat" style="color: #E74C3C; font-size: 24px;"></i>
       </div>
       <div style="margin: 30px 0;">
         <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #0066CC; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-        <p style="color: #0066CC; font-weight: 600; margin: 10px 0;">Sedang menganalisis data medis...</p>
-        <p style="color: #666; font-size: 14px; margin: 5px 0;">Mohon tunggu, proses ini memerlukan waktu beberapa detik</p>
+        <p style="color: #0066CC; font-weight: 600; margin: 10px 0;">Memproses file BED...</p>
+        <p style="color: #666; font-size: 14px; margin: 5px 0;">File BED besar membutuhkan waktu 1-2 menit</p>
       </div>
       <div style="background: #E3F2FD; padding: 15px; border-radius: 8px; border-left: 4px solid #0066CC;">
-        <p style="color: #0066CC; font-size: 12px; margin: 0;">🤖 AI sedang memproses data genomik untuk deteksi disabilitas intelektual</p>
+        <p style="color: #0066CC; font-size: 12px; margin: 0;">🧬 Mengekstrak DMR regions dari data methylation Nanopore</p>
       </div>
     </div>
   `;
@@ -404,10 +507,8 @@ function initializeTeamCarousel() {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  // Only initialize file upload if elements exist
-  if (dropZone && fileInput) {
-    initializeFileUpload();
-  }
+  // Initialize file upload
+  initializeFileUpload();
   
   // Always initialize team carousel
   initializeTeamCarousel();
