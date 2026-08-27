@@ -176,9 +176,8 @@ html {
 /* Drop Zone Styles */
 #dropZone {
   border: 3px dashed var(--medical-blue);
-  padding: 25px;
+  padding: 30px 25px;
   text-align: center;
-  color: white;
   border-radius: 15px;
   margin-top: 20px;
   cursor: pointer;
@@ -186,13 +185,13 @@ html {
   max-width: 450px;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 102, 204, 0.2);
   transition: all 0.3s ease;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #dropZone:hover {
@@ -201,12 +200,42 @@ html {
   transform: translateY(-2px);
 }
 
-#dropZone i {
-  font-size: 24px;
+#dropZone .dropzone-content {
+  text-align: center;
+  width: 100%;
+}
+
+#dropZone .dropzone-content i.fa-stethoscope {
+  font-size: 50px;
+  color: #0066CC;
+  display: block;
+  margin-bottom: 15px;
+  /* Remove any circle styling */
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: normal !important;
+  padding: 0 !important;
+}
+
+#dropZone .dropzone-title {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+#dropZone .dropzone-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #888;
 }
 
 #dropZone p {
-  margin: 0;
+  margin: 5px 0;
   font-size: 14px;
 }
 
@@ -294,6 +323,11 @@ html {
 /* Medical Team Section */
 .call-to-action {
   background: linear-gradient(135deg, var(--medical-dark-blue) 0%, var(--medical-blue) 50%, var(--medical-teal) 100%);
+}
+
+/* Override more-info positioning to move white box higher */
+#section-1 .more-info {
+  bottom: 100px !important;
 }
 
 /* Team carousel responsive layout */
